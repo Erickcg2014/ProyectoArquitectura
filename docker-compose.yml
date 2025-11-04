@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./Frontend/angular-frontend
+      dockerfile: Dockerfile
+    image: proyecto-arquitectura/frontend:latest
+    container_name: frontend-multicanal
+    ports:
+      - "4200:80" # Puerto local:Puerto contenedor
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:80/",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - multicanal-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
+
+networks:
+  multicanal-network:
+    driver: bridge
+    name: multicanal-network

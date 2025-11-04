@@ -1,0 +1,320 @@
+<!-- src/app/pages/product-detail/product-detail.component.html -->
+
+<!-- Loading State -->
+<div
+  *ngIf="loading"
+  class="flex justify-center items-center min-h-screen bg-white"
+>
+  <div class="relative">
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-b-4 border-[#1919e6]"
+    ></div>
+    <div
+      class="animate-ping absolute inset-0 rounded-full h-16 w-16 border-4 border-[#FFE600] opacity-20"
+    ></div>
+  </div>
+</div>
+
+<!-- Product Detail Content -->
+<main *ngIf="!loading && product" class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-6 max-w-7xl">
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 text-sm animate-fade-in">
+      <a routerLink="/" class="text-[#1919e6] hover:underline font-medium"
+        >Home</a
+      >
+      <span class="text-gray-400">/</span>
+      <a class="text-[#1919e6] hover:underline font-medium">{{
+        product.category
+      }}</a>
+      <span class="text-gray-400">/</span>
+      <span class="text-gray-600">{{ product.name }}</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <!-- Gallery Section -->
+      <div class="animate-fade-in-up">
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <!-- Main Image -->
+          <div class="mb-4">
+            <div
+              class="w-full bg-center bg-no-repeat bg-contain aspect-square rounded-xl hover:scale-105 transition-transform duration-500 cursor-zoom-in"
+              [style.background-image]="'url(' + selectedImage + ')'"
+              [attr.data-alt]="product.name"
+            ></div>
+          </div>
+
+          <!-- Thumbnails -->
+          <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+            <div
+              *ngFor="let image of product.images; let i = index"
+              (click)="selectImage(image)"
+              [class.ring-2]="selectedImage === image"
+              [class.ring-[#1919e6]="selectedImage === image"
+              class="w-20 h-20 flex-shrink-0 cursor-pointer border-2 border-gray-200 rounded-lg transition-all hover:border-[#1919e6] hover:shadow-md"
+            >
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-contain rounded-md"
+                [style.background-image]="'url(' + image + ')'"
+                [attr.data-alt]="'Product image ' + (i + 1)"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Info Section -->
+      <div class="animate-fade-in-up animation-delay-200">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <!-- Status Badge -->
+          <div class="mb-4">
+            <span
+              *ngIf="product.inStock"
+              class="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-sm font-semibold rounded-full"
+            >
+              <span class="material-symbols-outlined text-lg"
+                >check_circle</span
+              >
+              En Stock
+            </span>
+            <span
+              *ngIf="!product.inStock"
+              class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 text-sm font-semibold rounded-full"
+            >
+              <span class="material-symbols-outlined text-lg">cancel</span>
+              Agotado
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h1
+            class="text-gray-900 text-3xl md:text-4xl font-bold leading-tight mb-6"
+          >
+            {{ product.name }}
+          </h1>
+
+          <!-- Rating (si existe) -->
+          <div *ngIf="product.rating" class="flex items-center gap-2 mb-6">
+            <div class="flex">
+              <span
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="material-symbols-outlined text-xl"
+                [class.text-[#FFE600]="star <= product.rating!"
+                [class.text-gray-300]="star > product.rating!"
+                style="font-variation-settings: 'FILL' 1"
+              >
+                star
+              </span>
+            </div>
+            <span class="text-gray-600 font-medium">{{ product.rating }}</span>
+            <span class="text-gray-400 text-sm"
+              >({{ product.reviewCount }} valoraciones)</span
+            >
+          </div>
+
+          <!-- Price Box -->
+          <div
+            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 mb-6 border border-gray-200"
+          >
+            <div class="flex items-baseline gap-2 mb-4">
+              <span class="text-5xl font-bold text-gray-900">
+                ${{ Math.floor(product.price) }}
+              </span>
+              <span class="text-3xl font-light text-gray-600">
+                {{ getCents() }}
+              </span>
+            </div>
+
+            <!-- Free Shipping -->
+            <div class="flex items-center gap-3 text-green-600">
+              <span class="material-symbols-outlined text-2xl"
+                >local_shipping</span
+              >
+              <div>
+                <p class="font-semibold text-lg">Envío Gratis</p>
+                <p class="text-sm text-gray-600">Llega este viernes</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-3"
+              >Cantidad:</label
+            >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center border-2 border-gray-300 rounded-lg overflow-hidden"
+              >
+                <button
+                  (click)="decreaseQuantity()"
+                  [disabled]="quantity <= 1"
+                  class="px-4 py-3 text-gray-700 font-bold text-xl hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  -
+                </button>
+                <input
+                  [(ngModel)]="quantity"
+                  class="w-16 text-center border-x-2 border-gray-300 bg-white text-gray-900 font-semibold text-lg focus:ring-0 focus:outline-none py-3"
+                  type="number"
+                  min="1"
+                  [max]="product.stock"
+                  readonly
+                />
+                <button
+                  (click)="increaseQuantity()"
+                  [disabled]="quantity >= product.stock"
+                  class="px-4 py-3 text-gray-700 font-bold text-xl hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  +
+                </button>
+              </div>
+              <span class="text-gray-500 text-sm"
+                >{{ product.stock }} disponibles</span
+              >
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col gap-3 mb-8">
+            <button
+              (click)="buyNow()"
+              [disabled]="!product.inStock"
+              class="w-full flex items-center justify-center gap-2 py-4 bg-[#FFE600] hover:bg-[#ffd700] text-gray-900 text-lg font-bold rounded-lg transition-all hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+            >
+              <span class="material-symbols-outlined">shopping_bag</span>
+              Comprar Ahora
+            </button>
+            <button
+              (click)="addToCart()"
+              [disabled]="!product.inStock"
+              class="w-full flex items-center justify-center gap-2 py-4 bg-white border-2 border-[#1919e6] text-[#1919e6] text-lg font-bold rounded-lg hover:bg-[#1919e6] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span class="material-symbols-outlined">add_shopping_cart</span>
+              Agregar al Carrito
+            </button>
+          </div>
+
+          <!-- Vendor Info (si existe) -->
+          <div *ngIf="product.vendor" class="border-t border-gray-200 pt-6">
+            <p class="text-gray-600 text-sm mb-3 font-medium">Vendido por:</p>
+            <div
+              class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-14 border-2 border-gray-200"
+                [style.background-image]="
+                  product.vendor.logo
+                    ? 'url(' + product.vendor.logo + ')'
+                    : 'url(https://via.placeholder.com/150)'
+                "
+                [attr.data-alt]="product.vendor.name + ' logo'"
+              ></div>
+              <div class="flex-1">
+                <p class="text-gray-900 font-semibold text-lg">
+                  {{ product.vendor.name }}
+                </p>
+                <div
+                  *ngIf="product.vendor.rating"
+                  class="flex items-center gap-1 text-sm"
+                >
+                  <span
+                    class="material-symbols-outlined text-[#FFE600] text-base"
+                    style="font-variation-settings: 'FILL' 1"
+                    >star</span
+                  >
+                  <span class="text-gray-600 font-medium">{{
+                    product.vendor.rating
+                  }}</span>
+                </div>
+              </div>
+              <a
+                class="text-[#1919e6] font-semibold text-sm hover:underline whitespace-nowrap"
+                >Ver tienda →</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Description -->
+    <div
+      class="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up animation-delay-400"
+    >
+      <h2
+        class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2"
+      >
+        <span class="material-symbols-outlined text-3xl">description</span>
+        Descripción del Producto
+      </h2>
+      <div class="prose prose-lg max-w-none">
+        <p class="text-gray-700 leading-relaxed mb-6">
+          {{ product.description }}
+        </p>
+
+        <h3
+          class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-2xl text-[#1919e6]"
+            >verified</span
+          >
+          Características Principales:
+        </h3>
+        <ul class="space-y-3 text-gray-700">
+          <li class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-green-600 mt-0.5"
+              >check_circle</span
+            >
+            <span
+              ><strong>Alta Calidad:</strong> Materiales y construcción
+              premium</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-green-600 mt-0.5"
+              >check_circle</span
+            >
+            <span
+              ><strong
+                >{{
+                  product.type === "physical"
+                    ? "Envío Rápido"
+                    : product.type === "service"
+                    ? "Servicio Profesional"
+                    : "Acceso Instantáneo"
+                }}:</strong
+              >
+              {{
+                product.type === "physical"
+                  ? "Entregado a tu puerta"
+                  : product.type === "service"
+                  ? "Reserva tu cita hoy"
+                  : "Descarga inmediata después de la compra"
+              }}</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-green-600 mt-0.5"
+              >check_circle</span
+            >
+            <span
+              ><strong>Soporte al Cliente:</strong> Asistencia 24/7
+              disponible</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-green-600 mt-0.5"
+              >check_circle</span
+            >
+            <span
+              ><strong>Garantía:</strong> 1 año de garantía del fabricante
+              incluida</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
