@@ -1,0 +1,244 @@
+/* Colores corporativos */
+:root {
+  --primary-blue: #1e40af; /* Azul principal */
+  --secondary-blue: #3b82f6; /* Azul secundario */
+  --accent-yellow: #fbbf24; /* Amarillo corporativo */
+  --white: #ffffff; /* Blanco */
+  --light-gray: #f9fafb; /* Gris claro para fondos */
+  --dark-gray: #374151; /* Gris oscuro para texto */
+}
+
+/* Estilos generales */
+.min-h-screen {
+  background: linear-gradient(
+    135deg,
+    var(--white) 0%,
+    var(--secondary-blue) 0.5%,
+    var(--accent-yellow) 2%,
+    var(--white) 5%
+  ) !important;
+}
+
+/* Header */
+.text-center .w-20.h-20 {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  ) !important;
+  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3) !important;
+}
+
+.text-center h2 {
+  color: var(--primary-blue) !important;
+}
+
+.text-center p {
+  color: var(--dark-gray) !important;
+}
+
+/* Progress Steps */
+.flex.justify-between .absolute.h-1.bg-gray-200 {
+  background-color: rgba(30, 64, 175, 0.1) !important;
+}
+
+.flex.justify-between .absolute.h-1.bg-gradient-to-r {
+  background: linear-gradient(
+    to right,
+    var(--primary-blue),
+    var(--accent-yellow)
+  ) !important;
+}
+
+.flex.flex-col .w-12.h-12.bg-gradient-to-br {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  ) !important;
+  box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3) !important;
+}
+
+.flex.flex-col .w-12.h-12.bg-gray-200 {
+  background-color: rgba(30, 64, 175, 0.1) !important;
+  color: var(--primary-blue) !important;
+}
+
+/* Card principal */
+.card {
+  background-color: var(--white) !important;
+  border: 1px solid rgba(30, 64, 175, 0.1) !important;
+  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.1) !important;
+  border-radius: 12px !important;
+}
+
+/* Mensajes de error y éxito */
+.bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.05) !important;
+  border-left-color: #ef4444 !important;
+}
+
+.bg-green-50 {
+  background-color: rgba(34, 197, 94, 0.05) !important;
+  border-left-color: #22c55e !important;
+}
+
+/* Formulario */
+label {
+  color: var(--primary-blue) !important;
+}
+
+.input {
+  border: 1px solid rgba(30, 64, 175, 0.2) !important;
+  background-color: var(--white) !important;
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+}
+
+.input:focus {
+  border-color: var(--primary-blue) !important;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1) !important;
+  outline: none !important;
+}
+
+.input[class*="border-red-500"] {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Botones */
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue) 0%,
+    var(--secondary-blue) 100%
+  ) !important;
+  color: var(--white) !important;
+  border: none !important;
+  box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover:not([disabled]) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 15px rgba(30, 64, 175, 0.4) !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.btn-ghost {
+  color: var(--primary-blue) !important;
+  border: 1px solid rgba(30, 64, 175, 0.2) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(30, 64, 175, 0.05) !important;
+  border-color: var(--primary-blue) !important;
+}
+
+.btn-outline {
+  color: var(--primary-blue) !important;
+  border: 1px solid var(--primary-blue) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-blue) !important;
+  color: var(--white) !important;
+}
+
+/* Indicador de fortaleza de contraseña */
+.bg-red-500 {
+  background-color: #ef4444 !important;
+}
+
+.bg-yellow-500 {
+  background-color: var(--accent-yellow) !important;
+}
+
+.bg-green-500 {
+  background-color: #22c55e !important;
+}
+
+/* Checkboxes */
+input[type="checkbox"]:checked {
+  background-color: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+}
+
+/* Enlaces */
+a.text-primary {
+  color: var(--primary-blue) !important;
+}
+
+a.text-primary:hover {
+  color: var(--secondary-blue) !important;
+}
+
+/* Divisor */
+.divider {
+  border-top: 1px solid rgba(30, 64, 175, 0.1) !important;
+}
+
+/* Efectos de animación */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out !important;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modo oscuro (si es necesario) */
+@media (prefers-color-scheme: dark) {
+  .dark\:text-white {
+    color: var(--white) !important;
+  }
+
+  .dark\:text-gray-300 {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .dark\:text-gray-400 {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .dark\:bg-gray-700 {
+    background-color: rgba(30, 64, 175, 0.1) !important;
+  }
+
+  .dark\:bg-gray-800 {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+  }
+
+  .dark\:border-gray-700 {
+    border-color: rgba(30, 64, 175, 0.2) !important;
+  }
+}

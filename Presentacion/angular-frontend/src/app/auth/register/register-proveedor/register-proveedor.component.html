@@ -1,0 +1,727 @@
+<!-- src/app/auth/register/register-proveedor/register-proveedor.component.html -->
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-yellow-50 py-12 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-2xl w-full animate-fade-in-up">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="flex justify-center mb-4">
+        <div
+          class="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform"
+        >
+          <span class="material-symbols-outlined text-white text-5xl"
+            >store</span
+          >
+        </div>
+      </div>
+      <h2 class="text-4xl font-extrabold text-blue-800 dark:text-white mb-2">
+        Conviértete en Proveedor
+      </h2>
+      <p class="text-base text-blue-600 dark:text-gray-400">
+        Empieza a vender tus productos en JaveMarket y alcanza miles de clientes
+      </p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center relative">
+        <!-- Progress bar background -->
+        <div
+          class="absolute top-1/2 left-0 right-0 h-1 bg-blue-100 dark:bg-blue-900 -translate-y-1/2 -z-10"
+        ></div>
+        <!-- Progress bar fill -->
+        <div
+          class="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-blue-600 to-yellow-500 -translate-y-1/2 -z-10 transition-all duration-500"
+          [style.width]="((currentStep - 1) / (totalSteps - 1)) * 100 + '%'"
+        ></div>
+
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center">
+          <div
+            [class]="
+              currentStep >= 1
+                ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white'
+                : 'bg-blue-100 text-blue-400'
+            "
+            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
+            [class.scale-110]="currentStep === 1"
+          >
+            <span *ngIf="currentStep > 1" class="material-symbols-outlined"
+              >check</span
+            >
+            <span *ngIf="currentStep <= 1">1</span>
+          </div>
+          <span
+            class="text-xs mt-2 font-medium text-blue-600 dark:text-blue-300"
+            >Negocio</span
+          >
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center">
+          <div
+            [class]="
+              currentStep >= 2
+                ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white'
+                : 'bg-blue-100 text-blue-400'
+            "
+            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
+            [class.scale-110]="currentStep === 2"
+          >
+            <span *ngIf="currentStep > 2" class="material-symbols-outlined"
+              >check</span
+            >
+            <span *ngIf="currentStep <= 2">2</span>
+          </div>
+          <span
+            class="text-xs mt-2 font-medium text-blue-600 dark:text-blue-300"
+            >Contacto</span
+          >
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center">
+          <div
+            [class]="
+              currentStep >= 3
+                ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white'
+                : 'bg-blue-100 text-blue-400'
+            "
+            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
+            [class.scale-110]="currentStep === 3"
+          >
+            <span *ngIf="currentStep > 3" class="material-symbols-outlined"
+              >check</span
+            >
+            <span *ngIf="currentStep <= 3">3</span>
+          </div>
+          <span
+            class="text-xs mt-2 font-medium text-blue-600 dark:text-blue-300"
+            >Seguridad</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="bg-white p-8 shadow-2xl rounded-xl border border-blue-100">
+      <!-- Mensajes de error y éxito -->
+      <div
+        *ngIf="errorMessage"
+        class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg animate-shake"
+      >
+        <div class="flex items-center">
+          <span class="material-symbols-outlined text-red-500 mr-3">error</span>
+          <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="successMessage"
+        class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg animate-bounce-in"
+      >
+        <div class="flex items-center">
+          <span class="material-symbols-outlined text-green-500 mr-3"
+            >check_circle</span
+          >
+          <p class="text-sm text-green-700 font-medium">{{ successMessage }}</p>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <!-- STEP 1: Información del Negocio -->
+        <div *ngIf="currentStep === 1" class="space-y-5 animate-fade-in">
+          <!-- Nombre del Negocio -->
+          <div>
+            <label
+              for="nombre"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Nombre del Negocio / Empresa <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                business
+              </span>
+              <input
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Mi Tienda S.A.S"
+                [class.border-red-500]="nombre?.invalid && nombre?.touched"
+                class="w-full pl-11 pr-4 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+              />
+            </div>
+            <p
+              *ngIf="nombre?.invalid && nombre?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span *ngIf="nombre?.errors?.['required']"
+                >El nombre del negocio es requerido</span
+              >
+              <span *ngIf="nombre?.errors?.['minlength']"
+                >Mínimo 3 caracteres</span
+              >
+              <span *ngIf="nombre?.errors?.['maxlength']"
+                >Máximo 100 caracteres</span
+              >
+            </p>
+          </div>
+
+          <!-- Descripción del Negocio -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label
+                for="descripcion"
+                class="block text-sm font-semibold text-blue-800 dark:text-blue-300"
+              >
+                Descripción del Negocio <span class="text-red-500">*</span>
+              </label>
+              <span class="text-xs text-blue-500">{{
+                getDescripcionCount()
+              }}</span>
+            </div>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-3 text-blue-400"
+              >
+                description
+              </span>
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+                placeholder="Describe tu negocio: ¿Qué productos vendes? ¿Cuál es tu diferencial? ¿Qué hace especial a tu marca?"
+                [class.border-red-500]="
+                  descripcion?.invalid && descripcion?.touched
+                "
+                class="w-full pl-11 pr-4 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white min-h-[120px] resize-none"
+                rows="5"
+                maxlength="500"
+              ></textarea>
+            </div>
+            <p
+              *ngIf="descripcion?.invalid && descripcion?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span *ngIf="descripcion?.errors?.['required']"
+                >La descripción es requerida</span
+              >
+              <span *ngIf="descripcion?.errors?.['minlength']"
+                >Mínimo 20 caracteres para una buena descripción</span
+              >
+              <span *ngIf="descripcion?.errors?.['maxlength']"
+                >Máximo 500 caracteres</span
+              >
+            </p>
+            <p class="mt-1.5 text-xs text-blue-600 flex items-start gap-1">
+              <span class="material-symbols-outlined text-sm">lightbulb</span>
+              <span
+                >Tip: Una buena descripción ayuda a que los clientes confíen en
+                tu negocio</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <!-- STEP 2: Información de Contacto -->
+        <div *ngIf="currentStep === 2" class="space-y-5 animate-fade-in">
+          <!-- Email -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Correo Electrónico Corporativo <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                email
+              </span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="contacto@tunegocio.com"
+                [class.border-red-500]="email?.invalid && email?.touched"
+                class="w-full pl-11 pr-11 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                autocomplete="email"
+              />
+              <span
+                *ngIf="email?.valid"
+                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-green-500"
+              >
+                check_circle
+              </span>
+            </div>
+            <p
+              *ngIf="email?.invalid && email?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span *ngIf="email?.errors?.['required']"
+                >El correo es requerido</span
+              >
+              <span *ngIf="email?.errors?.['email']"
+                >Ingresa un correo válido</span
+              >
+              <span *ngIf="email?.errors?.['invalidDomain']"
+                >Este dominio de correo no está permitido</span
+              >
+            </p>
+          </div>
+
+          <!-- Teléfono -->
+          <div>
+            <label
+              for="telefono"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Teléfono de Contacto <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-600 font-medium text-sm"
+              >
+                🇨🇴 +57
+              </span>
+              <span
+                class="material-symbols-outlined absolute left-16 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                phone
+              </span>
+              <input
+                id="telefono"
+                type="tel"
+                formControlName="telefono"
+                placeholder="3001234567"
+                [class.border-red-500]="telefono?.invalid && telefono?.touched"
+                class="w-full pl-24 pr-4 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                maxlength="10"
+              />
+            </div>
+            <p
+              *ngIf="telefono?.invalid && telefono?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span *ngIf="telefono?.errors?.['required']"
+                >El teléfono es requerido</span
+              >
+              <span *ngIf="telefono?.errors?.['pattern']"
+                >Debe contener exactamente 10 dígitos</span
+              >
+            </p>
+            <p class="mt-1.5 text-xs text-blue-600 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span>Número de contacto para clientes (Colombia +57)</span>
+            </p>
+          </div>
+
+          <!-- Dirección -->
+          <div>
+            <label
+              for="direccion"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Dirección del Negocio <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-3 text-blue-400"
+              >
+                location_on
+              </span>
+              <textarea
+                id="direccion"
+                formControlName="direccion"
+                placeholder="Calle 123 #45-67, Local 301, Barrio Centro"
+                [class.border-red-500]="
+                  direccion?.invalid && direccion?.touched
+                "
+                class="w-full pl-11 pr-4 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white min-h-[80px] resize-none"
+                rows="3"
+              ></textarea>
+            </div>
+            <p
+              *ngIf="direccion?.invalid && direccion?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              <span *ngIf="direccion?.errors?.['required']"
+                >La dirección es requerida</span
+              >
+              <span *ngIf="direccion?.errors?.['minlength']"
+                >Mínimo 10 caracteres</span
+              >
+              <span *ngIf="direccion?.errors?.['maxlength']"
+                >Máximo 200 caracteres</span
+              >
+            </p>
+          </div>
+
+          <!-- Ciudad -->
+          <div>
+            <label
+              for="ciudad"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Ciudad <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                location_city
+              </span>
+              <select
+                id="ciudad"
+                formControlName="ciudad"
+                [class.border-red-500]="ciudad?.invalid && ciudad?.touched"
+                class="w-full pl-11 pr-10 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white appearance-none cursor-pointer"
+              >
+                <option value="" disabled selected>Selecciona tu ciudad</option>
+                <option *ngFor="let city of ciudades" [value]="city">
+                  {{ city }}
+                </option>
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 pointer-events-none"
+              >
+                expand_more
+              </span>
+            </div>
+            <p
+              *ngIf="ciudad?.invalid && ciudad?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              La ciudad es requerida
+            </p>
+          </div>
+        </div>
+
+        <!-- STEP 3: Seguridad -->
+        <div *ngIf="currentStep === 3" class="space-y-5 animate-fade-in">
+          <!-- Password -->
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Contraseña <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                lock
+              </span>
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="••••••••"
+                [class.border-red-500]="password?.invalid && password?.touched"
+                class="w-full pl-11 pr-11 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-600 transition-colors"
+              >
+                <span class="material-symbols-outlined text-xl">
+                  {{ showPassword ? "visibility_off" : "visibility" }}
+                </span>
+              </button>
+            </div>
+
+            <!-- Password strength indicator -->
+            <div *ngIf="password?.value" class="mt-2">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-medium text-blue-600"
+                  >Fortaleza:</span
+                >
+                <span
+                  class="text-xs font-bold"
+                  [class]="getPasswordStrength().color.replace('bg-', 'text-')"
+                >
+                  {{ getPasswordStrength().strength }}
+                </span>
+              </div>
+              <div class="w-full bg-blue-100 rounded-full h-2 overflow-hidden">
+                <div
+                  [class]="getPasswordStrength().color"
+                  class="h-2 rounded-full transition-all duration-500"
+                  [style.width]="getPasswordStrength().width"
+                ></div>
+              </div>
+            </div>
+
+            <div class="mt-2 space-y-1">
+              <p class="text-xs text-blue-600 flex items-center gap-1">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class.text-green-500]="hasMinLength()"
+                >
+                  {{ hasMinLength() ? "check_circle" : "cancel" }}
+                </span>
+                Mínimo 8 caracteres
+              </p>
+              <p class="text-xs text-blue-600 flex items-center gap-1">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class.text-green-500]="hasUpperCase()"
+                >
+                  {{ hasUpperCase() ? "check_circle" : "cancel" }}
+                </span>
+                Una letra mayúscula
+              </p>
+              <p class="text-xs text-blue-600 flex items-center gap-1">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class.text-green-500]="hasLowerCase()"
+                >
+                  {{ hasLowerCase() ? "check_circle" : "cancel" }}
+                </span>
+                Una letra minúscula
+              </p>
+              <p class="text-xs text-blue-600 flex items-center gap-1">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class.text-green-500]="hasNumber()"
+                >
+                  {{ hasNumber() ? "check_circle" : "cancel" }}
+                </span>
+                Un número
+              </p>
+              <p class="text-xs text-blue-600 flex items-center gap-1">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class.text-green-500]="hasSpecialCharacter()"
+                >
+                  {{ hasSpecialCharacter() ? "check_circle" : "cancel" }}
+                </span>
+                Un carácter especial (!&#64;#$%^&amp;*)
+              </p>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <label
+              for="confirmPassword"
+              class="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-2"
+            >
+              Confirmar Contraseña <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-blue-400"
+              >
+                lock_reset
+              </span>
+              <input
+                id="confirmPassword"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="••••••••"
+                [class.border-red-500]="(confirmPassword?.invalid || registerForm.errors?.['passwordMismatch']) && confirmPassword?.touched"
+                [class.border-green-500]="confirmPassword?.valid && !registerForm.errors?.['passwordMismatch'] && confirmPassword?.value"
+                class="w-full pl-11 pr-11 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                (click)="toggleConfirmPasswordVisibility()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-600 transition-colors"
+              >
+                <span class="material-symbols-outlined text-xl">
+                  {{ showConfirmPassword ? "visibility_off" : "visibility" }}
+                </span>
+              </button>
+            </div>
+            <p
+              *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched"
+              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              Las contraseñas no coinciden
+            </p>
+            <p
+              *ngIf="!registerForm.errors?.['passwordMismatch'] && confirmPassword?.valid && confirmPassword?.value"
+              class="mt-1.5 text-xs text-green-500 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-sm"
+                >check_circle</span
+              >
+              Las contraseñas coinciden
+            </p>
+          </div>
+
+          <!-- Términos y condiciones -->
+          <div class="space-y-3 pt-4">
+            <div
+              class="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200"
+            >
+              <input
+                id="aceptaTerminos"
+                type="checkbox"
+                formControlName="aceptaTerminos"
+                class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded cursor-pointer"
+              />
+              <label
+                for="aceptaTerminos"
+                class="text-sm text-blue-800 dark:text-blue-300 cursor-pointer"
+              >
+                Acepto los
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 font-semibold underline"
+                  >términos y condiciones</a
+                >
+                y la
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 font-semibold underline"
+                  >política de privacidad</a
+                >
+                <span class="text-red-500">*</span>
+              </label>
+            </div>
+            <p
+              *ngIf="aceptaTerminos?.invalid && aceptaTerminos?.touched"
+              class="text-xs text-red-500 flex items-center gap-1 pl-4"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              Debes aceptar los términos y condiciones
+            </p>
+
+            <div
+              class="flex items-start gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200"
+            >
+              <input
+                id="aceptaPoliticasComerciales"
+                type="checkbox"
+                formControlName="aceptaPoliticasComerciales"
+                class="mt-1 h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-yellow-300 rounded cursor-pointer"
+              />
+              <label
+                for="aceptaPoliticasComerciales"
+                class="text-sm text-blue-800 dark:text-blue-300 cursor-pointer"
+              >
+                Acepto las
+                <a
+                  href="#"
+                  class="text-yellow-700 hover:text-yellow-800 font-semibold underline"
+                  >políticas comerciales</a
+                >
+                y
+                <a
+                  href="#"
+                  class="text-yellow-700 hover:text-yellow-800 font-semibold underline"
+                  >comisiones de venta</a
+                >
+                de JaveMarket
+                <span class="text-red-500">*</span>
+              </label>
+            </div>
+            <p
+              *ngIf="
+                aceptaPoliticasComerciales?.invalid &&
+                aceptaPoliticasComerciales?.touched
+              "
+              class="text-xs text-red-500 flex items-center gap-1 pl-4"
+            >
+              <span class="material-symbols-outlined text-sm">info</span>
+              Debes aceptar las políticas comerciales
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div
+          class="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-blue-200 dark:border-blue-700"
+        >
+          <!-- Botón Anterior -->
+          <button
+            *ngIf="currentStep > 1"
+            type="button"
+            (click)="previousStep()"
+            class="flex items-center gap-2 px-6 py-3 text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-all duration-200 font-medium"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            Anterior
+          </button>
+
+          <div *ngIf="currentStep === 1" class="flex-1"></div>
+
+          <!-- Botón Siguiente / Registrar -->
+          <button
+            *ngIf="currentStep < totalSteps"
+            type="button"
+            (click)="nextStep()"
+            class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-900 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 font-medium ml-auto"
+          >
+            Siguiente
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+
+          <button
+            *ngIf="currentStep === totalSteps"
+            type="submit"
+            [disabled]="isLoading || registerForm.invalid"
+            class="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-900 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 font-medium ml-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg"
+          >
+            <span *ngIf="!isLoading" class="flex items-center gap-2">
+              <span class="material-symbols-outlined">store</span>
+              Crear Cuenta de Proveedor
+            </span>
+            <span *ngIf="isLoading" class="flex items-center gap-2">
+              <span class="material-symbols-outlined animate-spin"
+                >refresh</span
+              >
+              Creando cuenta...
+            </span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Divider -->
+      <div class="my-8 border-t border-blue-200"></div>
+
+      <!-- Botón para cambiar a Usuario -->
+      <div class="text-center space-y-4">
+        <p class="text-sm text-blue-600 dark:text-blue-400">
+          ¿Solo quieres comprar productos?
+        </p>
+        <button
+          type="button"
+          routerLink="/auth/register-usuario"
+          class="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium"
+        >
+          <span class="material-symbols-outlined">shopping_cart</span>
+          Registrarme como Comprador
+        </button>
+      </div>
+
+      <!-- Link de login -->
+      <p class="text-center text-sm text-blue-600 dark:text-blue-400 mt-6">
+        ¿Ya tienes una cuenta?
+        <a
+          routerLink="/login"
+          class="font-semibold text-blue-600 hover:text-blue-800 transition-colors ml-1 underline"
+        >
+          Inicia sesión aquí
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

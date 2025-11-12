@@ -1,0 +1,27 @@
+/* src/app/pages/login/login.component.css */
+/* Estilos específicos si necesitas agregar algo adicional */
+/* Los estilos principales vienen del styles.css global */
+
+.input:focus {
+  box-shadow: 0 0 0 3px rgba(25, 25, 230, 0.1);
+}
+
+.input.border-red-500:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Animación para el botón al hacer hover */
+button[type="submit"]:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 199, 44, 0.3);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Transición suave para los iconos de visibilidad */
+.material-symbols-outlined {
+  transition: all 0.3s ease;
+}

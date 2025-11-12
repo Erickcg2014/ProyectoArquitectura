@@ -1,0 +1,210 @@
+<!-- src/app/shared/navbar/navbar.component.html -->
+
+<header class="sticky top-0 z-[1000] bg-[#FFE600] shadow-md">
+  <!-- Top Bar -->
+  <div class="bg-[#FFE600] py-2.5">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a
+          routerLink="/"
+          class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <div class="size-10 text-[#1919e6]">
+            <svg
+              fill="currentColor"
+              viewBox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8.578 8.578C5.528 11.628 3.45 15.514 2.61 19.745c-.841 4.23.591 8.616 2.242 12.601 1.65 3.985 4.446 7.391 8.032 9.788 3.587 2.396 7.804 3.675 12.118 3.675s8.531-1.279 12.118-3.675c3.586-2.397 6.382-5.803 8.032-9.788 1.651-3.985 2.083-8.371 1.242-12.601-.842-4.23-2.919-8.117-5.97-11.167L24 24 8.578 8.578z"
+              ></path>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <h1 class="text-gray-900 text-xl font-bold leading-tight">
+              JaveMarket
+            </h1>
+            <span class="text-gray-600 text-[10px] leading-none"
+              >Tu tienda online</span
+            >
+          </div>
+        </a>
+
+        <!-- Barra de búsqueda -->
+        <div class="flex-1 max-w-2xl mx-8 hidden md:block">
+          <div class="relative">
+            <input
+              (input)="onSearch($event)"
+              type="text"
+              placeholder="Buscar productos, marcas y más..."
+              class="w-full py-3 pl-4 pr-12 rounded-sm text-gray-700 bg-white shadow-sm border-none focus:outline-none focus:ring-2 focus:ring-[#1919e6] text-base placeholder:text-gray-500"
+            />
+            <button
+              class="absolute right-0 top-0 h-full px-4 bg-white hover:bg-gray-50 transition-colors rounded-r-sm"
+            >
+              <span class="material-symbols-outlined text-gray-600"
+                >search</span
+              >
+            </button>
+          </div>
+        </div>
+
+        <!-- Iconos de acción -->
+        <div class="flex items-center gap-4">
+          <button
+            routerLink="/cart"
+            class="relative flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group"
+          >
+            <span
+              class="material-symbols-outlined text-gray-700 text-2xl group-hover:scale-110 transition-transform"
+              >shopping_cart</span
+            >
+            <span class="text-gray-700 text-xs font-medium hidden lg:block"
+              >Carrito</span
+            >
+            <span
+              *ngIf="cartItemCount > 0"
+              class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse"
+            >
+              {{ cartItemCount }}
+            </span>
+          </button>
+
+          <button
+            routerLink="/login"
+            class="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
+          >
+            <span
+              class="material-symbols-outlined text-gray-700 text-2xl group-hover:scale-110 transition-transform"
+              >person</span
+            >
+            <span class="text-gray-700 text-xs font-medium hidden lg:block"
+              >Cuenta</span
+            >
+          </button>
+
+          <div
+            class="hidden xl:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 cursor-pointer hover:ring-2 hover:ring-[#1919e6] transition-all border-2 border-white shadow-sm"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9yI3IC656gQjQn4oNUjj3XbG8ZJZKnj2v3PrYFE497tDU2n8_DjvGl3SRhDdjUdzNxztlzl-Osslo5IVeFRT_qJZEx3s4v4VGPauXNRUmovX1V1VMcidt9v_xWo-S5nRkesDoy3NNT8HIrrThEVSBpk-zhjS21rn9ji28lDR3nY7UUtMiDi4zx-l_k-cGfw43IKrZSn_E4eNx6qgRWcl7kvnLQ2AOQzbZ0YU3BuyeMR6EN5tdCn2Y72w_ZO8lVmHLu-PLv-3hrxk');
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Navigation -->
+  <div class="bg-white border-t border-gray-200 shadow-sm">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <nav
+        class="flex items-center gap-8 py-3 text-sm overflow-x-auto hide-scrollbar"
+      >
+        <!-- Botón Categorías -->
+        <button
+          #categoriesButton
+          (mouseenter)="openDropdown()"
+          (click)="openDropdown()"
+          class="flex items-center gap-2 text-gray-700 hover:text-[#1919e6] font-semibold whitespace-nowrap transition-colors"
+        >
+          <span class="material-symbols-outlined text-xl">menu</span>
+          Categorías
+          <span
+            class="material-symbols-outlined text-lg transition-transform duration-300"
+            [class.rotate-180]="isDropdownOpen"
+          >
+            expand_more
+          </span>
+        </button>
+
+        <!-- Enlaces principales -->
+        <a
+          class="flex items-center gap-1.5 text-gray-700 hover:text-[#1919e6] font-medium whitespace-nowrap transition-colors group cursor-pointer"
+        >
+          <span
+            class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform"
+            >local_offer</span
+          >
+          Ofertas
+        </a>
+
+        <a
+          class="flex items-center gap-1.5 text-gray-700 hover:text-[#1919e6] font-medium whitespace-nowrap transition-colors group cursor-pointer"
+        >
+          <span
+            class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform"
+            >history</span
+          >
+          Historial
+        </a>
+
+        <a
+          class="flex items-center gap-1.5 text-gray-700 hover:text-[#1919e6] font-medium whitespace-nowrap transition-colors group cursor-pointer"
+        >
+          <span
+            class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform"
+            >shopping_basket</span
+          >
+          Supermercado
+        </a>
+
+        <a
+          class="flex items-center gap-1.5 text-gray-700 hover:text-[#1919e6] font-medium whitespace-nowrap transition-colors group cursor-pointer"
+        >
+          <span
+            class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform"
+            >checkroom</span
+          >
+          Moda
+        </a>
+
+        <a
+          class="flex items-center gap-1.5 text-gray-700 hover:text-[#1919e6] font-medium whitespace-nowrap transition-colors group cursor-pointer"
+        >
+          <span
+            class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform"
+            >help</span
+          >
+          Ayuda
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Dropdown Menu FUERA del header - Position Fixed -->
+<div
+  *ngIf="isDropdownOpen"
+  [ngStyle]="dropdownStyles"
+  (mouseenter)="isDropdownOpen = true"
+  (mouseleave)="closeDropdown()"
+  class="w-80 bg-white rounded-lg shadow-2xl border border-gray-100 max-h-[70vh] overflow-y-auto animate-fade-in-down"
+>
+  <div class="py-2">
+    <a
+      *ngFor="let category of categories"
+      [routerLink]="['/category', category.slug]"
+      (click)="closeDropdown()"
+      class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#1919e6] transition-all cursor-pointer group/item border-l-4 border-transparent hover:border-[#1919e6]"
+    >
+      <span
+        class="material-symbols-outlined text-xl group-hover/item:scale-110 transition-transform"
+        >{{ category.icon }}</span
+      >
+      <span class="font-medium">{{ category.name }}</span>
+      <span
+        class="material-symbols-outlined ml-auto text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity"
+        >chevron_right</span
+      >
+    </a>
+  </div>
+</div>
+
+<!-- Backdrop para cerrar al hacer click fuera -->
+<div
+  *ngIf="isDropdownOpen"
+  (click)="closeDropdown()"
+  class="fixed inset-0 z-[9998]"
+  style="background: transparent"
+></div>

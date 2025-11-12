@@ -1,0 +1,102 @@
+{
+  "realm": "multichannel-realm",
+  "enabled": true,
+  "displayName": "Plataforma Multicanal",
+  "loginWithEmailAllowed": true,
+  "registrationAllowed": true,
+  "rememberMe": true,
+  "resetPasswordAllowed": true,
+  "verifyEmail": true,
+  "sslRequired": "external",
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrador general del sistema multicanal",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "user",
+        "description": "Usuario registrado (cliente)",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "provider",
+        "description": "Proveedor o vendedor de productos/servicios",
+        "composite": false,
+        "clientRole": false
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "angular-frontend",
+      "name": "Frontend Angular",
+      "description": "Aplicación de usuario web multicanal",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "redirectUris": ["http://localhost:4200/*"],
+      "webOrigins": ["http://localhost:4200"],
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "bearerOnly": false,
+      "rootUrl": "http://localhost:4200/",
+      "baseUrl": "/",
+      "adminUrl": "http://localhost:4200/",
+      "attributes": {
+        "post.logout.redirect.uris": "+",
+        "pkce.code.challenge.method": "S256"
+      }
+    },
+    {
+      "clientId": "spring-backend",
+      "name": "Backend Spring Boot",
+      "description": "API de negocio principal",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "redirectUris": ["http://localhost:8081/*"],
+      "webOrigins": [],
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "bearerOnly": false,
+      "authorizationServicesEnabled": true,
+      "secret": "SPRING_BACKEND_SECRET_123",
+      "attributes": {
+        "access.token.lifespan": "3600",
+        "client.secret.creation.time": "0"
+      }
+    }
+  ],
+  "groups": [],
+  "users": [
+    {
+      "username": "admin@multichannel.com",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Administrador",
+      "lastName": "Principal",
+      "email": "admin@multichannel.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin#2025",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"]
+    }
+  ],
+  "smtpServer": {},
+  "identityProviders": [],
+  "components": {},
+  "internationalizationEnabled": true,
+  "supportedLocales": ["es", "en"],
+  "defaultLocale": "es"
+}
