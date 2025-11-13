@@ -290,6 +290,44 @@ export class RegisterProveedorComponent implements OnInit {
     return specialCharRegex.test(password);
   }
 
+  // src/app/auth/register/register-proveedor/register-proveedor.component.ts
+
+  // Agregar estos métodos a la clase
+
+  onInputFocus(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    target.style.border = '2px solid #2563EB';
+    target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
+  }
+
+  onInputBlur(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    target.style.border = '2px solid #BFDBFE';
+    target.style.boxShadow = 'none';
+  }
+
+  onConfirmPasswordBlur(event: Event): void {
+    const target = event.target as HTMLInputElement;
+
+    if (
+      (this.confirmPassword?.invalid ||
+        this.registerForm.errors?.['passwordMismatch']) &&
+      this.confirmPassword?.touched
+    ) {
+      target.style.border = '2px solid #EF4444';
+    } else if (
+      this.confirmPassword?.valid &&
+      !this.registerForm.errors?.['passwordMismatch'] &&
+      this.confirmPassword?.value
+    ) {
+      target.style.border = '2px solid #10B981';
+    } else {
+      target.style.border = '2px solid #BFDBFE';
+    }
+
+    target.style.boxShadow = 'none';
+  }
+
   // Calcular fortaleza de contraseña
   getPasswordStrength(): { strength: string; color: string; width: string } {
     const password = this.password?.value || '';

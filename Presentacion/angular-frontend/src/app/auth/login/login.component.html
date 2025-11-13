@@ -3,6 +3,24 @@
   class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-yellow-50 py-12 px-4 sm:px-6 lg:px-8"
 >
   <div class="max-w-md w-full space-y-8 animate-fade-in-up">
+    <button
+      type="button"
+      routerLink="/"
+      class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all duration-200 mb-6"
+      style="
+        background: rgba(255, 255, 255, 0.95);
+        color: #1e40af;
+        border: 2px solid #bfdbfe;
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.1);
+      "
+      onmouseover="this.style.background='#FFFFFF'; this.style.borderColor='#2563EB'; this.style.transform='translateX(-3px)'; this.style.boxShadow='0 6px 16px rgba(37, 99, 235, 0.2)'"
+      onmouseout="this.style.background='rgba(255, 255, 255, 0.95)'; this.style.borderColor='#BFDBFE'; this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(30, 64, 175, 0.1)'"
+    >
+      <span class="material-symbols-outlined" style="font-size: 1.25rem"
+        >arrow_back</span
+      >
+      Volver al inicio
+    </button>
     <!-- Header con colores corporativos -->
     <div class="text-center">
       <div class="flex justify-center mb-4">

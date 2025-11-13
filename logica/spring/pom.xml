@@ -45,10 +45,10 @@
 		</dependency>
 
 		<!-- CLIENTE OIDC PARA VALIDAR TOKENS -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- SPRING SECURITY WEB -->
 		<dependency>
@@ -57,10 +57,10 @@
 		</dependency>
 
 		<!-- JWT DECODER (manejo de tokens) -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-jose</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,148 +1,284 @@
 <!-- src/app/auth/register/register-usuario/register-usuario.component.html -->
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10 py-12 px-4 sm:px-6 lg:px-8"
+  class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  style="
+    background: linear-gradient(
+      135deg,
+      #eff6ff 0%,
+      #dbeafe 25%,
+      #bfdbfe 50%,
+      #fef3c7 75%,
+      #fde68a 100%
+    );
+  "
 >
-  <div class="max-w-2xl w-full animate-fade-in-up">
+  <div class="max-w-2xl w-full" style="animation: fadeInUp 0.6s ease-out">
+    <button
+      type="button"
+      routerLink="/"
+      class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold transition-all duration-200 mb-8"
+      style="
+        background: rgba(255, 255, 255, 0.95);
+        color: #1e40af;
+        border: 2px solid #bfdbfe;
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.1);
+      "
+      onmouseover="this.style.background='#FFFFFF'; this.style.borderColor='#2563EB'; this.style.transform='translateX(-3px)'; this.style.boxShadow='0 6px 16px rgba(37, 99, 235, 0.2)'"
+      onmouseout="this.style.background='rgba(255, 255, 255, 0.95)'; this.style.borderColor='#BFDBFE'; this.style.transform='translateX(0)'; this.style.boxShadow='0 4px 12px rgba(30, 64, 175, 0.1)'"
+    >
+      <span class="material-symbols-outlined" style="font-size: 1.25rem"
+        >arrow_back</span
+      >
+      Volver al inicio
+    </button>
     <!-- Header -->
-    <div class="text-center mb-8">
-      <div class="flex justify-center mb-4">
+    <div class="text-center mb-10">
+      <div class="flex justify-center mb-6">
         <div
-          class="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform"
+          class="w-24 h-24 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300"
+          style="
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            box-shadow: 0 20px 50px rgba(37, 99, 235, 0.4);
+          "
         >
-          <span class="material-symbols-outlined text-white text-5xl"
+          <span
+            class="material-symbols-outlined text-white"
+            style="font-size: 3.5rem; font-variation-settings: 'FILL' 1"
             >person_add</span
           >
         </div>
       </div>
-      <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
+      <h2
+        class="text-5xl font-black mb-3"
+        style="
+          background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        "
+      >
         Crear Cuenta de Usuario
       </h2>
-      <p class="text-base text-gray-600 dark:text-gray-400">
-        Únete a JaveMarket y disfruta de una experiencia de compra única
+      <p class="text-lg font-medium" style="color: #1e40af">
+        🛒 Únete a JaveMarket y disfruta de una experiencia de compra única
       </p>
     </div>
 
-    <!-- Progress Steps -->
-    <div class="mb-8">
-      <div class="flex justify-between items-center relative">
-        <!-- Progress bar background -->
+    <!-- Progress Steps REDISEÑADO -->
+    <div class="mb-10">
+      <div
+        class="flex justify-between items-center relative max-w-md mx-auto px-8"
+      >
+        <!-- Barra de fondo -->
         <div
-          class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 -translate-y-1/2 -z-10"
+          class="absolute top-1/2 left-0 right-0 -translate-y-1/2 rounded-full"
+          style="height: 4px; background: rgba(30, 64, 175, 0.15); z-index: 0"
         ></div>
-        <!-- Progress bar fill -->
+
+        <!-- Barra de progreso -->
         <div
-          class="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-primary to-accent -translate-y-1/2 -z-10 transition-all duration-500"
-          [style.width]="((currentStep - 1) / (totalSteps - 1)) * 100 + '%'"
+          class="absolute top-1/2 left-0 -translate-y-1/2 rounded-full transition-all duration-500"
+          [style.width.%]="((currentStep - 1) / (totalSteps - 1)) * 100"
+          style="
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+            z-index: 1;
+          "
         ></div>
 
         <!-- Step 1 -->
-        <div class="flex flex-col items-center">
+        <div class="relative flex flex-col items-center" style="z-index: 10">
           <div
-            [class]="
-              currentStep >= 1
-                ? 'bg-gradient-to-br from-primary to-accent text-white'
-                : 'bg-gray-200 text-gray-500'
-            "
-            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
             [class.scale-110]="currentStep === 1"
+            class="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all duration-300"
+            [style.background]="
+              currentStep > 1
+                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                : currentStep === 1
+                ? 'linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)'
+                : '#FFFFFF'
+            "
+            [style.color]="currentStep >= 1 ? '#FFFFFF' : '#93C5FD'"
+            [style.border]="
+              currentStep < 1 ? '3px solid #BFDBFE' : '3px solid transparent'
+            "
+            [style.box-shadow]="
+              currentStep >= 1
+                ? '0 10px 25px rgba(37, 99, 235, 0.4)'
+                : '0 4px 10px rgba(191, 219, 254, 0.3)'
+            "
           >
-            <span *ngIf="currentStep > 1" class="material-symbols-outlined"
+            <span
+              *ngIf="currentStep > 1"
+              class="material-symbols-outlined"
+              style="font-size: 1.75rem; font-variation-settings: 'FILL' 1"
               >check</span
             >
-            <span *ngIf="currentStep <= 1">1</span>
+            <span *ngIf="currentStep <= 1" class="font-black">1</span>
           </div>
           <span
-            class="text-xs mt-2 font-medium text-gray-600 dark:text-gray-400"
-            >Personal</span
+            class="text-xs mt-3 font-bold whitespace-nowrap"
+            [style.color]="currentStep >= 1 ? '#1E40AF' : '#93C5FD'"
           >
+            Personal
+          </span>
         </div>
 
         <!-- Step 2 -->
-        <div class="flex flex-col items-center">
+        <div class="relative flex flex-col items-center" style="z-index: 10">
           <div
-            [class]="
-              currentStep >= 2
-                ? 'bg-gradient-to-br from-primary to-accent text-white'
-                : 'bg-gray-200 text-gray-500'
-            "
-            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
             [class.scale-110]="currentStep === 2"
+            class="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all duration-300"
+            [style.background]="
+              currentStep > 2
+                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                : currentStep === 2
+                ? 'linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)'
+                : '#FFFFFF'
+            "
+            [style.color]="currentStep >= 2 ? '#FFFFFF' : '#93C5FD'"
+            [style.border]="
+              currentStep < 2 ? '3px solid #BFDBFE' : '3px solid transparent'
+            "
+            [style.box-shadow]="
+              currentStep >= 2
+                ? '0 10px 25px rgba(37, 99, 235, 0.4)'
+                : '0 4px 10px rgba(191, 219, 254, 0.3)'
+            "
           >
-            <span *ngIf="currentStep > 2" class="material-symbols-outlined"
+            <span
+              *ngIf="currentStep > 2"
+              class="material-symbols-outlined"
+              style="font-size: 1.75rem; font-variation-settings: 'FILL' 1"
               >check</span
             >
-            <span *ngIf="currentStep <= 2">2</span>
+            <span *ngIf="currentStep <= 2" class="font-black">2</span>
           </div>
           <span
-            class="text-xs mt-2 font-medium text-gray-600 dark:text-gray-400"
-            >Seguridad</span
+            class="text-xs mt-3 font-bold whitespace-nowrap"
+            [style.color]="currentStep >= 2 ? '#1E40AF' : '#93C5FD'"
           >
+            Seguridad
+          </span>
         </div>
 
         <!-- Step 3 -->
-        <div class="flex flex-col items-center">
+        <div class="relative flex flex-col items-center" style="z-index: 10">
           <div
-            [class]="
-              currentStep >= 3
-                ? 'bg-gradient-to-br from-primary to-accent text-white'
-                : 'bg-gray-200 text-gray-500'
-            "
-            class="w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg transition-all duration-300 transform"
             [class.scale-110]="currentStep === 3"
+            class="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg shadow-lg transition-all duration-300"
+            [style.background]="
+              currentStep > 3
+                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                : currentStep === 3
+                ? 'linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)'
+                : '#FFFFFF'
+            "
+            [style.color]="currentStep >= 3 ? '#FFFFFF' : '#93C5FD'"
+            [style.border]="
+              currentStep < 3 ? '3px solid #BFDBFE' : '3px solid transparent'
+            "
+            [style.box-shadow]="
+              currentStep >= 3
+                ? '0 10px 25px rgba(37, 99, 235, 0.4)'
+                : '0 4px 10px rgba(191, 219, 254, 0.3)'
+            "
           >
-            <span *ngIf="currentStep > 3" class="material-symbols-outlined"
+            <span
+              *ngIf="currentStep > 3"
+              class="material-symbols-outlined"
+              style="font-size: 1.75rem; font-variation-settings: 'FILL' 1"
               >check</span
             >
-            <span *ngIf="currentStep <= 3">3</span>
+            <span *ngIf="currentStep <= 3" class="font-black">3</span>
           </div>
           <span
-            class="text-xs mt-2 font-medium text-gray-600 dark:text-gray-400"
-            >Contacto</span
+            class="text-xs mt-3 font-bold whitespace-nowrap"
+            [style.color]="currentStep >= 3 ? '#1E40AF' : '#93C5FD'"
           >
+            Contacto
+          </span>
         </div>
       </div>
     </div>
 
     <!-- Card principal -->
-    <div class="card p-8 shadow-2xl">
+    <div
+      class="p-8 sm:p-10 rounded-2xl"
+      style="
+        background: #ffffff;
+        box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.25);
+        border: 1px solid rgba(30, 64, 175, 0.1);
+      "
+    >
       <!-- Mensajes de error y éxito -->
       <div
         *ngIf="errorMessage"
-        class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg animate-shake"
+        class="mb-6 p-4 rounded-xl flex items-start gap-3"
+        style="
+          background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+          border-left: 4px solid #ef4444;
+          animation: shake 0.5s ease-in-out;
+        "
       >
-        <div class="flex items-center">
-          <span class="material-symbols-outlined text-red-500 mr-3">error</span>
-          <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
-        </div>
+        <span
+          class="material-symbols-outlined"
+          style="
+            color: #dc2626;
+            font-size: 1.5rem;
+            font-variation-settings: 'FILL' 1;
+          "
+          >error</span
+        >
+        <p class="text-sm font-semibold flex-1" style="color: #991b1b">
+          {{ errorMessage }}
+        </p>
       </div>
 
       <div
         *ngIf="successMessage"
-        class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg animate-bounce-in"
+        class="mb-6 p-4 rounded-xl flex items-start gap-3"
+        style="
+          background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+          border-left: 4px solid #10b981;
+          animation: bounceIn 0.6s ease-out;
+        "
       >
-        <div class="flex items-center">
-          <span class="material-symbols-outlined text-green-500 mr-3"
-            >check_circle</span
-          >
-          <p class="text-sm text-green-700 font-medium">{{ successMessage }}</p>
-        </div>
+        <span
+          class="material-symbols-outlined"
+          style="
+            color: #059669;
+            font-size: 1.5rem;
+            font-variation-settings: 'FILL' 1;
+          "
+          >check_circle</span
+        >
+        <p class="text-sm font-semibold flex-1" style="color: #065f46">
+          {{ successMessage }}
+        </p>
       </div>
 
       <!-- Formulario -->
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <!-- STEP 1: Información Personal -->
-        <div *ngIf="currentStep === 1" class="space-y-5 animate-fade-in">
+        <div
+          *ngIf="currentStep === 1"
+          class="space-y-6"
+          style="animation: fadeIn 0.4s ease-out"
+        >
           <!-- Nombre -->
           <div>
             <label
               for="nombre"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Nombre Completo <span class="text-red-500">*</span>
+              Nombre Completo <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 person
               </span>
@@ -151,15 +287,28 @@
                 type="text"
                 formControlName="nombre"
                 placeholder="Juan Pérez García"
-                [class.border-red-500]="nombre?.invalid && nombre?.touched"
-                class="input pl-11 w-full"
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  nombre?.invalid && nombre?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  nombre?.invalid && nombre?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               />
             </div>
             <p
               *ngIf="nombre?.invalid && nombre?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               <span *ngIf="nombre?.errors?.['required']"
                 >El nombre es requerido</span
               >
@@ -176,13 +325,15 @@
           <div>
             <label
               for="edad"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Edad <span class="text-red-500">*</span>
+              Edad <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 cake
               </span>
@@ -191,17 +342,30 @@
                 type="number"
                 formControlName="edad"
                 placeholder="25"
-                [class.border-red-500]="edad?.invalid && edad?.touched"
-                class="input pl-11 w-full"
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  edad?.invalid && edad?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  edad?.invalid && edad?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
                 min="18"
                 max="120"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               />
             </div>
             <p
               *ngIf="edad?.invalid && edad?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               <span *ngIf="edad?.errors?.['required']"
                 >La edad es requerida</span
               >
@@ -216,13 +380,15 @@
           <div>
             <label
               for="email"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Correo Electrónico <span class="text-red-500">*</span>
+              Correo Electrónico <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 email
               </span>
@@ -231,22 +397,40 @@
                 type="email"
                 formControlName="email"
                 placeholder="tu@email.com"
-                [class.border-red-500]="email?.invalid && email?.touched"
-                class="input pl-11 w-full"
+                class="w-full pl-12 pr-12 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  email?.invalid && email?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  email?.invalid && email?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
                 autocomplete="email"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               />
               <span
                 *ngIf="email?.valid"
-                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-green-500"
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2"
+                style="
+                  color: #10b981;
+                  font-size: 1.5rem;
+                  font-variation-settings: 'FILL' 1;
+                "
               >
                 check_circle
               </span>
             </div>
             <p
               *ngIf="email?.invalid && email?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               <span *ngIf="email?.errors?.['required']"
                 >El correo es requerido</span
               >
@@ -261,18 +445,24 @@
         </div>
 
         <!-- STEP 2: Seguridad -->
-        <div *ngIf="currentStep === 2" class="space-y-5 animate-fade-in">
+        <div
+          *ngIf="currentStep === 2"
+          class="space-y-6"
+          style="animation: fadeIn 0.4s ease-out"
+        >
           <!-- Password -->
           <div>
             <label
               for="password"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Contraseña <span class="text-red-500">*</span>
+              Contraseña <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 lock
               </span>
@@ -281,84 +471,145 @@
                 [type]="showPassword ? 'text' : 'password'"
                 formControlName="password"
                 placeholder="••••••••"
-                [class.border-red-500]="password?.invalid && password?.touched"
-                class="input pl-11 pr-11 w-full"
+                class="w-full pl-12 pr-12 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  password?.invalid && password?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  password?.invalid && password?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
                 autocomplete="new-password"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               />
               <button
                 type="button"
                 (click)="togglePasswordVisibility()"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                class="absolute right-4 top-1/2 -translate-y-1/2 transition-colors duration-200"
+                style="color: #60a5fa"
+                onmouseover="this.style.color='#2563EB'"
+                onmouseout="this.style.color='#60A5FA'"
               >
-                <span class="material-symbols-outlined text-xl">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-size: 1.5rem"
+                >
                   {{ showPassword ? "visibility_off" : "visibility" }}
                 </span>
               </button>
             </div>
 
             <!-- Password strength indicator -->
-            <div *ngIf="password?.value" class="mt-2">
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-medium text-gray-600"
-                  >Fortaleza:</span
+            <div *ngIf="password?.value" class="mt-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold" style="color: #1e40af"
+                  >Fortaleza de la contraseña:</span
                 >
                 <span
-                  class="text-xs font-bold"
-                  [class]="getPasswordStrength().color.replace('bg-', 'text-')"
+                  class="text-xs font-black px-2.5 py-1 rounded-full"
+                  [style.background]="
+                    getPasswordStrength().color === 'bg-red-500'
+                      ? '#FEE2E2'
+                      : getPasswordStrength().color === 'bg-yellow-500'
+                      ? '#FEF3C7'
+                      : '#D1FAE5'
+                  "
+                  [style.color]="
+                    getPasswordStrength().color === 'bg-red-500'
+                      ? '#991B1B'
+                      : getPasswordStrength().color === 'bg-yellow-500'
+                      ? '#92400E'
+                      : '#065F46'
+                  "
                 >
                   {{ getPasswordStrength().strength }}
                 </span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                class="w-full rounded-full h-2.5 overflow-hidden"
+                style="background: #e5e7eb"
+              >
                 <div
-                  [class]="getPasswordStrength().color"
-                  class="h-2 rounded-full transition-all duration-500"
+                  class="h-2.5 rounded-full transition-all duration-500"
                   [style.width]="getPasswordStrength().width"
+                  [style.background]="
+                    getPasswordStrength().color === 'bg-red-500'
+                      ? 'linear-gradient(90deg, #EF4444 0%, #DC2626 100%)'
+                      : getPasswordStrength().color === 'bg-yellow-500'
+                      ? 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)'
+                      : 'linear-gradient(90deg, #10B981 0%, #059669 100%)'
+                  "
                 ></div>
               </div>
             </div>
 
-            <div class="mt-2 space-y-1">
-              <p class="text-xs text-gray-500 flex items-center gap-1">
+            <div
+              class="mt-3 space-y-2 p-4 rounded-xl"
+              style="background: #f0f9ff; border: 1px solid #bfdbfe"
+            >
+              <p
+                class="text-xs font-semibold flex items-center gap-2"
+                [style.color]="hasMinLength() ? '#059669' : '#6B7280'"
+              >
                 <span
-                  class="material-symbols-outlined text-sm"
-                  [class.text-green-500]="hasMinLength()"
+                  class="material-symbols-outlined"
+                  style="font-size: 1rem; font-variation-settings: 'FILL' 1"
+                  [style.color]="hasMinLength() ? '#10B981' : '#9CA3AF'"
                 >
                   {{ hasMinLength() ? "check_circle" : "cancel" }}
                 </span>
                 Mínimo 8 caracteres
               </p>
-              <p class="text-xs text-gray-500 flex items-center gap-1">
+              <p
+                class="text-xs font-semibold flex items-center gap-2"
+                [style.color]="hasUpperCase() ? '#059669' : '#6B7280'"
+              >
                 <span
-                  class="material-symbols-outlined text-sm"
-                  [class.text-green-500]="hasUpperCase()"
+                  class="material-symbols-outlined"
+                  style="font-size: 1rem; font-variation-settings: 'FILL' 1"
+                  [style.color]="hasUpperCase() ? '#10B981' : '#9CA3AF'"
                 >
                   {{ hasUpperCase() ? "check_circle" : "cancel" }}
                 </span>
                 Una letra mayúscula
               </p>
-              <p class="text-xs text-gray-500 flex items-center gap-1">
+              <p
+                class="text-xs font-semibold flex items-center gap-2"
+                [style.color]="hasLowerCase() ? '#059669' : '#6B7280'"
+              >
                 <span
-                  class="material-symbols-outlined text-sm"
-                  [class.text-green-500]="hasLowerCase()"
+                  class="material-symbols-outlined"
+                  style="font-size: 1rem; font-variation-settings: 'FILL' 1"
+                  [style.color]="hasLowerCase() ? '#10B981' : '#9CA3AF'"
                 >
                   {{ hasLowerCase() ? "check_circle" : "cancel" }}
                 </span>
                 Una letra minúscula
               </p>
-              <p class="text-xs text-gray-500 flex items-center gap-1">
+              <p
+                class="text-xs font-semibold flex items-center gap-2"
+                [style.color]="hasNumber() ? '#059669' : '#6B7280'"
+              >
                 <span
-                  class="material-symbols-outlined text-sm"
-                  [class.text-green-500]="hasNumber()"
+                  class="material-symbols-outlined"
+                  style="font-size: 1rem; font-variation-settings: 'FILL' 1"
+                  [style.color]="hasNumber() ? '#10B981' : '#9CA3AF'"
                 >
                   {{ hasNumber() ? "check_circle" : "cancel" }}
                 </span>
                 Un número
               </p>
-              <p class="text-xs text-gray-500 flex items-center gap-1">
+              <p
+                class="text-xs font-semibold flex items-center gap-2"
+                [style.color]="hasSpecialCharacter() ? '#059669' : '#6B7280'"
+              >
                 <span
-                  class="material-symbols-outlined text-sm"
-                  [class.text-green-500]="hasSpecialCharacter()"
+                  class="material-symbols-outlined"
+                  style="font-size: 1rem; font-variation-settings: 'FILL' 1"
+                  [style.color]="hasSpecialCharacter() ? '#10B981' : '#9CA3AF'"
                 >
                   {{ hasSpecialCharacter() ? "check_circle" : "cancel" }}
                 </span>
@@ -371,13 +622,15 @@
           <div>
             <label
               for="confirmPassword"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Confirmar Contraseña <span class="text-red-500">*</span>
+              Confirmar Contraseña <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 lock_reset
               </span>
@@ -386,33 +639,48 @@
                 [type]="showConfirmPassword ? 'text' : 'password'"
                 formControlName="confirmPassword"
                 placeholder="••••••••"
-                [class.border-red-500]="(confirmPassword?.invalid || registerForm.errors?.['passwordMismatch']) && confirmPassword?.touched"
-                [class.border-green-500]="confirmPassword?.valid && !registerForm.errors?.['passwordMismatch'] && confirmPassword?.value"
-                class="input pl-11 pr-11 w-full"
+                class="w-full pl-12 pr-12 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="(confirmPassword?.invalid || registerForm.errors?.['passwordMismatch']) && confirmPassword?.touched ? '2px solid #EF4444' : confirmPassword?.valid && !registerForm.errors?.['passwordMismatch'] && confirmPassword?.value ? '2px solid #10B981' : '2px solid #BFDBFE'"
+                [style.background]="(confirmPassword?.invalid || registerForm.errors?.['passwordMismatch']) && confirmPassword?.touched ? '#FEF2F2' : '#FFFFFF'"
+                style="outline: none"
                 autocomplete="new-password"
+                (focus)="onInputFocus($event)"
+                (blur)="onConfirmPasswordBlur($event)"
               />
               <button
                 type="button"
                 (click)="toggleConfirmPasswordVisibility()"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                class="absolute right-4 top-1/2 -translate-y-1/2 transition-colors duration-200"
+                style="color: #60a5fa"
+                onmouseover="this.style.color='#2563EB'"
+                onmouseout="this.style.color='#60A5FA'"
               >
-                <span class="material-symbols-outlined text-xl">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-size: 1.5rem"
+                >
                   {{ showConfirmPassword ? "visibility_off" : "visibility" }}
                 </span>
               </button>
             </div>
             <p
               *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               Las contraseñas no coinciden
             </p>
             <p
               *ngIf="!registerForm.errors?.['passwordMismatch'] && confirmPassword?.valid && confirmPassword?.value"
-              class="mt-1.5 text-xs text-green-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #059669"
             >
-              <span class="material-symbols-outlined text-sm"
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 1rem; font-variation-settings: 'FILL' 1"
                 >check_circle</span
               >
               Las contraseñas coinciden
@@ -421,20 +689,32 @@
         </div>
 
         <!-- STEP 3: Contacto y Ubicación -->
-        <div *ngIf="currentStep === 3" class="space-y-5 animate-fade-in">
+        <div
+          *ngIf="currentStep === 3"
+          class="space-y-6"
+          style="animation: fadeIn 0.4s ease-out"
+        >
           <!-- Teléfono con prefijo -->
           <div>
             <label
               for="telefono"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Teléfono <span class="text-red-500">*</span>
+              Teléfono <span style="color: #ef4444">*</span>
             </label>
-            <div class="flex gap-2">
-              <div class="relative w-36">
+            <div class="flex gap-3">
+              <div class="relative" style="width: 140px">
                 <select
                   formControlName="countryCode"
-                  class="input w-full pr-8 appearance-none cursor-pointer"
+                  class="w-full pl-3 pr-8 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                  style="
+                    border: 2px solid #bfdbfe;
+                    background: #ffffff;
+                    outline: none;
+                  "
+                  (focus)="onInputFocus($event)"
+                  (blur)="onInputBlur($event)"
                 >
                   <option
                     *ngFor="let country of countryCodes"
@@ -444,14 +724,16 @@
                   </option>
                 </select>
                 <span
-                  class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+                  style="color: #60a5fa; font-size: 1.5rem"
                 >
                   expand_more
                 </span>
               </div>
               <div class="relative flex-1">
                 <span
-                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                  style="color: #60a5fa; font-size: 1.25rem"
                 >
                   phone
                 </span>
@@ -460,19 +742,32 @@
                   type="tel"
                   formControlName="telefono"
                   placeholder="3001234567"
-                  [class.border-red-500]="
+                  class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                  [style.border]="
                     telefono?.invalid && telefono?.touched
+                      ? '2px solid #EF4444'
+                      : '2px solid #BFDBFE'
                   "
-                  class="input pl-11 w-full"
+                  [style.background]="
+                    telefono?.invalid && telefono?.touched
+                      ? '#FEF2F2'
+                      : '#FFFFFF'
+                  "
+                  style="outline: none"
                   maxlength="10"
+                  (focus)="onInputFocus($event)"
+                  (blur)="onInputBlur($event)"
                 />
               </div>
             </div>
             <p
               *ngIf="telefono?.invalid && telefono?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               <span *ngIf="telefono?.errors?.['required']"
                 >El teléfono es requerido</span
               >
@@ -486,13 +781,15 @@
           <div>
             <label
               for="direccion"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Dirección <span class="text-red-500">*</span>
+              Dirección <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-3 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-4"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 home
               </span>
@@ -500,26 +797,36 @@
                 id="direccion"
                 formControlName="direccion"
                 placeholder="Calle 123 #45-67, Apto 301, Barrio Centro"
-                [class.border-red-500]="
-                  direccion?.invalid && direccion?.touched
-                "
-                class="input pl-11 w-full min-h-[80px] resize-none"
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium resize-none transition-all duration-200"
                 rows="3"
+                [style.border]="
+                  direccion?.invalid && direccion?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  direccion?.invalid && direccion?.touched
+                    ? '#FEF2F2'
+                    : '#FFFFFF'
+                "
+                style="outline: none; min-height: 90px"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               ></textarea>
             </div>
             <p
               *ngIf="direccion?.invalid && direccion?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               <span *ngIf="direccion?.errors?.['required']"
                 >La dirección es requerida</span
               >
               <span *ngIf="direccion?.errors?.['minlength']"
                 >Mínimo 10 caracteres</span
-              >
-              <span *ngIf="direccion?.errors?.['maxlength']"
-                >Máximo 200 caracteres</span
               >
             </p>
           </div>
@@ -528,21 +835,33 @@
           <div>
             <label
               for="ciudad"
-              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
             >
-              Ciudad <span class="text-red-500">*</span>
+              Ciudad <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
               >
                 location_city
               </span>
               <select
                 id="ciudad"
                 formControlName="ciudad"
-                [class.border-red-500]="ciudad?.invalid && ciudad?.touched"
-                class="input pl-11 pr-10 w-full appearance-none cursor-pointer"
+                class="w-full pl-12 pr-10 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                [style.border]="
+                  ciudad?.invalid && ciudad?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  ciudad?.invalid && ciudad?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
               >
                 <option value="" disabled selected>Selecciona tu ciudad</option>
                 <option *ngFor="let city of ciudades" [value]="city">
@@ -550,71 +869,100 @@
                 </option>
               </select>
               <span
-                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                style="color: #60a5fa; font-size: 1.5rem"
               >
                 expand_more
               </span>
             </div>
             <p
               *ngIf="ciudad?.invalid && ciudad?.touched"
-              class="mt-1.5 text-xs text-red-500 flex items-center gap-1"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
             >
-              <span class="material-symbols-outlined text-sm">info</span>
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
               La ciudad es requerida
             </p>
           </div>
 
           <!-- Términos y condiciones -->
           <div
-            class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
+            class="flex items-start gap-3 p-4 rounded-xl"
+            style="
+              background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+              border: 2px solid #93c5fd;
+            "
           >
             <input
               id="aceptaTerminos"
               type="checkbox"
               formControlName="aceptaTerminos"
-              class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
+              class="mt-1 h-5 w-5 rounded cursor-pointer"
+              style="accent-color: #2563eb"
             />
             <label
               for="aceptaTerminos"
-              class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+              class="text-sm font-semibold cursor-pointer"
+              style="color: #1e3a8a"
             >
               Acepto los
               <a
                 href="#"
-                class="text-primary hover:text-primary-dark font-semibold underline"
+                class="font-black underline"
+                style="color: #2563eb"
+                onmouseover="this.style.color='#1E40AF'"
+                onmouseout="this.style.color='#2563EB'"
                 >términos y condiciones</a
               >
               y la
               <a
                 href="#"
-                class="text-primary hover:text-primary-dark font-semibold underline"
+                class="font-black underline"
+                style="color: #2563eb"
+                onmouseover="this.style.color='#1E40AF'"
+                onmouseout="this.style.color='#2563EB'"
                 >política de privacidad</a
               >
               de JaveMarket
-              <span class="text-red-500">*</span>
+              <span style="color: #ef4444">*</span>
             </label>
           </div>
           <p
             *ngIf="aceptaTerminos?.invalid && aceptaTerminos?.touched"
-            class="text-xs text-red-500 flex items-center gap-1"
+            class="text-xs font-semibold flex items-center gap-1.5 pl-4"
+            style="color: #dc2626"
           >
-            <span class="material-symbols-outlined text-sm">info</span>
+            <span class="material-symbols-outlined" style="font-size: 1rem"
+              >info</span
+            >
             Debes aceptar los términos y condiciones
           </p>
         </div>
 
         <!-- Botones de navegación -->
         <div
-          class="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+          class="flex items-center justify-between gap-4 mt-10 pt-8"
+          style="border-top: 2px solid #e5e7eb"
         >
           <!-- Botón Anterior -->
           <button
             *ngIf="currentStep > 1"
             type="button"
             (click)="previousStep()"
-            class="btn btn-ghost flex items-center gap-2 px-6"
+            class="flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold transition-all duration-200"
+            style="
+              border: 2px solid #93c5fd;
+              color: #1e40af;
+              background: #ffffff;
+            "
+            onmouseover="this.style.background='#EFF6FF'; this.style.borderColor='#2563EB'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(37, 99, 235, 0.15)'"
+            onmouseout="this.style.background='#FFFFFF'; this.style.borderColor='#93C5FD'; this.style.transform='translateY(0)'; this.style.boxShadow='none'"
           >
-            <span class="material-symbols-outlined">arrow_back</span>
+            <span class="material-symbols-outlined" style="font-size: 1.25rem"
+              >arrow_back</span
+            >
             Anterior
           </button>
 
@@ -625,24 +973,56 @@
             *ngIf="currentStep < totalSteps"
             type="button"
             (click)="nextStep()"
-            class="btn btn-primary flex items-center gap-2 px-6 ml-auto"
+            class="flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold transition-all duration-200 ml-auto"
+            style="
+              background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+              color: #ffffff;
+              box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            "
+            onmouseover="this.style.background='linear-gradient(135deg, #1E40AF 0%, #1E3A8A 100%)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(37, 99, 235, 0.4)'"
+            onmouseout="this.style.background='linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(37, 99, 235, 0.3)'"
           >
             Siguiente
-            <span class="material-symbols-outlined">arrow_forward</span>
+            <span class="material-symbols-outlined" style="font-size: 1.25rem"
+              >arrow_forward</span
+            >
           </button>
 
           <button
             *ngIf="currentStep === totalSteps"
             type="submit"
             [disabled]="isLoading || registerForm.invalid"
-            class="btn btn-primary flex items-center gap-2 px-8 ml-auto"
+            class="flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold transition-all duration-200 ml-auto"
+            [style.background]="
+              isLoading || registerForm.invalid
+                ? '#9CA3AF'
+                : 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+            "
+            [style.color]="'#FFFFFF'"
+            [style.box-shadow]="
+              isLoading || registerForm.invalid
+                ? 'none'
+                : '0 10px 25px rgba(16, 185, 129, 0.3)'
+            "
+            [style.cursor]="
+              isLoading || registerForm.invalid ? 'not-allowed' : 'pointer'
+            "
+            [style.opacity]="isLoading || registerForm.invalid ? '0.6' : '1'"
+            onmouseover="if(!this.disabled) { this.style.background='linear-gradient(135deg, #059669 0%, #047857 100%)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(16, 185, 129, 0.4)' }"
+            onmouseout="if(!this.disabled) { this.style.background='linear-gradient(135deg, #10B981 0%, #059669 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(16, 185, 129, 0.3)' }"
           >
             <span *ngIf="!isLoading" class="flex items-center gap-2">
-              <span class="material-symbols-outlined">check_circle</span>
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 1.25rem; font-variation-settings: 'FILL' 1"
+                >check_circle</span
+              >
               Crear Cuenta
             </span>
             <span *ngIf="isLoading" class="flex items-center gap-2">
-              <span class="material-symbols-outlined animate-spin"
+              <span
+                class="material-symbols-outlined"
+                style="font-size: 1.25rem; animation: spin 1s linear infinite"
                 >refresh</span
               >
               Creando cuenta...
@@ -652,19 +1032,26 @@
       </form>
 
       <!-- Divider -->
-      <div class="divider my-8"></div>
+      <div class="my-10" style="border-top: 2px dashed #bfdbfe"></div>
 
       <!-- Botón para cambiar a Proveedor -->
-      <div class="text-center space-y-4">
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-          ¿Quieres vender tus productos en JaveMarket?
+      <div class="text-center space-y-5">
+        <p class="text-base font-bold" style="color: #1e40af">
+          ¿Quieres vender tus productos en JaveMarket? 🏪
         </p>
         <button
           type="button"
           routerLink="/auth/register-proveedor"
-          class="btn btn-outline w-full flex items-center justify-center gap-2"
+          class="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold transition-all duration-200"
+          style="border: 2px solid #2563eb; color: #2563eb; background: #ffffff"
+          onmouseover="this.style.background='#2563EB'; this.style.color='#FFFFFF'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(37, 99, 235, 0.25)'"
+          onmouseout="this.style.background='#FFFFFF'; this.style.color='#2563EB'; this.style.transform='translateY(0)'; this.style.boxShadow='none'"
         >
-          <span class="material-symbols-outlined">store</span>
+          <span
+            class="material-symbols-outlined"
+            style="font-size: 1.5rem; font-variation-settings: 'FILL' 1"
+            >store</span
+          >
           Registrarme como Proveedor
         </button>
       </div>
