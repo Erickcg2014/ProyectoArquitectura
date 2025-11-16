@@ -45,6 +45,7 @@ services:
           memory: 128M
 
   # --- KEYCLOAK CON POSTGRES LOCAL ---
+  # --- KEYCLOAK CON POSTGRES LOCAL ---
   keycloak:
     build:
       context: ./proyecto-keycloak
@@ -68,7 +69,7 @@ services:
     restart: unless-stopped
     networks:
       - multicanal-network
-    command: ["start-dev"]
+    command: ["start-dev", "--import-realm"] # ⬅️ Agregamos --import-realm aquí
     healthcheck:
       test:
         [
@@ -81,7 +82,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
-
   # --- BACKEND SPRING BOOT ---
   backend:
     build:
