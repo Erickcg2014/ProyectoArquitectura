@@ -362,44 +362,12 @@ export class RegisterProveedorComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    const {
-      confirmPassword,
-      aceptaTerminos,
-      aceptaPoliticasComerciales,
-      ...proveedorData
-    } = this.registerForm.value;
+    // Redirigir a Keycloak para registro
+    this.successMessage = 'Registro disponible en Keycloak. Redirigiendo al login...';
 
-    // Agregar prefijo +57 al teléfono
-    const telefonoCompleto = `+57${proveedorData.telefono}`;
-
-    const registerData = {
-      ...proveedorData,
-      telefono: telefonoCompleto,
-    };
-
-    this.authService.registerProveedor(registerData).subscribe({
-      next: (response) => {
-        console.log('Registro de proveedor exitoso:', response);
-        this.isLoading = false;
-        this.successMessage =
-          '¡Registro exitoso! Bienvenido a JaveMarket. Redirigiendo...';
-
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 2000);
-      },
-      error: (error) => {
-        console.error('Error en registro de proveedor:', error);
-        this.isLoading = false;
-        this.errorMessage =
-          error.error?.message ||
-          'Error al registrar proveedor. Por favor, intenta nuevamente.';
-
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
-      },
-    });
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 2000);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

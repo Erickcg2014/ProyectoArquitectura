@@ -357,39 +357,13 @@ export class RegisterUsuarioComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    const { confirmPassword, countryCode, aceptaTerminos, ...userData } =
-      this.registerForm.value;
+    // Redirigir a Keycloak para registro
+    // Como Keycloak maneja el registro, mostramos mensaje y redirigimos al login
+    this.successMessage = 'Registro disponible en Keycloak. Redirigiendo al login...';
 
-    // Combinar código de país con teléfono
-    const telefonoCompleto = `${countryCode}${userData.telefono}`;
-
-    const registerData = {
-      ...userData,
-      telefono: telefonoCompleto,
-    };
-
-    this.authService.registerUsuario(registerData).subscribe({
-      next: (response) => {
-        console.log('Registro exitoso:', response);
-        this.isLoading = false;
-        this.successMessage = '¡Registro exitoso! Redirigiendo...';
-
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 2000);
-      },
-      error: (error) => {
-        console.error('Error en registro:', error);
-        this.isLoading = false;
-        this.errorMessage =
-          error.error?.message ||
-          'Error al registrar usuario. Por favor, intenta nuevamente.';
-
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
-      },
-    });
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 2000);
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

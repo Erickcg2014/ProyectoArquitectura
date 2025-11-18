@@ -63,27 +63,8 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const { email, password } = this.loginForm.value;
-
-    this.authService.login({ email, password }).subscribe({
-      next: (response) => {
-        console.log('Login exitoso:', response);
-        this.isLoading = false;
-        this.router.navigate(['/dashboard']);
-      },
-      error: (error) => {
-        console.error('Error en login:', error);
-        this.isLoading = false;
-        this.errorMessage =
-          error.error?.message ||
-          'Error al iniciar sesión. Verifica tus credenciales.';
-
-        // Limpiar mensaje después de 5 segundos
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
-      },
-    });
+    // Redirigir a Keycloak para autenticación
+    this.authService.login();
   }
 
   // Marcar todos los campos como tocados para mostrar errores
