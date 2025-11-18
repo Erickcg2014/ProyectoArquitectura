@@ -72,16 +72,16 @@
           </button>
 
           <button
-            routerLink="/login"
+            (click)="goToLogin()"
             class="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
           >
             <span
               class="material-symbols-outlined text-gray-700 text-2xl group-hover:scale-110 transition-transform"
-              >person</span
+              >{{ isAuthenticated ? 'logout' : 'person' }}</span
             >
-            <span class="text-gray-700 text-xs font-medium hidden lg:block"
-              >Cuenta</span
-            >
+            <span class="text-gray-700 text-xs font-medium hidden lg:block">
+              {{ isAuthenticated ? 'Cerrar sesión' : 'Cuenta' }}
+            </span>
           </button>
 
           <div

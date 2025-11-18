@@ -3,6 +3,7 @@
 import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+// import { AuthService } from '../../core/auth.service';
 
 interface Category {
   id: string;
@@ -21,7 +22,10 @@ interface Category {
 export class NavbarComponent {
   @ViewChild('categoriesButton', { read: ElementRef })
   categoriesButton!: ElementRef;
-  constructor(private router: Router) {} // ← Inyectar Router
+
+  isAuthenticated = false; // Temporalmente false hasta que se arregle el AuthService
+
+  constructor(private router: Router) {}
 
   cartItemCount = 0;
   isDropdownOpen = false;
@@ -117,6 +121,16 @@ export class NavbarComponent {
   }
 
   goToLogin(): void {
+    if (this.isAuthenticated) {
+      this.logout();
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  logout(): void {
+    // TODO: Implementar logout con Keycloak
+    this.isAuthenticated = false;
     this.router.navigate(['/login']);
   }
 

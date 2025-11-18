@@ -1,5 +1,7 @@
+version: '3.8'
+
 services:
-  # --- BASE DE DATOS POSTGRES LOCAL ---
+  # --- BASE DE DATOS POSTGRES ---
   postgres-db:
     image: postgres:15
     container_name: postgres-multicanal
@@ -19,34 +21,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- FRONTEND EXISTENTE ---
-  # COMENTADO: El frontend tiene errores de compilación
-  # Para probar, ejecuta: cd Presentacion/angular-frontend && npm start
-  # frontend:
-  #   build:
-  #     context: ./Presentacion/angular-frontend
-  #     dockerfile: Dockerfile
-  #   image: proyecto-arquitectura/frontend:latest
-  #   container_name: frontend-multicanal
-  #   ports:
-  #     - "4200:80"
-  #   environment:
-  #     - NODE_ENV=production
-  #   depends_on:
-  #     - backend
-  #   restart: unless-stopped
-  #   networks:
-  #     - multicanal-network
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: "0.5"
-  #         memory: 512M
-  #       reservations:
-  #         cpus: "0.1"
-  #         memory: 128M
-
-  # --- KEYCLOAK CON POSTGRES LOCAL ---
+  # --- KEYCLOAK CON IMAGEN OFICIAL ---
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
     container_name: keycloak-multicanal
@@ -76,28 +51,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 40s
-  # --- BACKEND SPRING BOOT ---
-  backend:
-    build:
-      context: ./logica/spring
-      dockerfile: Dockerfile
-    container_name: backend-multicanal
-    depends_on:
-      keycloak:
-        condition: service_healthy
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-    ports:
-      - "8081:8081"
-    restart: unless-stopped
-    networks:
-      - multicanal-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
       start_period: 40s
 
 networks:
