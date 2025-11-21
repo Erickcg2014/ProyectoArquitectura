@@ -1,4 +1,5 @@
 using MicroProducto.Model;
+using MicroProducto.Model.DTO;
 using MicroProducto.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,12 +44,26 @@ namespace MicroProducto.Controllers
         }
 
         // GET: api/producto/categoria/{categoria}
-        [HttpGet("categoria/{categoria}")]
+        [HttpGet("categoria/{id_categoria}")]
+        public async Task<IActionResult> GetByCategoria(int categoria)
+        {
+            try
+            {
+                var productos = await _service.ObtenerProductosPorIdCategoria(categoria);
+                return Ok(productos);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpGet("categoria/{string_categoria}")]
         public async Task<IActionResult> GetByCategoria(string categoria)
         {
             try
             {
-                var productos = await _service.ObtenerProductosPorCategoria(categoria);
+                var productos = await _service.ObtenerProductosPorNombreCategoria(categoria);
                 return Ok(productos);
             }
             catch (ArgumentException ex)
@@ -77,11 +92,12 @@ namespace MicroProducto.Controllers
 
         // POST: api/producto
         [HttpPost]
-        public async Task<IActionResult> Crear([FromBody] Producto producto)
+        public async Task<IActionResult> Crear([FromBody] CrearProductoRequest request)
         {
             try
             {
-                var productoCreado = await _service.CrearProducto(producto);
+                
+                var productoCreado = await _service.CrearProducto(request.Producto, request.CategoriaNombre);
                 return CreatedAtAction(nameof(GetById), new { id = productoCreado.Id }, productoCreado);
             }
             catch (ArgumentException ex)
@@ -163,6 +179,24 @@ namespace MicroProducto.Controllers
                     return BadRequest(new { mensaje = "No hay stock suficiente o producto no encontrado" });
 
                 return Ok(new { mensaje = "Inventario reducido correctamente" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+
+        [HttpPost("descontarCantidadReservada/{id}")]
+        public async Task<IActionResult> ReducirCantidadReservada(int id, [FromQuery] int cantidadReservadaEliminar)
+        {
+            try
+            {
+                var reducido = await _service.ActualizarCantidadDisponible6HorasCumplidas(id, cantidadReservadaEliminar);
+                if (!reducido)
+                    return BadRequest(new { mensaje = "Error" });
+
+                return Ok(new { mensaje = "Cantidad Reservada reducida correctamente" });
             }
             catch (ArgumentException ex)
             {

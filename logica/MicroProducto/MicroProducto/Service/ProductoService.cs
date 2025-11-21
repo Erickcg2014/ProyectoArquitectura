@@ -13,18 +13,13 @@ public class ProductoService
             _productoRepository = productoRepository;
         }
 
-        public async Task<Producto> CrearProducto(Producto producto)
+        public async Task<Producto> CrearProducto(Producto producto, string? categoriaNombre)
         {
-            if (producto == null)
-                throw new ArgumentNullException(nameof(producto));
-
-            if (string.IsNullOrWhiteSpace(producto.Nombre))
-                throw new ArgumentException("El nombre del producto es requerido");
 
             if (producto.Precio <= 0)
                 throw new ArgumentException("El precio debe ser mayor a cero");
 
-            await _productoRepository.CrearProducto(producto);
+            await _productoRepository.CrearProducto(producto, categoriaNombre);
             return producto;
         }
 
@@ -62,12 +57,18 @@ public class ProductoService
             return await _productoRepository.GetPrecioProductoById(id);
         }
 
-        public async Task<List<Producto>> ObtenerProductosPorCategoria(string categoria)
+        public async Task<List<Producto>> ObtenerProductosPorIdCategoria(int categoria)
         {
-            if (string.IsNullOrWhiteSpace(categoria))
+            if (categoria <= 0)
                 throw new ArgumentException("La categoría es requerida");
 
-            return await _productoRepository.GetProductosByCategoria(categoria);
+            return await _productoRepository.GetProductosByIdCategoria(categoria);
+        }
+
+        public async Task<List<Producto>> ObtenerProductosPorNombreCategoria(string categoria)
+        {
+
+            return await _productoRepository.GetProductosByNombreCategoria(categoria);
         }
 
         public async Task<bool> ActualizarProducto(Producto producto)
@@ -114,7 +115,16 @@ public class ProductoService
             if (producto == null)
                 return false;
 
-            return producto.Cantidad >= cantidadRequerida;
+            return (producto.CantidadDisponible - producto.CantidadReservada) >= cantidadRequerida;
+        }
+
+        public async Task<bool> ActualizarCantidadDisponible6HorasCumplidas(int id, int cantidadReservadaEliminar)
+        {
+            var producto = await _productoRepository.GetProductoById(id);
+            if (producto == null)
+                return false;
+            await _productoRepository.UpdateCantidadReservadaById(id, producto.CantidadReservada - cantidadReservadaEliminar);
+            return true;
         }
 
         public async Task<bool> ReducirInventario(int id, int cantidad)
@@ -123,10 +133,10 @@ public class ProductoService
                 throw new ArgumentException("ID y cantidad deben ser mayores a cero");
 
             var producto = await _productoRepository.GetProductoById(id);
-            if (producto == null || producto.Cantidad < cantidad)
+            if (producto == null || producto.CantidadDisponible < cantidad)
                 return false;
 
-            await _productoRepository.UpdateCantidadProductoById(id, producto.Cantidad - cantidad);
+            await _productoRepository.UpdateCantidadProductoById(id, producto.CantidadDisponible - cantidad);
             return true;
         }
     }

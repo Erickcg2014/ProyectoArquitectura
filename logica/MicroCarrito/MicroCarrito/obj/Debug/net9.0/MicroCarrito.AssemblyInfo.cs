@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MicroCarrito")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddd855a6ebd76bdcec352062cc0142738aac7689")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10d6e0c53ac89bee87d00bf17f0ea7e7962738e3")]
 [assembly: System.Reflection.AssemblyProductAttribute("MicroCarrito")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MicroCarrito")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
