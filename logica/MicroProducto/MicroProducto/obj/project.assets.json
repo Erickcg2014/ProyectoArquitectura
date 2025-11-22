@@ -2057,19 +2057,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
+    "C:\\Users\\Erick\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\MicroProducto.csproj",
+      "projectUniqueName": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\MicroProducto.csproj",
       "projectName": "MicroProducto",
-      "projectPath": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\MicroProducto.csproj",
-      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\obj\\",
+      "projectPath": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\MicroProducto.csproj",
+      "packagesPath": "C:\\Users\\Erick\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroProducto\\MicroProducto\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Erick\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"

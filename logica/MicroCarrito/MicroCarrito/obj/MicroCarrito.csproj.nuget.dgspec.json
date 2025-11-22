@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj": {}
+    "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj": {
+    "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj",
+        "projectUniqueName": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj",
         "projectName": "MicroCarrito",
-        "projectPath": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj",
-        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Usuario\\Documents\\UniversidadJaveriana\\7Semestre\\ArquitecturaSoftware\\ProyectoArquitectura\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\obj\\",
+        "projectPath": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\MicroCarrito.csproj",
+        "packagesPath": "C:\\Users\\Erick\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Erick\\OneDrive\\Escritorio\\PROYECTO_ARQUITECTURA\\ProyectoArquitectura\\Logica\\MicroCarrito\\MicroCarrito\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Erick\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
