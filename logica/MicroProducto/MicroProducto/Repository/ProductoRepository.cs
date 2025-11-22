@@ -127,6 +127,12 @@ public class ProductoRepository : IProductoRepository
         await _context.SaveChangesAsync();   
     }
 
+    public async Task<List<Categoria>> GetAllCategorias()
+    {
+        return await _context.Categorias.ToListAsync();
+    }
+
+
 }
 
 

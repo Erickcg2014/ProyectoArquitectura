@@ -14,6 +14,11 @@ public class CarritoRepository : ICarritoRepository
         _context = context;
     }
 
+    public async Task CrearCarrito(Carrito carrito)
+    {
+        await _context.Carritos.AddAsync(carrito);
+        await _context.SaveChangesAsync();
+    }
 
     public async Task CrearCarritoItem(CarritoItem carritoItem)
     {
@@ -35,22 +40,19 @@ public class CarritoRepository : ICarritoRepository
 
     public async Task DeleteCarritoItemsByIdCliente(int id_cliente)
     {
-        var items = await _context.CarritoItems
-            .Where(x => x.Id_usuario == id_cliente)
-            .ToListAsync();
+       var carrito =  await _context.Carritos
+        .Where(c => c.IdUsuario == id_cliente).FirstAsync();
 
-        if (items == null || !items.Any())
-            return;
-
-        _context.CarritoItems.RemoveRange(items);
+        _context.Carritos.Remove(carrito);
         await _context.SaveChangesAsync();
     }
 
 
     public async Task<List<CarritoItem>> GetAllCarritoItemByIdCliente(int id_cliente)
     {
+        var carrito = await _context.Carritos.Where(c => c.IdUsuario == id_cliente).FirstAsync();
         return await _context.CarritoItems
-            .Where(x => x.Id_usuario == id_cliente)
+            .Where(x => x.IdCarrito == carrito.Id)
             .ToListAsync();
     }
 
@@ -84,15 +86,19 @@ public class CarritoRepository : ICarritoRepository
         await _context.SaveChangesAsync();
     }
 
-
-    public async Task UpdatePrecioCarritoItem(int idCarritoItem, double precio)
+    public Task UpdateFechaActualizacionCarrito(int idCarrito, DateTime dateTime)
     {
-        var item = await _context.CarritoItems.FindAsync(idCarritoItem);
+        throw new NotImplementedException();
+    }
+
+    public async Task UpdatePrecioCarrito(int idCarrito, double precio)
+    {
+        var item = await _context.Carritos.FindAsync(idCarrito);
 
         if (item == null)
             return;
 
-        item.Precio = precio;
+        item.PrecioTotal = precio;
 
         await _context.SaveChangesAsync();
     }

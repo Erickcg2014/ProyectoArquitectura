@@ -16,8 +16,21 @@ namespace MicroCarrito.Controllers
         {
             _service = service;
         }
+       [HttpPost("crear/carrito")]
+        public async Task<IActionResult> CrearCarrito([FromBody] Carrito carrito)
+        {
+            try
+            {
+                await _service.crearCarrito(carrito);
+                return CreatedAtAction(nameof(GetCarritoItemById), new { id = carrito.Id }, carrito);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
 
-        [HttpPost("crear")]
+        [HttpPost("crear/Item")]
         public async Task<IActionResult> CrearCarritoItem([FromBody] CarritoItem item)
         {
             try
@@ -114,7 +127,7 @@ namespace MicroCarrito.Controllers
         {
             try
             {
-                await _service.UpdatePrecioCarritoItem(id, precio);
+                await _service.UpdatePrecioCarrito(id, precio);
                 return Ok("Precio actualizado");
             }
             catch (ArgumentException ex)

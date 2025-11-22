@@ -11,7 +11,10 @@ public class CarritoService
     {
         _repo = repo;
     }
-
+    public async Task crearCarrito(Carrito carrito)
+    {
+        await _repo.CrearCarrito(carrito);
+    }
 
     public async Task CrearCarritoItem(CarritoItem carritoItem)
     {
@@ -65,10 +68,10 @@ public class CarritoService
 
     }
 
-    public async Task UpdatePrecioCarritoItem(int id, double precio)
+    public async Task UpdatePrecioCarrito(int id, double precio)
     {
 
-            await _repo.UpdatePrecioCarritoItem(id, precio);
+            await _repo.UpdatePrecioCarrito(id, precio);
 
     }
     public async Task DeleteCarritoItemsByIdCliente(int id_cliente)
@@ -76,5 +79,9 @@ public class CarritoService
 
             await _repo.DeleteCarritoItemsByIdCliente(id_cliente);
 
+    }
+    public async Task UpdateFechaActualizacionCarrito(int id_carrito, DateTime dateTime)
+    {
+        await _repo.UpdateFechaActualizacionCarrito(id_carrito, dateTime);
     }
 }

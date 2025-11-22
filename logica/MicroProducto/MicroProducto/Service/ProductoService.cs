@@ -139,4 +139,9 @@ public class ProductoService
             await _productoRepository.UpdateCantidadProductoById(id, producto.CantidadDisponible - cantidad);
             return true;
         }
+
+        public async Task<List<Categoria>> GetAllCategorias()
+    {
+        return await _productoRepository.GetAllCategorias();
+    }
     }

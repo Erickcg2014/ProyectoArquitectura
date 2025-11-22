@@ -11,6 +11,8 @@ public class CarritoDBContext : DbContext
         }
 
         public DbSet<CarritoItem> CarritoItems { get; set; }
+        public DbSet<Carrito> Carritos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,11 +23,31 @@ public class CarritoDBContext : DbContext
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Id_producto).HasColumnName("id_producto");
+                entity.Property(e => e.IdCarrito).HasColumnName("id_carrito");
+                entity.Property(e => e.IdProducto).HasColumnName("id_producto");
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+                entity.Property(e => e.PrecioUnitario).HasColumnName("precio_unitario");
                 entity.Property(e => e.Descripcion).HasColumnName("descripcion");
-                entity.Property(e => e.Id_usuario).HasColumnName("id_usuario");
-                entity.Property(e => e.Precio).HasColumnName("precio");
+
+                entity.HasOne<Carrito>()
+                      .WithMany()
+                      .HasForeignKey(e => e.IdCarrito)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+      
+            });
+            modelBuilder.Entity<Carrito>(entity =>
+            {
+                entity.ToTable("Carrito");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+                entity.Property(e => e.PrecioTotal).HasColumnName("precio");
+                entity.Property(e => e.FechaActualizacion).HasColumnName("fechaactualizacion");
+
+    
+
       
             });
         }

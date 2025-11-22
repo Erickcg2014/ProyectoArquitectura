@@ -203,5 +203,11 @@ namespace MicroProducto.Controllers
                 return BadRequest(new { mensaje = ex.Message });
             }
         }
+
+        [HttpGet("categorias")]
+        public async Task<List<Categoria>> ObtenerCategorias()
+        {
+            return await _service.GetAllCategorias();
+        }
     }
 }

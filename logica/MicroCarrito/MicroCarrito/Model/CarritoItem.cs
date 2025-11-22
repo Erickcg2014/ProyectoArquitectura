@@ -5,9 +5,9 @@ namespace MicroCarrito.Model;
 public class CarritoItem
 {
     public int Id {get; set;}
-    public int Id_producto {get; set;}
-    public int Cantidad {get; set; }
+    public int IdCarrito {get; set;}
+    public int IdProducto {get; set;}
+    public int Cantidad {get; set;}
     public string Descripcion {get; set;}
-    public int Id_usuario {get; set;}
-    public double Precio {get; set;}
+    public double PrecioUnitario {get; set;}
 }

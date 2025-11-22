@@ -15,5 +15,6 @@ public interface IProductoRepository
     Task<double?> GetPrecioProductoById(int id);
     Task<List<Producto>> GetProductosByIdCategoria(int categoria);
     Task<List<Producto>> GetProductosByNombreCategoria(string categoria);
+    Task<List<Categoria>> GetAllCategorias();
 
 }
