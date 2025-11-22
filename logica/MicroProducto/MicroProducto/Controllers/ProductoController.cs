@@ -44,7 +44,7 @@ namespace MicroProducto.Controllers
         }
 
         // GET: api/producto/categoria/{categoria}
-        [HttpGet("categoria/{id_categoria}")]
+        [HttpGet("categoriaId/{id_categoria}")]
         public async Task<IActionResult> GetByCategoria(int categoria)
         {
             try
@@ -58,7 +58,7 @@ namespace MicroProducto.Controllers
             }
         }
 
-        [HttpGet("categoria/{string_categoria}")]
+        [HttpGet("categoriaStr/{string_categoria}")]
         public async Task<IActionResult> GetByCategoria(string categoria)
         {
             try
@@ -91,7 +91,7 @@ namespace MicroProducto.Controllers
         }
 
         // POST: api/producto
-        [HttpPost]
+        [HttpPost("crear")]
         public async Task<IActionResult> Crear([FromBody] CrearProductoRequest request)
         {
             try
@@ -107,7 +107,7 @@ namespace MicroProducto.Controllers
         }
 
         // PUT: api/producto
-        [HttpPut]
+        [HttpPut("actualizar")]
         public async Task<IActionResult> Update([FromBody] Producto producto)
         {
             try

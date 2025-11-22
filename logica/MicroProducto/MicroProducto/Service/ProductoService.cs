@@ -144,4 +144,6 @@ public class ProductoService
     {
         return await _productoRepository.GetAllCategorias();
     }
-    }
+
+
+}

@@ -1,4 +1,5 @@
 
+using MicroProducto.Integration;
 using MicroProducto.Persistence;
 using MicroProducto.Repository;
 using MicroProducto.Service;
@@ -10,42 +11,46 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-        builder.Services.AddDbContextFactory<ProductoDBContext>(
-            options => options.UseNpgsql(connectionString)
-        );
-        
-        Console.WriteLine("ConnectionString: " + connectionString);
-
-
-        builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
-        builder.Services.AddScoped<ProductoService>();
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        try
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContextFactory<ProductoDBContext>(
+                options => options.UseNpgsql(connectionString)
+            );
+            
+            Console.WriteLine("📊 ConnectionString configurada");
+
+            builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+            builder.Services.AddScoped<ProductoService>();
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            
+            // Kafka consumer en background
+            builder.Services.AddHostedService<Receive>();
+
+            var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            Console.WriteLine("🚀 API iniciando...");
+            app.Run();
         }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-
-        app.MapControllers();
-
-        app.Run();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"💥 Error fatal: {ex.Message}");
+            throw;
+        }
     }
 }
