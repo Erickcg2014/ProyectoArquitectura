@@ -43,8 +43,8 @@ public class CarritoDBContext : DbContext
 
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
-                entity.Property(e => e.PrecioTotal).HasColumnName("precio");
-                entity.Property(e => e.FechaActualizacion).HasColumnName("fechaactualizacion");
+                entity.Property(e => e.PrecioTotal).HasColumnName("total");
+                entity.Property(e => e.FechaActualizacion).HasColumnName("fecha_actualizacion");
             });
         }
     }
