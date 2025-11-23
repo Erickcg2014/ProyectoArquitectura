@@ -11,6 +11,4 @@ public interface IOrdenItemRepository extends JpaRepository<OrdenItem, Long> {
 
     List<OrdenItem> findByIdOrden(UUID idOrden);
 
-    // TODO: Agregar métodos personalizados si es necesario
-
 }

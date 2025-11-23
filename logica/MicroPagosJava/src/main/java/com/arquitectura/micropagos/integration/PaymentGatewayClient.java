@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@SuppressWarnings("null")
 public class PaymentGatewayClient {
 
     private final RestTemplate restTemplate;

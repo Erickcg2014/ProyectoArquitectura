@@ -13,6 +13,4 @@ public interface IResumenProveedorOrdenRepository extends JpaRepository<ResumenP
 
     List<ResumenProveedorOrden> findByIdProveedor(UUID idProveedor);
 
-    // TODO: Agregar métodos personalizados si es necesario
-
 }
