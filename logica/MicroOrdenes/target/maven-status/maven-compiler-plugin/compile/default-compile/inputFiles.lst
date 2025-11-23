@@ -1,0 +1,16 @@
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\dto\OrdenResponse.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\integration\KafkaConsumerService.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\repository\IOrdenRepository.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\model\Orden.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\config\DatabaseConfig.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\config\IntegrationConfig.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\health\HealthCheckController.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\MicroOrdenesApplication.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\model\OrdenItem.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\service\OrdenService.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\controller\OrdenController.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\dto\OrdenRequest.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\model\ResumenProveedorOrden.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\integration\OrdenIntegration.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\repository\IResumenProveedorOrdenRepository.java
+c:\ProyectosGit\ProyectoArquitectura\logica\MicroOrdenes\src\main\java\com\arquitectura\microordenes\repository\IOrdenItemRepository.java
