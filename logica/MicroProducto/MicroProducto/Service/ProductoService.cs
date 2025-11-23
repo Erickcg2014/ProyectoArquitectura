@@ -1,5 +1,6 @@
 using System;
 using MicroProducto.Model;
+using MicroProducto.Model.DTO;
 using MicroProducto.Repository;
 
 namespace MicroProducto.Service;
@@ -13,7 +14,7 @@ public class ProductoService
             _productoRepository = productoRepository;
         }
 
-        public async Task<Producto> CrearProducto(Producto producto, string? categoriaNombre)
+        public async Task<CreacionProducto> CrearProducto(CreacionProducto producto, string? categoriaNombre)
         {
 
             if (producto.Precio <= 0)
@@ -23,10 +24,8 @@ public class ProductoService
             return producto;
         }
 
-        public async Task<bool> EliminarProducto(int id)
+        public async Task<bool> EliminarProducto(Guid id)
         {
-            if (id <= 0)
-                throw new ArgumentException("ID inválido");
 
             var producto = await _productoRepository.GetProductoById(id);
             if (producto == null)
@@ -41,17 +40,15 @@ public class ProductoService
             return await _productoRepository.GetAllProductos();
         }
 
-        public async Task<Producto?> ObtenerProductoPorId(int id)
+        public async Task<Producto?> ObtenerProductoPorId(Guid id)
         {
-            if (id <= 0)
-                throw new ArgumentException("ID inválido");
 
             return await _productoRepository.GetProductoById(id);
         }
 
-        public async Task<double?> ObtenerPrecioProductoPorId(int id)
+        public async Task<double?> ObtenerPrecioProductoPorId(Guid id)
         {
-            if (id <= 0)
+            if (id == null)
                 throw new ArgumentException("ID inválido");
 
             return await _productoRepository.GetPrecioProductoById(id);
@@ -76,7 +73,7 @@ public class ProductoService
             if (producto == null)
                 throw new ArgumentNullException(nameof(producto));
 
-            if (producto.Id <= 0)
+            if (producto.Id == null)
                 throw new ArgumentException("ID inválido");
 
             var productoExistente = await _productoRepository.GetProductoById(producto.Id);
@@ -93,9 +90,9 @@ public class ProductoService
             return true;
         }
 
-        public async Task<bool> ActualizarCantidadProducto(int id, int cantidad)
+        public async Task<bool> ActualizarCantidadProducto(Guid id, int cantidad)
         {
-            if (id <= 0)
+            if (id == null)
                 throw new ArgumentException("ID inválido");
 
             if (cantidad < 0)
@@ -109,7 +106,7 @@ public class ProductoService
             return true;
         }
 
-        public async Task<bool> VerificarDisponibilidad(int id, int cantidadRequerida)
+        public async Task<bool> VerificarDisponibilidad(Guid id, int cantidadRequerida)
         {
             var producto = await _productoRepository.GetProductoById(id);
             if (producto == null)
@@ -118,7 +115,7 @@ public class ProductoService
             return (producto.CantidadDisponible - producto.CantidadReservada) >= cantidadRequerida;
         }
 
-        public async Task<bool> ActualizarCantidadDisponible6HorasCumplidas(int id, int cantidadReservadaEliminar)
+        public async Task<bool> ActualizarCantidadDisponible6HorasCumplidas(Guid id, int cantidadReservadaEliminar)
         {
             var producto = await _productoRepository.GetProductoById(id);
             if (producto == null)
@@ -127,9 +124,9 @@ public class ProductoService
             return true;
         }
 
-        public async Task<bool> ReducirInventario(int id, int cantidad)
+        public async Task<bool> ReducirInventario(Guid id, int cantidad)
         {
-            if (id <= 0 || cantidad <= 0)
+            if (id == null || cantidad <= 0)
                 throw new ArgumentException("ID y cantidad deben ser mayores a cero");
 
             var producto = await _productoRepository.GetProductoById(id);

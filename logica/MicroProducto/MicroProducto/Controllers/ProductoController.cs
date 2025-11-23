@@ -27,7 +27,7 @@ namespace MicroProducto.Controllers
 
         // GET: api/producto/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
@@ -45,11 +45,11 @@ namespace MicroProducto.Controllers
 
         // GET: api/producto/categoria/{categoria}
         [HttpGet("categoriaId/{id_categoria}")]
-        public async Task<IActionResult> GetByCategoria(int categoria)
+        public async Task<IActionResult> GetByCategoria(int id_categoria)
         {
             try
             {
-                var productos = await _service.ObtenerProductosPorIdCategoria(categoria);
+                var productos = await _service.ObtenerProductosPorIdCategoria(id_categoria);
                 return Ok(productos);
             }
             catch (ArgumentException ex)
@@ -59,11 +59,11 @@ namespace MicroProducto.Controllers
         }
 
         [HttpGet("categoriaStr/{string_categoria}")]
-        public async Task<IActionResult> GetByCategoria(string categoria)
+        public async Task<IActionResult> GetByCategoria(string string_categoria)
         {
             try
             {
-                var productos = await _service.ObtenerProductosPorNombreCategoria(categoria);
+                var productos = await _service.ObtenerProductosPorNombreCategoria(string_categoria);
                 return Ok(productos);
             }
             catch (ArgumentException ex)
@@ -74,7 +74,7 @@ namespace MicroProducto.Controllers
 
         // GET: api/producto/precio/5
         [HttpGet("precio/{id}")]
-        public async Task<IActionResult> GetPrecio(int id)
+        public async Task<IActionResult> GetPrecio(Guid id)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace MicroProducto.Controllers
             {
                 
                 var productoCreado = await _service.CrearProducto(request.Producto, request.CategoriaNombre);
-                return CreatedAtAction(nameof(GetById), new { id = productoCreado.Id }, productoCreado);
+                return Ok(new { mensaje = "Producto creado correctamente" });
             }
             catch (ArgumentException ex)
             {
@@ -126,7 +126,7 @@ namespace MicroProducto.Controllers
 
         // PATCH: api/producto/cantidad/5
         [HttpPatch("cantidad/{id}")]
-        public async Task<IActionResult> UpdateCantidad(int id, [FromQuery] int cantidad)
+        public async Task<IActionResult> UpdateCantidad(Guid id, [FromQuery] int cantidad)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace MicroProducto.Controllers
 
         // DELETE: api/producto/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace MicroProducto.Controllers
 
         // POST: api/producto/verificar-disponibilidad/5
         [HttpPost("verificar-disponibilidad/{id}")]
-        public async Task<IActionResult> VerificarDisponibilidad(int id, [FromQuery] int cantidad)
+        public async Task<IActionResult> VerificarDisponibilidad(Guid id, [FromQuery] int cantidad)
         {
             var disponible = await _service.VerificarDisponibilidad(id, cantidad);
             return Ok(new { disponible });
@@ -170,7 +170,7 @@ namespace MicroProducto.Controllers
 
         // POST: api/producto/reducir-inventario/5
         [HttpPost("reducir-inventario/{id}")]
-        public async Task<IActionResult> ReducirInventario(int id, [FromQuery] int cantidad)
+        public async Task<IActionResult> ReducirInventario(Guid id, [FromQuery] int cantidad)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace MicroProducto.Controllers
 
 
         [HttpPost("descontarCantidadReservada/{id}")]
-        public async Task<IActionResult> ReducirCantidadReservada(int id, [FromQuery] int cantidadReservadaEliminar)
+        public async Task<IActionResult> ReducirCantidadReservada(Guid id, [FromQuery] int cantidadReservadaEliminar)
         {
             try
             {

@@ -1,11 +1,9 @@
 using System;
-using Confluent.Kafka;
 
-namespace MicroProducto.Model;
+namespace MicroProducto.Model.DTO;
 
-public class Producto
+public class CreacionProducto
 {
-    public Guid Id {get; set;}
     public string Nombre {get; set;}
     public string Descripcion {get; set;}
     public int CantidadDisponible {get; set;}
@@ -14,5 +12,4 @@ public class Producto
     public string ?ImagenUrl {get; set;}
     public Guid IdProveedor { get; set;}
     public int CantidadReservada {get; set;}
-
 }

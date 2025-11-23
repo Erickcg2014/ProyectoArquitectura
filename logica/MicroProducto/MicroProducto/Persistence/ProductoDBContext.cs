@@ -22,12 +22,12 @@ public class ProductoDBContext: DbContext
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Nombre).HasColumnName("nombre");
                 entity.Property(e => e.Descripcion).HasColumnName("descripcion");
-                entity.Property(e => e.CantidadDisponible).HasColumnName("cantidadDisponible");
+                entity.Property(e => e.CantidadDisponible).HasColumnName("cantidaddisponible");
                 entity.Property(e => e.Precio).HasColumnName("precio");
-                entity.Property(e => e.Categoria).HasColumnName("categoria");
-                entity.Property(e => e.ImagenUrl).HasColumnName("imagenUrl");
-                entity.Property(e => e.IdProveedor).HasColumnName("idProveedor");
-                entity.Property(e => e.CantidadReservada).HasColumnName("cantidadReservada");
+                entity.Property(e => e.Categoria).HasColumnName("idcategoria");
+                entity.Property(e => e.ImagenUrl).HasColumnName("imageurl");
+                entity.Property(e => e.IdProveedor).HasColumnName("idproveedor");
+                entity.Property(e => e.CantidadReservada).HasColumnName("cantidadreservada");
                              
                 // Relación opcional: Producto → Categoria
                 entity.HasOne<Categoria>()

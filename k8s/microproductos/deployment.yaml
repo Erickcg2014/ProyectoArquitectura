@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microproductos-deployment
+  namespace: arquitectura
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: microproductos
+  template:
+    metadata:
+      labels:
+        app: microproductos
+    spec:
+      containers:
+        - name: microproductos
+          image: docker.io/davidjcuadros/microproductos:latest
+          ports:
+            - containerPort: 8083
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
