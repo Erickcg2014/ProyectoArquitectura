@@ -1,4 +1,4 @@
-@MicroCarrito_HostAddress = http://localhost:5119
+@MicroCarrito_HostAddress = http://localhost:8087
 
 GET {{MicroCarrito_HostAddress}}/weatherforecast/
 Accept: application/json
