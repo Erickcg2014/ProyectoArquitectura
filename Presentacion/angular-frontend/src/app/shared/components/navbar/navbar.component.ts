@@ -3,6 +3,7 @@
 import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { KeycloakService } from '../../../core/keycloak.service';
 
 interface Category {
   id: string;
@@ -21,7 +22,7 @@ interface Category {
 export class NavbarComponent {
   @ViewChild('categoriesButton', { read: ElementRef })
   categoriesButton!: ElementRef;
-  constructor(private router: Router) {} // ← Inyectar Router
+  constructor(private router: Router, private keycloakService: KeycloakService) {} // ← Inyectar Router y KeycloakService
 
   cartItemCount = 0;
   isDropdownOpen = false;
@@ -116,8 +117,20 @@ export class NavbarComponent {
     }
   }
 
+  isLoggedIn(): boolean {
+    return this.keycloakService.isLoggedIn();
+  }
+
+  getUsername(): string {
+    return this.keycloakService.getUsername();
+  }
+
   goToLogin(): void {
-    this.router.navigate(['/login']);
+    this.keycloakService.login();
+  }
+
+  logout(): void {
+    this.keycloakService.logout();
   }
 
   onSearch(event: Event): void {

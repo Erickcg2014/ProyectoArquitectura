@@ -15,13 +15,10 @@ public class SecurityConfig {
         http
             .cors().and().csrf().disable()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**").permitAll() // rutas públicas
-                .requestMatchers("/admin/**").hasRole("admin")
-                .requestMatchers("/provider/**").hasRole("provider")
-                .requestMatchers("/user/**").hasRole("user")
-                .anyRequest().authenticated()
-            )
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+                // El Gateway ya valida tokens, aquí permitimos todas las requests
+                // Mantener @EnableMethodSecurity para autorización interna si es necesario
+                .anyRequest().permitAll()
+            );
 
         return http.build();
     }

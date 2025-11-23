@@ -1,114 +1,91 @@
-// src/app/core/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
-import { Router } from '@angular/router';
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface RegisterUsuarioRequest {
-  nombre: string;
-  edad: number;
-  email: string;
-  password: string;
-  telefono: string;
-  direccion: string;
-  ciudad: string;
-}
-
-export interface RegisterProveedorRequest {
-  nombre: string;
-  telefono: string;
-  email: string;
-  password: string;
-  direccion: string;
-  descripcion: string;
-  ciudad: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: {
-    id: string;
-    nombre: string;
-    email: string;
-    tipo: 'usuario' | 'proveedor';
-  };
-}
+import { KeycloakService } from './keycloak.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth'; // Ajusta según tu backend
-  private currentUserSubject = new BehaviorSubject<any>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
-    // Cargar usuario desde localStorage si existe
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      this.currentUserSubject.next(JSON.parse(storedUser));
+  constructor(private keycloakService: KeycloakService) {}
+
+  // Método compatible con componentes existentes
+  isAuthenticated(): boolean {
+    try {
+      return this.keycloakService.isLoggedIn();
+    } catch {
+      return false;
     }
   }
 
-  login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/login`, credentials)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        })
-      );
+  // Alias para mantener compatibilidad
+  isLoggedIn(): boolean {
+    return this.isAuthenticated();
   }
 
-  registerUsuario(userData: RegisterUsuarioRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/register/usuario`, userData)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        })
-      );
+  async getToken(): Promise<string | null> {
+    try {
+      if (this.isAuthenticated()) {
+        return await this.keycloakService.getToken();
+      }
+    } catch {
+      // KeycloakService no disponible aún
+    }
+    return null;
   }
 
-  registerProveedor(
-    proveedorData: RegisterProveedorRequest
-  ): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/register/proveedor`, proveedorData)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        })
-      );
+  // Método de login compatible - redirige a Keycloak
+  login(credentials?: any): Observable<any> {
+    try {
+      this.keycloakService.login();
+      return of({ success: true });
+    } catch (error) {
+      return of({ success: false, error });
+    }
   }
 
+  // Método de registro - redirige a Keycloak
+  registerUsuario(data?: any): Observable<any> {
+    try {
+      // Keycloak maneja el registro
+      this.keycloakService.login();
+      return of({ success: true });
+    } catch (error) {
+      return of({ success: false, error });
+    }
+  }
+
+  // Método de registro proveedor - redirige a Keycloak
+  registerProveedor(data?: any): Observable<any> {
+    try {
+      // Keycloak maneja el registro
+      this.keycloakService.login();
+      return of({ success: true });
+    } catch (error) {
+      return of({ success: false, error });
+    }
+  }
+
+  // Método de logout
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.keycloakService.logout();
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  // Obtener información del usuario
+  getUsername(): string {
+    try {
+      return this.keycloakService.getUsername();
+    } catch {
+      return '';
+    }
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  getCurrentUser(): any {
-    return this.currentUserSubject.value;
+  // Verificar roles
+  hasRole(role: string): boolean {
+    try {
+      return this.keycloakService.hasRole(role);
+    } catch {
+      return false;
+    }
   }
 }

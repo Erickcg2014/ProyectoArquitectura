@@ -1,12 +1,12 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+import { TestComponent } from './test.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-    title: 'JaveMarket - Your Product Catalog',
+    component: TestComponent,
+    title: 'Test - JaveMarket',
   },
   {
     path: 'login',

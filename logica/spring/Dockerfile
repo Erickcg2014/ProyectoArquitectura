@@ -1,27 +1,14 @@
 # ==========================
-# 1️⃣ Etapa de compilación
+# Imagen simplificada - copiar JAR pre-compilado
 # ==========================
-FROM maven:3.9.4-eclipse-temurin-17 AS builder
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copiar archivos de configuración y dependencias
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Copiar el JAR compilado desde el host
+COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
 
-# Copiar el código fuente
-COPY src ./src
-
-# Compilar el proyecto
-RUN mvn clean package -DskipTests
-
-# ==========================
-# 2️⃣ Etapa de ejecución
-# ==========================
-FROM eclipse-temurin:17-jdk-jammy
-WORKDIR /app
-
-# Copiar el JAR generado desde la etapa anterior
-COPY --from=builder /app/target/*.jar app.jar
+# Verificar que el JAR existe
+RUN ls -la app.jar
 
 # Puerto expuesto del backend
 EXPOSE 8081

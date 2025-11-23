@@ -62,7 +62,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin123
     ports:
-      - "8080:8080"
+      - "8180:8080"
     depends_on:
       postgres-db:
         condition: service_healthy

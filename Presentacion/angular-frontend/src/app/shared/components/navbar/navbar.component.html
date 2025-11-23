@@ -72,7 +72,8 @@
           </button>
 
           <button
-            routerLink="/login"
+            *ngIf="!isLoggedIn()"
+            (click)="goToLogin()"
             class="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
           >
             <span
@@ -80,7 +81,21 @@
               >person</span
             >
             <span class="text-gray-700 text-xs font-medium hidden lg:block"
-              >Cuenta</span
+              >Iniciar Sesión</span
+            >
+          </button>
+
+          <button
+            *ngIf="isLoggedIn()"
+            (click)="logout()"
+            class="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
+          >
+            <span
+              class="material-symbols-outlined text-gray-700 text-2xl group-hover:scale-110 transition-transform"
+              >logout</span
+            >
+            <span class="text-gray-700 text-xs font-medium hidden lg:block"
+              >Cerrar Sesión</span
             >
           </button>
 
