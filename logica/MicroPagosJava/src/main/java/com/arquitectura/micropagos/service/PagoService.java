@@ -5,6 +5,7 @@ import com.arquitectura.micropagos.model.EstadoPago;
 import com.arquitectura.micropagos.model.MetodoPago;
 import com.arquitectura.micropagos.model.TransaccionPago;
 import com.arquitectura.micropagos.repository.PagoRepository;
+import com.arquitectura.micropagos.repository.TransaccionPagoRepository;
 import com.arquitectura.micropagos.dto.PaymentConfirmed;
 import com.arquitectura.micropagos.dto.PaymentFailed;
 import com.arquitectura.micropagos.integration.PaymentGatewayClient;
@@ -21,12 +22,14 @@ import java.util.UUID;
 public class PagoService {
 
     private final PagoRepository pagoRepository;
+    private final TransaccionPagoRepository transaccionPagoRepository;
     private final PaymentGatewayClient gatewayClient;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
-    public PagoService(PagoRepository pagoRepository, PaymentGatewayClient gatewayClient, KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+    public PagoService(PagoRepository pagoRepository, TransaccionPagoRepository transaccionPagoRepository, PaymentGatewayClient gatewayClient, KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
         this.pagoRepository = pagoRepository;
+        this.transaccionPagoRepository = transaccionPagoRepository;
         this.gatewayClient = gatewayClient;
         this.kafkaTemplate = kafkaTemplate;
         this.objectMapper = objectMapper;
@@ -61,7 +64,7 @@ public class PagoService {
             transaccion.setMonto(monto);
             transaccion.setFecha(LocalDateTime.now());
 
-            pagoRepository.save(transaccion);
+            transaccionPagoRepository.save(transaccion);
 
             return pago;
         } catch (Exception e) {
@@ -73,7 +76,7 @@ public class PagoService {
     public void procesarWebhook(String gatewayId, String estado, BigDecimal monto) {
         try {
             // Buscar transacción
-            TransaccionPago transaccion = pagoRepository.findByGatewayId(gatewayId)
+            TransaccionPago transaccion = transaccionPagoRepository.findByGatewayId(gatewayId)
                     .orElseThrow(() -> new RuntimeException("Transacción no encontrada"));
 
             Pago pago = pagoRepository.findById(transaccion.getIdPago())
@@ -92,7 +95,7 @@ public class PagoService {
             nuevaTransaccion.setGatewayId(gatewayId);
             nuevaTransaccion.setMonto(monto);
             nuevaTransaccion.setFecha(LocalDateTime.now());
-            pagoRepository.save(nuevaTransaccion);
+            transaccionPagoRepository.save(nuevaTransaccion);
 
             // Enviar evento
             try {
