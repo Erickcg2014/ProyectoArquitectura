@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micropagos-deployment
+  namespace: arquitectura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micropagos
+  template:
+    metadata:
+      labels:
+        app: micropagos
+    spec:
+      containers:
+        - name: micropagos
+          image: docker.io/davidjcuadros/micropagos:latest
+          ports:
+            - containerPort: 8086
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"

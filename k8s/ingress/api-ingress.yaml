@@ -24,3 +24,10 @@ spec:
                 name: microcarrito-service
                 port:
                   number: 80
+          - path: /micropagos(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: micropagos-service
+                port:
+                  number: 80

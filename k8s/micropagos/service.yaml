@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micropagos-service
+  namespace: arquitectura
+spec:
+  type: ClusterIP
+  selector:
+    app: micropagos
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8086
