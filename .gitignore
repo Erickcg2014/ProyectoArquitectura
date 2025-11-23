@@ -4,6 +4,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+logica/MicroCarrito/MicroCarrito/obj/
+logica/MicroCarrito/MicroCarrito/bin/
+logica/MicroProducto/MicroProducto/bin/
+logica/MicroProducto/MicroProducto/obj/
+
+
 # Build de Angular
 dist/
 tmp/
