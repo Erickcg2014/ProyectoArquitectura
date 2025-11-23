@@ -35,6 +35,7 @@ public class OrdenService {
     private OrdenIntegration ordenIntegration;
 
     @Transactional
+    @SuppressWarnings("null")
     public OrdenResponse crearOrden(OrdenRequest request) {
         // Validar datos
         if (request.getIdUsuario() == null || request.getItems() == null || request.getItems().isEmpty()) {
@@ -72,8 +73,7 @@ public class OrdenService {
             return oi;
         }).toList();
 
-        @SuppressWarnings("null")
-        var unused = ordenItemRepository.saveAll(items);
+        ordenItemRepository.saveAll(items);
 
         // Integrar con MS Inventario (validar stock) - Placeholder
         ordenIntegration.validarStock(request);
@@ -100,8 +100,7 @@ public class OrdenService {
                     return resumen;
                 }).toList();
 
-        @SuppressWarnings("null")
-        var unused2 = resumenRepository.saveAll(resumenes);
+        resumenRepository.saveAll(resumenes);
 
         // Retornar datos al frontend
         return mapToResponse(orden, items, resumenes);
