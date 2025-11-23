@@ -4,7 +4,7 @@ metadata:
   name: microcarrito-deployment
   namespace: arquitectura
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: microcarrito
@@ -20,24 +20,8 @@ spec:
             - containerPort: 8087
           resources:
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: "300m"      # Reducir de 500m
+              memory: "256Mi"  # Reducir de 512Mi
             requests:
-              cpu: "250m"
-              memory: "256Mi"
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8087
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8087
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
+              cpu: "50m"       # Reducir de 100-250m
+              memory: "64Mi" 
