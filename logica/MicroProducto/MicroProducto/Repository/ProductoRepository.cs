@@ -5,6 +5,7 @@ namespace MicroProducto.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MicroProducto.Model;
+using MicroProducto.Model.DTO;
 using MicroProducto.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ public class ProductoRepository : IProductoRepository
     {
         _context = context;
     }
-    public async Task CrearProducto(Producto producto, string? categoriaNombre)
+    public async Task CrearProducto(CreacionProducto producto, string? categoriaNombre)
 {
     int? categoriaId = producto.Categoria;
 
@@ -51,12 +52,25 @@ public class ProductoRepository : IProductoRepository
         throw new ArgumentException("Debe especificar un Id de categoría o un nombre de categoría.");
     }
 
+    var productonuevo = new Producto
+    {
+        Nombre = producto.Nombre,
+        Descripcion = producto.Descripcion,
+        CantidadDisponible = producto.CantidadDisponible,
+        CantidadReservada = producto.CantidadReservada,
+        Precio = producto.Precio,
+        Categoria = producto.Categoria,
+        ImagenUrl = producto.ImagenUrl,
+        IdProveedor = producto.IdProveedor
+        // No seteas el ID → lo genera PostgreSQL automáticamente
+    };
+
     // 4. Guardar producto
-    await _context.Productos.AddAsync(producto);
+    await _context.Productos.AddAsync(productonuevo);
     await _context.SaveChangesAsync();
 }
 
-    public async Task DeleteProducto(int id)
+    public async Task DeleteProducto(Guid id)
     {
         var producto = await _context.Productos.FindAsync(id);
         if (producto != null)
@@ -71,7 +85,7 @@ public class ProductoRepository : IProductoRepository
         return await _context.Productos.ToListAsync();
     }
 
-    public async Task<double?> GetPrecioProductoById(int id)
+    public async Task<double?> GetPrecioProductoById(Guid id)
     {
         var producto = await _context.Productos.FindAsync(id);
 
@@ -82,7 +96,7 @@ public class ProductoRepository : IProductoRepository
     }
 
 
-    public async Task<Producto?> GetProductoById(int id)
+    public async Task<Producto?> GetProductoById(Guid id)
     {
         return await _context.Productos.FindAsync(id);
     }
@@ -105,7 +119,7 @@ public class ProductoRepository : IProductoRepository
             .ToListAsync();
     }
 
-    public async Task UpdateCantidadReservadaById(int id, int cantidad)
+    public async Task UpdateCantidadReservadaById(Guid id, int cantidad)
     {
         var producto = await _context.Productos.FindAsync(id);
         producto.CantidadReservada = cantidad;
@@ -113,7 +127,7 @@ public class ProductoRepository : IProductoRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateCantidadProductoById(int id, int cantidad)
+    public async Task UpdateCantidadProductoById(Guid id, int cantidad)
     {
         var producto = await _context.Productos.FindAsync(id);
         producto.CantidadDisponible = cantidad;

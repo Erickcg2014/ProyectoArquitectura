@@ -31,16 +31,18 @@ public class Program
             
             // Kafka consumer en background
             builder.Services.AddHostedService<Receive>();
+            builder.WebHost.UseUrls("http://0.0.0.0:8083");
+
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
+           // if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+           // }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
 

@@ -8,6 +8,12 @@ logica/MicroCarrito/MicroCarrito/obj/
 logica/MicroProducto/MicroProducto/bin/
 logica/MicroProducto/MicroProducto/obj/
 
+logica/MicroCarrito/MicroCarrito/obj/
+logica/MicroCarrito/MicroCarrito/bin/
+logica/MicroProducto/MicroProducto/bin/
+logica/MicroProducto/MicroProducto/obj/
+
+
 # Build de Angular
 dist/
 tmp/
@@ -110,3 +116,6 @@ local.properties
 
 # Archivos de MacOS
 *.DS_Store?
+
+bin/
+obj/

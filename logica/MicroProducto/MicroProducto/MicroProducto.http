@@ -1,4 +1,4 @@
-@MicroProducto_HostAddress = http://localhost:5170
+@MicroProducto_HostAddress = http://localhost:8083
 
 GET {{MicroProducto_HostAddress}}/weatherforecast/
 Accept: application/json
