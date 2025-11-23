@@ -110,3 +110,6 @@ local.properties
 
 # Archivos de MacOS
 *.DS_Store?
+
+bin/
+obj/
