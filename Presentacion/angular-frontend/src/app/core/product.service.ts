@@ -1,15 +1,21 @@
 // src/app/core/products.service.ts
 
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map, catchError } from 'rxjs/operators';
 import { Product, ProductType } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  // Mock data - luego conectarás con tu backend
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  // Mock data - fallback si API falla
   private mockProducts: Product[] = [
     {
       id: '1',
@@ -144,23 +150,32 @@ export class ProductsService {
     },
   ];
 
-  constructor() {}
-
   // Obtener todos los productos
   getAllProducts(): Observable<Product[]> {
-    return of(this.mockProducts).pipe(delay(500)); // Simula latencia de red
+    return this.http.get<Product[]>(`${this.apiUrl}/api/producto`).pipe(
+      map(products => products), // Transformar si es necesario
+      catchError(() => of(this.mockProducts)) // Fallback a mock si falla
+    );
   }
 
   // Obtener productos por categoría
   getProductsByCategory(category: string): Observable<Product[]> {
-    const filtered = this.mockProducts.filter((p) => p.category === category);
-    return of(filtered).pipe(delay(500));
+    return this.http.get<Product[]>(`${this.apiUrl}/api/producto/categoriaStr/${category}`).pipe(
+      catchError(() => {
+        const filtered = this.mockProducts.filter((p) => p.category === category);
+        return of(filtered);
+      })
+    );
   }
 
   // Obtener producto por ID
   getProductById(id: string): Observable<Product | undefined> {
-    const product = this.mockProducts.find((p) => p.id === id);
-    return of(product).pipe(delay(300));
+    return this.http.get<Product>(`${this.apiUrl}/api/producto/${id}`).pipe(
+      catchError(() => {
+        const product = this.mockProducts.find((p) => p.id === id);
+        return of(product);
+      })
+    );
   }
 
   // Obtener productos destacados

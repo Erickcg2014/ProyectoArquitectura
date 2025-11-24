@@ -1,12 +1,13 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { TestComponent } from './test.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: TestComponent,
-    title: 'Test - JaveMarket',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+    title: 'Home - JaveMarket',
   },
   {
     path: 'login',
@@ -51,6 +52,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/cart/cart.component').then((m) => m.CartComponent),
     title: 'Shopping Cart - JaveMarket',
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
@@ -59,8 +61,7 @@ export const routes: Routes = [
         (m) => m.DashboardComponent
       ),
     title: 'Dashboard - JaveMarket',
-    // Aquí podrías agregar un guard de autenticación más adelante
-    // canActivate: [authGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
