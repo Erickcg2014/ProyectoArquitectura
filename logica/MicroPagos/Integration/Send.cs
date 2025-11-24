@@ -8,7 +8,7 @@ namespace MicroPagos.Integration;
 public class Send
 {
     private readonly IConfiguration _config;
-    private const string TOPICO = "kafka.pagos";
+    private const string TOPICO = "topico_pagos";
 
     public Send(IConfiguration config)
     {

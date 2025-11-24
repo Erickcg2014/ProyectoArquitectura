@@ -105,13 +105,13 @@ public class PagoService {
                             pago.getId(), pago.getIdOrden(), pago.getMonto(),
                             pago.getMetodoPago().getTipo(), "aprobado", LocalDateTime.now());
                     String json = objectMapper.writeValueAsString(evento);
-                    kafkaTemplate.send("kafka.pagos", evento.getIdPago().toString(), json);
+                    kafkaTemplate.send("topico_pagos", evento.getIdPago().toString(), json);
                 } else if ("rechazado".equals(estado) || "fallido".equals(estado)) {
                     PaymentFailed evento = new PaymentFailed(
                             pago.getId(), pago.getIdOrden(), pago.getMonto(),
                             pago.getMetodoPago().getTipo(), estado, LocalDateTime.now(), "Error en gateway");
                     String json = objectMapper.writeValueAsString(evento);
-                    kafkaTemplate.send("kafka.pagos", evento.getIdPago().toString(), json);
+                    kafkaTemplate.send("topico_pagos", evento.getIdPago().toString(), json);
                 }
             } catch (Exception e) {
                 System.err.println("Error serializando evento Kafka: " + e.getMessage());
