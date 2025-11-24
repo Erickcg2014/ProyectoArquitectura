@@ -31,6 +31,11 @@ tmp/
 .env.test.local
 .env.production.local
 
+# Kubernetes secrets (contienen credenciales sensibles)
+k8s/*/secret.yaml
+k8s/*/secrets.yaml
+k8s/*/*secret*.yaml
+
 # Logs
 logs
 *.log
