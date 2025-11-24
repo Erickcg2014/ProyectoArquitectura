@@ -1,213 +1,94 @@
-using MicroProducto.Model;
-using MicroProducto.Model.DTO;
-using MicroProducto.Service;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MicroProducto.Model;
+using MicroProducto.Repository;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MicroProducto.Controllers
+namespace MicroProducto.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ProductoController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductoController : ControllerBase
+    private readonly IProductoRepository _productoRepository;
+
+    public ProductoController(IProductoRepository productoRepository)
     {
-        private readonly ProductoService _service;
+        _productoRepository = productoRepository;
+    }
 
-        public ProductoController(ProductoService service)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Producto>>> GetProductos()
+    {
+        var productos = await _productoRepository.GetAllProductos();
+        return Ok(productos);
+    }
+
+    [HttpGet("categoriaStr/{categoria}")]
+    public async Task<ActionResult<IEnumerable<Producto>>> GetProductosByCategoria(string categoria)
+    {
+        // Decodificar la categoría si viene URL-encoded
+        categoria = Uri.UnescapeDataString(categoria);
+
+        var productos = await _productoRepository.GetProductosByNombreCategoria(categoria);
+        return Ok(productos ?? new List<Producto>());
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Producto>> GetProducto(Guid id)
+    {
+        var producto = await _productoRepository.GetProductoById(id);
+        if (producto == null)
         {
-            _service = service;
+            return NotFound();
+        }
+        return Ok(producto);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Producto>> CreateProducto(CreacionProducto producto)
+    {
+        var nuevoProducto = new Producto
+        {
+            Nombre = producto.Nombre,
+            Descripcion = producto.Descripcion,
+            Precio = producto.Precio,
+            Stock = producto.Stock,
+            CategoriaId = producto.CategoriaId,
+            ImagenUrl = producto.ImagenUrl
+        };
+
+        var created = await _productoRepository.CreateAsync(nuevoProducto);
+        return CreatedAtAction(nameof(GetProducto), new { id = created.Id }, created);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProducto(int id, Producto producto)
+    {
+        if (id != producto.Id)
+        {
+            return BadRequest();
         }
 
-        // GET: api/producto
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        var result = await _productoRepository.UpdateAsync(producto);
+        if (!result)
         {
-            var productos = await _service.ObtenerTodosLosProductos();
-            return Ok(productos);
+            return NotFound();
         }
 
-        // GET: api/producto/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            try
-            {
-                var producto = await _service.ObtenerProductoPorId(id);
-                if (producto == null)
-                    return NotFound(new { mensaje = "Producto no encontrado" });
+        return NoContent();
+    }
 
-                return Ok(producto);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProducto(int id)
+    {
+        var result = await _productoRepository.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound();
         }
 
-        // GET: api/producto/categoria/{categoria}
-        [HttpGet("categoriaId/{id_categoria}")]
-        public async Task<IActionResult> GetByCategoria(int id_categoria)
-        {
-            try
-            {
-                var productos = await _service.ObtenerProductosPorIdCategoria(id_categoria);
-                return Ok(productos);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        [HttpGet("categoriaStr/{string_categoria}")]
-        public async Task<IActionResult> GetByCategoria(string string_categoria)
-        {
-            try
-            {
-                var productos = await _service.ObtenerProductosPorNombreCategoria(string_categoria);
-                return Ok(productos);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // GET: api/producto/precio/5
-        [HttpGet("precio/{id}")]
-        public async Task<IActionResult> GetPrecio(Guid id)
-        {
-            try
-            {
-                var precio = await _service.ObtenerPrecioProductoPorId(id);
-                if (precio == null)
-                    return NotFound(new { mensaje = "Producto no encontrado" });
-
-                return Ok(new { precio });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // POST: api/producto
-        [HttpPost("crear")]
-        public async Task<IActionResult> Crear([FromBody] CrearProductoRequest request)
-        {
-            try
-            {
-                
-                var productoCreado = await _service.CrearProducto(request.Producto, request.CategoriaNombre);
-                return Ok(new { mensaje = "Producto creado correctamente" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // PUT: api/producto
-        [HttpPut("actualizar")]
-        public async Task<IActionResult> Update([FromBody] Producto producto)
-        {
-            try
-            {
-                var actualizado = await _service.ActualizarProducto(producto);
-                if (!actualizado)
-                    return NotFound(new { mensaje = "Producto no encontrado" });
-
-                return Ok(new { mensaje = "Producto actualizado correctamente" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // PATCH: api/producto/cantidad/5
-        [HttpPatch("cantidad/{id}")]
-        public async Task<IActionResult> UpdateCantidad(Guid id, [FromQuery] int cantidad)
-        {
-            try
-            {
-                var actualizado = await _service.ActualizarCantidadProducto(id, cantidad);
-                if (!actualizado)
-                    return NotFound(new { mensaje = "Producto no encontrado" });
-
-                return Ok(new { mensaje = "Cantidad actualizada" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // DELETE: api/producto/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                var eliminado = await _service.EliminarProducto(id);
-                if (!eliminado)
-                    return NotFound(new { mensaje = "Producto no encontrado" });
-
-                return Ok(new { mensaje = "Producto eliminado" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        // POST: api/producto/verificar-disponibilidad/5
-        [HttpPost("verificar-disponibilidad/{id}")]
-        public async Task<IActionResult> VerificarDisponibilidad(Guid id, [FromQuery] int cantidad)
-        {
-            var disponible = await _service.VerificarDisponibilidad(id, cantidad);
-            return Ok(new { disponible });
-        }
-
-        // POST: api/producto/reducir-inventario/5
-        [HttpPost("reducir-inventario/{id}")]
-        public async Task<IActionResult> ReducirInventario(Guid id, [FromQuery] int cantidad)
-        {
-            try
-            {
-                var reducido = await _service.ReducirInventario(id, cantidad);
-                if (!reducido)
-                    return BadRequest(new { mensaje = "No hay stock suficiente o producto no encontrado" });
-
-                return Ok(new { mensaje = "Inventario reducido correctamente" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-
-        [HttpPost("descontarCantidadReservada/{id}")]
-        public async Task<IActionResult> ReducirCantidadReservada(Guid id, [FromQuery] int cantidadReservadaEliminar)
-        {
-            try
-            {
-                var reducido = await _service.ActualizarCantidadDisponible6HorasCumplidas(id, cantidadReservadaEliminar);
-                if (!reducido)
-                    return BadRequest(new { mensaje = "Error" });
-
-                return Ok(new { mensaje = "Cantidad Reservada reducida correctamente" });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        [HttpGet("categorias")]
-        public async Task<List<Categoria>> ObtenerCategorias()
-        {
-            return await _service.GetAllCategorias();
-        }
+        return NoContent();
     }
 }

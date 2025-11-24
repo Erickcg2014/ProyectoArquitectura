@@ -36,44 +36,37 @@ logging:
       routes:
         # Microservicio de Productos
         - id: producto-service
-          uri: http://localhost:30083  # NodePort del service
+          uri: http://microproducto:80
           predicates:
             - Path=/api/producto/**
-          # SIN StripPrefix - el path se mantiene completo
-            
+
         # Microservicio de Usuario
         - id: usuario-service
-          uri: http://localhost:30084
+          uri: http://microusuarios:8084
           predicates:
             - Path=/api/usuario/**
-            
-        # Microservicio de Pagos
+
+        # Microservicio de Pagos (Java)
         - id: pago-service
-          uri: http://localhost:30085
+          uri: http://micropagosjava:8085
           predicates:
             - Path=/api/pago/**
-            
-        # Microservicio de Métricas
-        - id: metrica-service
-          uri: http://localhost:30086
+
+        # Microservicio de Notificaciones
+        - id: notificaciones-service
+          uri: http://micronotificaciones:8082
           predicates:
-            - Path=/api/metrica/**
-        
-        # Microservicio de Carrito
-        - id: carrito-service
-          uri: http://localhost:30087
-          predicates:
-            - Path=/api/carrito/**
+            - Path=/api/notificaciones/**
 
         # Microservicio de Recomendaciones
         - id: recomendaciones-service
-          uri: http://localhost:30088
+          uri: http://microrecomendaciones:8088
           predicates:
             - Path=/api/recomendaciones/**
-        
+
         # Microservicio de Orden
         - id: orden-service
-          uri: http://localhost:30089
+          uri: http://microordenes:8083
           predicates:
             - Path=/api/orden/**
 
