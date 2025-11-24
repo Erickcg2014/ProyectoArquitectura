@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micronotificaciones-deployment
+  namespace: arquitectura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micronotificaciones
+  template:
+    metadata:
+      labels:
+        app: micronotificaciones
+    spec:
+      containers:
+        - name: micronotificaciones
+          image: docker.io/yourusername/micronotificaciones:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: Sms__AccountSid
+              valueFrom:
+                secretKeyRef:
+                  name: micronotificaciones-secrets
+                  key: twilio-account-sid
+            - name: Sms__AuthToken
+              valueFrom:
+                secretKeyRef:
+                  name: micronotificaciones-secrets
+                  key: twilio-auth-token
+            - name: Sms__FromPhoneNumber
+              valueFrom:
+                secretKeyRef:
+                  name: micronotificaciones-secrets
+                  key: twilio-from-phone-number
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "pkc-619z3.us-east1.gcp.confluent.cloud:9092"
+            - name: KAFKA_SASL_USERNAME
+              value: "ME7P3ZK2LK55QXU3"
+            - name: KAFKA_SASL_PASSWORD
+              value: "cflt9kdlS/TNSBD9QpT/dNAYmrABdcpUE8EmT5uqlEO+4hGfESaqyMq+3Y6l4TkA"
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
