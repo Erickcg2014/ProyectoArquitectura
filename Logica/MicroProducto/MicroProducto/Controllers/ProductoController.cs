@@ -25,6 +25,12 @@ namespace MicroProducto.Controllers
             return Ok(productos);
         }
 
+        [HttpGet("categorias")]
+        public async Task<List<Categoria>> ObtenerCategorias()
+        {
+            return await _service.GetAllCategorias();
+        }
+
         // GET: api/producto/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
@@ -204,10 +210,5 @@ namespace MicroProducto.Controllers
             }
         }
 
-        [HttpGet("categorias")]
-        public async Task<List<Categoria>> ObtenerCategorias()
-        {
-            return await _service.GetAllCategorias();
-        }
     }
 }

@@ -19,7 +19,7 @@ echo =========================================
 echo Enviando imagen al registry configurado
 echo =========================================
 
-docker push proyecto-arquitectura/api-gateway:latest
+docker push localhost:5000/api-gateway:latest
 
 IF %ERRORLEVEL% NEQ 0 (
     echo ❌ ERROR: Fallo en el PUSH del API Gateway.

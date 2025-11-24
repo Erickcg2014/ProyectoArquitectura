@@ -4,7 +4,7 @@ metadata:
   name: microproductos-deployment
   namespace: arquitectura
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: microproductos
@@ -20,11 +20,11 @@ spec:
             - containerPort: 8083
           resources:
             limits:
-              cpu: "300m"      # Reducir de 500m
-              memory: "256Mi"  # Reducir de 512Mi
+              cpu: "300m" # Reducir de 500m
+              memory: "256Mi" # Reducir de 512Mi
             requests:
-              cpu: "50m"       # Reducir de 100-250m
-              memory: "64Mi" 
+              cpu: "50m" # Reducir de 100-250m
+              memory: "64Mi"
 
 ---
 apiVersion: v1

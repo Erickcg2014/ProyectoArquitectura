@@ -9,52 +9,79 @@ rem -------------------------------
 rem 1. Crear namespace si no existe
 rem -------------------------------
 echo.
-echo 🔹 Verificando namespace 'javemarket'...
-kubectl get namespace javemarket >nul 2>&1
+echo Verificando namespace 'arquitectura'...
+kubectl get namespace arquitectura >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
-    echo ➕ Creando namespace 'javemarket'...
-    kubectl create namespace javemarket
+    echo Creando namespace 'arquitectura'...
+    kubectl create namespace arquitectura
 ) ELSE (
-    echo ✔ Namespace 'javemarket' ya existe.
+    echo Namespace 'arquitectura' ya existe.
 )
 
-rem -------------------------------------
-rem 2. Verificar / instalar Ingress NGINX
-rem -------------------------------------
+rem -----------------------------------------------
+rem 2. Aplicar secrets primero (si existen)
+rem -----------------------------------------------
+
 echo.
+echo ============================================
+echo         APLICANDO SECRETS
+echo ============================================
+
+echo.
+echo === 1. Eliminando Secret 'micronotificaciones-secrets'...
+kubectl delete secret micronotificaciones-secrets --namespace=arquitectura --ignore-not-found=true
+
+echo.
+echo === 2. Creando Secret 'micronotificaciones-secrets' desde el archivo .env...
+kubectl create secret generic micronotificaciones-secrets ^
+    --from-env-file=.env ^
+    --namespace=arquitectura
 
 rem -----------------------------------------------
-rem 3. Aplicar todos los manifiestos de despliegue
+rem 3. Aplicar los despliegues de microservicios
 rem -----------------------------------------------
+
 echo.
 echo ============================================
 echo      APLICANDO MANIFIESTOS DEL PROYECTO
 echo ============================================
 
-echo.
-echo 🔹 Aplicando presentacion_deployment.yaml...
+echo  Aplicando presentacion_deployment.yaml...
 kubectl apply -f presentacion_deployment.yaml
 
 echo.
-echo 🔹 Aplicando api_gateway_deployment.yaml...
+echo  Aplicando api_gateway_deployment.yaml...
 kubectl apply -f api_gateway_deployment.yaml
 
+echo. 
+echo Aplicando postgres_keycloak.yaml...
+kubectl apply -f postgres_keycloak.yaml
 echo.
-echo 🔹 Aplicando keycloak_deployment.yaml...
+echo  Aplicando keycloak_deployment.yaml...
 kubectl apply -f keycloak_deployment.yaml
 
 echo.
-echo 🔹 Aplicando microcarrito_deployment.yaml...
+echo  Aplicando microcarrito_deployment.yaml...
 kubectl apply -f microcarrito_deployment.yaml
 
 echo.
-echo 🔹 Aplicando microproductos.yaml...
-kubectl apply -f microproductos.yaml
+echo  Aplicando microproductos_deployment.yaml...
+kubectl apply -f microproductos_deployment.yaml
 
 echo.
+echo  Aplicando micropagos_deployment.yaml...
+kubectl apply -f micropagos_deployment.yaml
+
+echo.
+echo  Aplicando microordenes_deployment.yaml...
+kubectl apply -f microordenes_deployment.yaml
+
+echo.
+echo  Aplicando micro_notificaciones_deployment.yaml...
+kubectl apply -f micro_notificaciones_deployment.yaml
 
 echo.
 echo ============================================
-echo          CONFIGURACIÓN FINALIZADA
+echo          CONFIGURACION FINALIZADA
 echo ============================================
 pause

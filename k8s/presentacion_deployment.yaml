@@ -34,10 +34,12 @@ metadata:
   name: presentacion-service
   namespace: arquitectura
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: presentacion
   ports:
     - name: http
-      port: 80
-      targetPort: 80
+      port: 80 # puerto del Service interno
+      targetPort: 80 # puerto en el contenedor NGINX
+      nodePort: 32702 # Puerto externo accesible desde el navegador
+

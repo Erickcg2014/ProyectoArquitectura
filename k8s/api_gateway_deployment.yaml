@@ -39,10 +39,11 @@ metadata:
   name: api-gateway-service
   namespace: arquitectura
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: api-gateway
   ports:
     - name: http
-      port: 8080
-      targetPort: 8080
+      port: 8080 # Puerto interno del cluster
+      targetPort: 8080 # Puerto del contenedor
+      nodePort: 30080 # PUERTO EXTERNO PARA ACCEDER DESDE EL HOST

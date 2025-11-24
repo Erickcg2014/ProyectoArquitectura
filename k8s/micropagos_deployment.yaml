@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micropagos-deployment
+  namespace: arquitectura
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: micropagos
+  template:
+    metadata:
+      labels:
+        app: micropagos
+    spec:
+      containers:
+        - name: micropagos
+          image: localhost:5000/micropagos:latest # ✔ registry local
+          ports:
+            - containerPort: 8086
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micropagos-service
+  namespace: arquitectura
+spec:
+  type: NodePort
+  selector:
+    app: micropagos
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8086
+      nodePort: 30086 # ✔ NodePort asignado
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: micropagos-hpa
+  namespace: arquitectura
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: micropagos-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60

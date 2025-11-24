@@ -18,7 +18,7 @@ echo =========================================
 echo Enviando imagen al registry configurado
 echo =========================================
 
-docker push proyecto-arquitectura/frontend:latest
+docker push localhost:5000/frontend:latest
 
 IF %ERRORLEVEL% NEQ 0 (
     echo ❌ ERROR: Fallo en el PUSH del frontend.

@@ -4,55 +4,53 @@ server:
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       routes:
-        # Microservicio de Productos
-        - id: producto-service
-          uri: http://localhost:30083  # NodePort del service
+        # ==========================
+        # MICROPRODUCTOS
+        # ==========================
+        - id: microproductos-service
+          uri: http://microproductos-service:80
           predicates:
             - Path=/api/producto/**
-          # SIN StripPrefix - el path se mantiene completo
-            
-        # Microservicio de Usuario
-        - id: usuario-service
-          uri: http://localhost:30084
-          predicates:
-            - Path=/api/usuario/**
-            
-        # Microservicio de Pagos
-        - id: pago-service
-          uri: http://localhost:30085
+
+        # ==========================
+        # MICROPAGOS
+        # ==========================
+        - id: micropagos-service
+          uri: http://micropagos-service:80
           predicates:
             - Path=/api/pago/**
-            
-        # Microservicio de Métricas
-        - id: metrica-service
-          uri: http://localhost:30086
-          predicates:
-            - Path=/api/metrica/**
-        
-        # Microservicio de Carrito
-        - id: carrito-service
-          uri: http://localhost:30087
-          predicates:
-            - Path=/api/carrito/**
 
-        # Microservicio de Recomendaciones
-        - id: recomendaciones-service
-          uri: http://localhost:30088
+        # ==========================
+        # MICRONOTIFICACIONES
+        # ==========================
+        - id: micronotificaciones-service
+          uri: http://micronotificaciones-service:80
           predicates:
-            - Path=/api/recomendaciones/**
-        
-        # Microservicio de Orden
-        - id: orden-service
-          uri: http://localhost:30089
+            - Path=/api/notificacion/**
+
+        # ==========================
+        # MICROORDENES
+        # ==========================
+        - id: microordenes-service
+          uri: http://microordenes-service:80
           predicates:
             - Path=/api/orden/**
 
+        # ==========================
+        # PRESENTACIÓN
+        # ==========================
+        - id: presentacion-service
+          uri: http://presentacion-service:80
+          predicates:
+            - Path=/app/**
+
       globalcors:
         cors-configurations:
-          '[/**]':
+          "[/**]":
             allowedOrigins: "*"
             allowedMethods:
               - GET

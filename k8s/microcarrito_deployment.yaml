@@ -1,59 +1,81 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microcarrito-deployment
+  name: microordenes-deployment
   namespace: arquitectura
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: microcarrito
+      app: microordenes
   template:
     metadata:
       labels:
-        app: microcarrito
+        app: microordenes
     spec:
       containers:
-        - name: microcarrito
-          image: localhost:5000/microcarrito:latest # ✔ registry local
+        - name: microordenes
+          image: localhost:5000/microordenes:latest
           ports:
-            - containerPort: 8087
+            - containerPort: 8089
+          env:
+            - name: SUPABASE_URL
+              value: "jdbc:postgresql://supabase-host:5432/ordenes_db"
+            - name: SUPABASE_USERNAME
+              value: "postgres"
+            - name: SUPABASE_PASSWORD
+              value: "password"
+            - name: MICRONVENTARIO_URL
+              value: "http://microinventario-service:8081/api/inventario"
+            - name: MICROPAGOS_URL
+              value: "http://micropagos-service:8082/api/pagos"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8089
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8089
+            initialDelaySeconds: 5
+            periodSeconds: 5
           resources:
             limits:
-              cpu: "300m"      # Reducir de 500m
-              memory: "256Mi"  # Reducir de 512Mi
+              cpu: "300m"
+              memory: "256Mi"
             requests:
-              cpu: "50m"       # Reducir de 100-250m
-              memory: "64Mi" 
+              cpu: "50m"
+              memory: "64Mi"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: microcarrito-service
+  name: microordenes-service
   namespace: arquitectura
 spec:
   type: NodePort
   selector:
-    app: microcarrito
+    app: microordenes
   ports:
     - name: http
       port: 80
-      targetPort: 8087
-      nodePort: 30087
-
+      targetPort: 8089
+      nodePort: 30089 # ← NodePort fijo como hicimos con microcarrito
 
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: microcarrito-hpa
+  name: microordenes-hpa
   namespace: arquitectura
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: microcarrito-deployment
+    name: microordenes-deployment
   minReplicas: 1
   maxReplicas: 5
   metrics:
@@ -63,4 +85,3 @@ spec:
         target:
           type: Utilization
           averageUtilization: 60
-
