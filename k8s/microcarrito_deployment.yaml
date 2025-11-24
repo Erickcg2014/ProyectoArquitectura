@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microcarrito-deployment
+  namespace: arquitectura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microcarrito
+  template:
+    metadata:
+      labels:
+        app: microcarrito
+    spec:
+      containers:
+        - name: microcarrito
+          image: localhost:5000/microcarrito:latest # ✔ registry local
+          ports:
+            - containerPort: 8087
+          resources:
+            limits:
+              cpu: "300m"      # Reducir de 500m
+              memory: "256Mi"  # Reducir de 512Mi
+            requests:
+              cpu: "50m"       # Reducir de 100-250m
+              memory: "64Mi" 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microcarrito-service
+  namespace: arquitectura
+spec:
+  type: NodePort
+  selector:
+    app: microcarrito
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8087
+      nodePort: 30087
+
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: microcarrito-hpa
+  namespace: arquitectura
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: microcarrito-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+

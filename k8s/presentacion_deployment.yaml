@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presentacion-deployment
+  namespace: arquitectura
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: presentacion
+  template:
+    metadata:
+      labels:
+        app: presentacion
+    spec:
+      containers:
+        - name: presentacion
+          image: localhost:5000/frontend:latest # ← misma imagen del docker-compose
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: presentacion-service
+  namespace: arquitectura
+spec:
+  type: ClusterIP
+  selector:
+    app: presentacion
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

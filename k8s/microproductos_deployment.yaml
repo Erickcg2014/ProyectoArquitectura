@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microproductos-deployment
+  namespace: arquitectura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microproductos
+  template:
+    metadata:
+      labels:
+        app: microproductos
+    spec:
+      containers:
+        - name: microproductos
+          image: localhost:5000/microproductos:latest # ← ✔ REGISTRY LOCAL
+          ports:
+            - containerPort: 8083
+          resources:
+            limits:
+              cpu: "300m"      # Reducir de 500m
+              memory: "256Mi"  # Reducir de 512Mi
+            requests:
+              cpu: "50m"       # Reducir de 100-250m
+              memory: "64Mi" 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microproductos-service
+  namespace: arquitectura
+spec:
+  type: NodePort
+  selector:
+    app: microproductos
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8083
+      nodePort: 30083
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: microproductos-hpa
+  namespace: arquitectura
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: microproductos-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
