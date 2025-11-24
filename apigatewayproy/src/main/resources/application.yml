@@ -27,9 +27,10 @@ management:
 
 logging:
   level:
-    org.springframework.cloud.gateway: INFO
-    org.springframework.security: INFO
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
     apigateway.apigatewayproy: DEBUG
+    org.springframework.web.cors: DEBUG
   cloud:
     gateway:
       routes:
