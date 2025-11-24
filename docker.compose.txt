@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  # --- FRONTEND EXISTENTE ---
+  frontend:
+    build:
+      context: ./Frontend/angular-frontend
+      dockerfile: Dockerfile
+    image: proyecto-arquitectura/frontend:latest
+    container_name: frontend-multicanal
+    ports:
+      - "4200:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - multicanal-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
+
+  # --- NUEVO SERVICIO: KEYCLOAK ---
+  keycloak:
+    build:
+      context: ./proyecto-keycloak
+      dockerfile: Dockerfile
+    image: proyecto-arquitectura/keycloak:latest
+    container_name: keycloak-multicanal
+    env_file:
+      - ./.env
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_DB_SCHEMA: ${KC_DB_SCHEMA}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - multicanal-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/realms/master/.well-known/openid-configuration",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+  # --- BACKEND SPRING BOOT ---
+  backend:
+    build:
+      context: ./logica/spring
+      dockerfile: Dockerfile
+    image: proyecto-arquitectura/backend:latest
+    container_name: backend-multicanal
+    depends_on:
+      - keycloak
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    networks:
+      - multicanal-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+networks:
+  multicanal-network:
+    driver: bridge
+    name: multicanal-network

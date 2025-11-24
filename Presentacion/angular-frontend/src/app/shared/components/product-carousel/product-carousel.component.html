@@ -1,0 +1,39 @@
+<!-- src/app/shared/product-carousel/product-carousel.component.html -->
+
+<section class="mb-12">
+  <!-- Encabezado de sección -->
+  <div class="mb-6">
+    <h2
+      class="text-gray-900 text-2xl md:text-3xl font-semibold leading-tight mb-1"
+    >
+      {{ title }}
+    </h2>
+    <p *ngIf="subtitle" class="text-gray-500 text-sm">{{ subtitle }}</p>
+  </div>
+
+  <!-- Carrusel de productos -->
+  <div class="relative group/carousel">
+    <!-- Botón anterior -->
+    <button
+      class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-xl rounded-full p-3 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 -translate-x-2 hover:scale-110"
+    >
+      <span class="material-symbols-outlined text-gray-700">chevron_left</span>
+    </button>
+
+    <!-- Contenedor de productos -->
+    <div class="flex overflow-x-auto hide-scrollbar scroll-smooth gap-4 pb-4">
+      <app-product-card
+        *ngFor="let product of products; let i = index"
+        [product]="product"
+        [style.animation-delay]="i * 100 + 'ms'"
+      ></app-product-card>
+    </div>
+
+    <!-- Botón siguiente -->
+    <button
+      class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-xl rounded-full p-3 opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 translate-x-2 hover:scale-110"
+    >
+      <span class="material-symbols-outlined text-gray-700">chevron_right</span>
+    </button>
+  </div>
+</section>

@@ -1,0 +1,116 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/multichannel-realm
+          jwk-set-uri: http://localhost:8180/realms/multichannel-realm/protocol/openid-connect/certs
+
+# Observabilidad
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    org.springframework.security: INFO
+    apigateway.apigatewayproy: DEBUG
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Microservicio de Inventario
+            - id: producto-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/producto/**
+              filters:
+                - StripPrefix=1
+                
+            # Microservicio de Cliente
+            - id: usuario-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/usuario/**
+              filters:
+                - StripPrefix=1
+                
+            # Microservicio de Pagos
+            - id: pago-service
+              uri: http://localhost:8085
+              predicates:
+                - Path=/api/pago/**
+              filters:
+                - StripPrefix=1
+                
+            # Microservicio de Proveedor
+            - id: metrica-service
+              uri: http://localhost:8086
+              predicates:
+                - Path=/api/metrica/**
+              filters:
+                - StripPrefix=1
+            
+            # Microservicio de Administrador
+            - id: carrito-service
+              uri: http://localhost:8087
+              predicates:
+                - Path=/api/carrito/**
+              filters:
+                - StripPrefix=1
+
+            # Microservicio de Recomendaciones
+            - id: recomendaciones-service
+              uri: http://localhost:8088
+              predicates:
+                - Path=/api/recomendaciones/**
+              filters:
+                - StripPrefix=1
+            
+            # Microservicio de Recomendaciones
+            - id: orden-service
+              uri: http://localhost:8089
+              predicates:
+                - Path=/api/orden/**
+              filters:
+                - StripPrefix=1
+
+          # Configuración CORS (opcional pero recomendado)
+        globalcors:
+          cors-configurations:
+            '[/**]':
+              allowedOrigins: "http://localhost:4200"
+              allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+              allowedHeaders: "*"
+              allowCredentials: true
+
+        # Rate Limiting básico
+        default-filters:
+          - name: RequestRateLimiter
+            args:
+              redis-rate-limiter.replenishRate: 10
+              redis-rate-limiter.burstCapacity: 20
+              redis-rate-limiter.requestedTokens: 1
+
+

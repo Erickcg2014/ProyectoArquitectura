@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: arquitectura
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /microproductos(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: microproductos-service
+                port:
+                  number: 80
+          - path: /microcarrito(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: microcarrito-service
+                port:
+                  number: 80
+          - path: /micropagos(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: micropagos-service
+                port:
+                  number: 80
