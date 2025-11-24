@@ -34,46 +34,53 @@ logging:
   cloud:
     gateway:
       routes:
+        # ==========================
+        # MICROPRODUCTOS
+        # ==========================
+        - id: microproductos-service
+          uri: http://microproductos-service:80
         # Microservicio de Productos
         - id: producto-service
           uri: http://microproducto:80
           predicates:
             - Path=/api/producto/**
 
-        # Microservicio de Usuario
-        - id: usuario-service
-          uri: http://microusuarios:8084
-          predicates:
-            - Path=/api/usuario/**
-
-        # Microservicio de Pagos (Java)
-        - id: pago-service
-          uri: http://micropagosjava:8085
+        # ==========================
+        # MICROPAGOS
+        # ==========================
+        - id: micropagos-service
+          uri: http://micropagos-service:80
           predicates:
             - Path=/api/pago/**
 
-        # Microservicio de Notificaciones
-        - id: notificaciones-service
-          uri: http://micronotificaciones:8082
+        # ==========================
+        # MICRONOTIFICACIONES
+        # ==========================
+        - id: micronotificaciones-service
+          uri: http://micronotificaciones-service:80
           predicates:
-            - Path=/api/notificaciones/**
+            - Path=/api/notificacion/**
 
-        # Microservicio de Recomendaciones
-        - id: recomendaciones-service
-          uri: http://microrecomendaciones:8088
-          predicates:
-            - Path=/api/recomendaciones/**
-
-        # Microservicio de Orden
-        - id: orden-service
-          uri: http://microordenes:8083
+        # ==========================
+        # MICROORDENES
+        # ==========================
+        - id: microordenes-service
+          uri: http://microordenes-service:80
           predicates:
             - Path=/api/orden/**
 
+        # ==========================
+        # PRESENTACIÓN
+        # ==========================
+        - id: presentacion-service
+          uri: http://presentacion-service:80
+          predicates:
+            - Path=/app/**
+
       globalcors:
         cors-configurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:4200"
+          "[/**]":
+            allowedOrigins: "*"
             allowedMethods:
               - GET
               - POST

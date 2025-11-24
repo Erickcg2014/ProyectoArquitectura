@@ -18,12 +18,19 @@ public class ProductoController : ControllerBase
         _productoRepository = productoRepository;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Producto>>> GetProductos()
-    {
-        var productos = await _productoRepository.GetAllProductos();
-        return Ok(productos);
-    }
+        // GET: api/producto
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var productos = await _service.ObtenerTodosLosProductos();
+            return Ok(productos);
+        }
+
+        [HttpGet("categorias")]
+        public async Task<List<Categoria>> ObtenerCategorias()
+        {
+            return await _service.GetAllCategorias();
+        }
 
     [HttpGet("categoriaStr/{categoria}")]
     public async Task<ActionResult<IEnumerable<Producto>>> GetProductosByCategoria(string categoria)

@@ -25,7 +25,7 @@ public class ProductoDBContext: DbContext
                 entity.Property(e => e.CantidadDisponible).HasColumnName("cantidaddisponible");
                 entity.Property(e => e.Precio).HasColumnName("precio");
                 entity.Property(e => e.Categoria).HasColumnName("idcategoria");
-                entity.Property(e => e.ImagenUrl).HasColumnName("imagenurl");
+                entity.Property(e => e.ImagenUrl).HasColumnName("imageurl");
                 entity.Property(e => e.IdProveedor).HasColumnName("idproveedor");
                 entity.Property(e => e.CantidadReservada).HasColumnName("cantidadreservada");
                              

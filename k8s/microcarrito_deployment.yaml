@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microordenes-deployment
+  namespace: arquitectura
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: microordenes
+  template:
+    metadata:
+      labels:
+        app: microordenes
+    spec:
+      containers:
+        - name: microordenes
+          image: localhost:5000/microordenes:latest
+          ports:
+            - containerPort: 8089
+          env:
+            - name: SUPABASE_URL
+              value: "jdbc:postgresql://supabase-host:5432/ordenes_db"
+            - name: SUPABASE_USERNAME
+              value: "postgres"
+            - name: SUPABASE_PASSWORD
+              value: "password"
+            - name: MICRONVENTARIO_URL
+              value: "http://microinventario-service:8081/api/inventario"
+            - name: MICROPAGOS_URL
+              value: "http://micropagos-service:8082/api/pagos"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8089
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8089
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microordenes-service
+  namespace: arquitectura
+spec:
+  type: NodePort
+  selector:
+    app: microordenes
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8089
+      nodePort: 30089 # ← NodePort fijo como hicimos con microcarrito
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: microordenes-hpa
+  namespace: arquitectura
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: microordenes-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
