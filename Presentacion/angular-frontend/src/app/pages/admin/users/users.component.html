@@ -1,0 +1,98 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
+            <p class="mt-1 text-sm text-gray-500">Administrar usuarios, roles y permisos</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <select [(ngModel)]="selectedRole" (change)="loadUsers()"
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+              <option value="all">Todos los roles</option>
+              <option value="admin">Administradores</option>
+              <option value="provider">Proveedores</option>
+              <option value="user">Usuarios</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1919e6]"></div>
+    </div>
+
+    <!-- Users List -->
+    <div *ngIf="!loading" class="bg-white rounded-lg shadow-sm border">
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Usuarios ({{ getFilteredUsers().length }})</h2>
+      </div>
+
+      <div class="divide-y divide-gray-200">
+        <div *ngFor="let user of getFilteredUsers()" class="p-6 hover:bg-gray-50 transition-colors">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                <span class="text-lg font-medium text-gray-600">{{ user.username.charAt(0).toUpperCase() }}</span>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-900">{{ user.username }}</h3>
+                <p class="text-sm text-gray-600">{{ user.email }}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span [class]="getRoleColor(user.role)"
+                        class="px-2 py-1 rounded-full text-xs font-medium">
+                    {{ getRoleText(user.role) }}
+                  </span>
+                  <span [class]="getStatusColor(user.status)"
+                        class="px-2 py-1 rounded-full text-xs font-medium">
+                    {{ getStatusText(user.status) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="text-right text-sm text-gray-600">
+                <p *ngIf="user.totalOrders">Órdenes: {{ user.totalOrders }}</p>
+                <p *ngIf="user.totalSpent">{{ formatCurrency(user.totalSpent) }}</p>
+                <p *ngIf="user.lastLogin">Último login: {{ user.lastLogin | date:'dd/MM/yyyy' }}</p>
+              </div>
+
+              <div class="flex gap-2">
+                <select (change)="updateUserStatus(user.id, $any($event.target).value)"
+                        [value]="user.status"
+                        class="px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+                  <option value="active">Activar</option>
+                  <option value="inactive">Desactivar</option>
+                  <option value="suspended">Suspender</option>
+                </select>
+
+                <button (click)="viewUserDetails(user.id)"
+                        class="px-3 py-1 bg-[#1919e6] text-white text-xs rounded hover:bg-[#1919e6]/90 transition-colors">
+                  Ver Detalles
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="getFilteredUsers().length === 0" class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No hay usuarios</h3>
+        <p class="text-gray-500">No se encontraron usuarios con el filtro seleccionado</p>
+      </div>
+    </div>
+  </div>
+</div>

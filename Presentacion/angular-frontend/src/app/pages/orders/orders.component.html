@@ -1,0 +1,61 @@
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Mis Órdenes</h1>
+
+    <!-- Filter -->
+    <div class="mb-6">
+      <select [(ngModel)]="selectedStatus" (change)="filterOrders()"
+              class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+        <option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="flex justify-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1919e6]"></div>
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!loading" class="space-y-6">
+    <div *ngIf="filterOrders().length === 0" class="text-center py-12">
+      <div class="text-gray-400 mb-4">
+        <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">No tienes órdenes</h3>
+      <p class="text-gray-500">Cuando realices compras, aparecerán aquí</p>
+    </div>
+
+    <div *ngFor="let order of filterOrders()" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Orden #{{ order.id }}</h3>
+          <p class="text-sm text-gray-500">{{ formatDate(order.createdAt || '') }}</p>
+        </div>
+        <div class="text-right">
+          <span [class]="getStatusColor(order.status)"
+                class="px-3 py-1 rounded-full text-sm font-medium">
+            {{ order.status }}
+          </span>
+          <p class="text-lg font-bold text-gray-900 mt-1">${{ order.total | number:'1.2-2' }}</p>
+        </div>
+      </div>
+
+      <div class="border-t pt-4">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-600">
+            <span class="font-medium">{{ order.items.length }}</span> producto(s)
+          </div>
+          <button (click)="viewOrderDetail(order.id!)"
+                  class="px-4 py-2 bg-[#1919e6] text-white rounded-md hover:bg-[#1919e6]/90 text-sm font-medium">
+            Ver Detalles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -51,6 +51,21 @@
       </div>
     </div>
 
+    <!-- Banners Carousel -->
+    <div class="mb-8" *ngIf="banners.length > 0">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div *ngFor="let banner of banners" class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-xl transition-shadow"
+             (click)="router.navigate([banner.link])">
+          <img [src]="banner.image" [alt]="banner.title" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <h3 class="font-bold text-lg">{{ banner.title }}</h3>
+            <p class="text-sm opacity-90">{{ banner.subtitle }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Loading state -->
     <div *ngIf="loading" class="flex justify-center items-center py-20">
       <div class="relative">
@@ -79,6 +94,24 @@
       subtitle="Recién llegados a nuestra tienda"
       [products]="newArrivals"
       class="animate-fade-in-up animation-delay-400"
+    ></app-product-carousel>
+
+    <!-- Sección: Recomendaciones Personalizadas -->
+    <app-product-carousel
+      *ngIf="!loading && recommendedProducts.length > 0"
+      title="Recomendado para Ti"
+      subtitle="Basado en tus preferencias de compra"
+      [products]="recommendedProducts"
+      class="animate-fade-in-up animation-delay-600"
+    ></app-product-carousel>
+
+    <!-- Sección: Trending Products -->
+    <app-product-carousel
+      *ngIf="!loading && trendingProducts.length > 0"
+      title="Productos en Tendencia"
+      subtitle="Lo que más le gusta a nuestros clientes"
+      [products]="trendingProducts"
+      class="animate-fade-in-up animation-delay-800"
     ></app-product-carousel>
 
     <!-- Empty state -->

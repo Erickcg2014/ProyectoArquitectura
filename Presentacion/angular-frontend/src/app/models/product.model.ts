@@ -25,6 +25,8 @@ export interface Product {
     logo?: string;
     rating?: number;
   };
+  providerId?: number; // Para gestión de proveedores
+  providerName?: string;
   inStock: boolean;
   featured?: boolean; // Para productos destacados
   createdAt?: Date;
@@ -36,4 +38,14 @@ export interface ProductCategory {
   name: string;
   slug: string;
   icon?: string;
+}
+
+export interface ProductCreate {
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  category: string;
+  stock: number;
+  providerId: number;
 }

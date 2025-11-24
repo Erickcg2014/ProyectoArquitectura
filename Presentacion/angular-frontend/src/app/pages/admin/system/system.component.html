@@ -1,0 +1,148 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-6">
+        <h1 class="text-3xl font-bold text-gray-900">Configuración del Sistema</h1>
+        <p class="mt-1 text-sm text-gray-500">Gestionar configuraciones globales y servicios</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1919e6]"></div>
+    </div>
+
+    <!-- System Config Form -->
+    <form *ngIf="!loading" [formGroup]="configForm" (ngSubmit)="onSubmit()" class="space-y-8">
+      <!-- General Settings -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Configuración General</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="maintenanceMode" id="maintenanceMode"
+                   class="h-4 w-4 text-[#1919e6] focus:ring-[#1919e6] border-gray-300 rounded">
+            <label for="maintenanceMode" class="ml-2 block text-sm text-gray-900">
+              Modo de mantenimiento
+            </label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" formControlName="registrationEnabled" id="registrationEnabled"
+                   class="h-4 w-4 text-[#1919e6] focus:ring-[#1919e6] border-gray-300 rounded">
+            <label for="registrationEnabled" class="ml-2 block text-sm text-gray-900">
+              Registro de usuarios habilitado
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- File Upload Settings -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Configuración de Archivos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tamaño máximo de archivo</label>
+            <input type="number" formControlName="maxFileSize" min="1024"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+            <p class="mt-1 text-sm text-gray-500">{{ formatFileSize(configForm.get('maxFileSize')?.value || 0) }}</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de archivo permitidos</label>
+            <div class="space-y-2">
+              <div *ngFor="let type of configForm.get('allowedFileTypes')?.value; let i = index" class="flex gap-2">
+                <input type="text" [value]="type" (input)="updateFileType(i, $any($event.target).value)"
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+                <button type="button" (click)="removeFileType(i)"
+                        class="px-3 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+              <button type="button" (click)="addFileType()"
+                      class="px-3 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200 text-sm">
+                + Agregar tipo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMTP Configuration -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-gray-900">Configuración SMTP</h2>
+          <button type="button" (click)="testSmtpConnection()"
+                  class="px-4 py-2 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 text-sm">
+            Probar conexión
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2 flex items-center">
+            <input type="checkbox" formControlName="smtpConfig.enabled" id="smtpEnabled"
+                   class="h-4 w-4 text-[#1919e6] focus:ring-[#1919e6] border-gray-300 rounded">
+            <label for="smtpEnabled" class="ml-2 block text-sm text-gray-900">
+              SMTP habilitado
+            </label>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Host</label>
+            <input type="text" formControlName="smtpConfig.host"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Puerto</label>
+            <input type="number" formControlName="smtpConfig.port" min="1" max="65535"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+            <input type="text" formControlName="smtpConfig.username"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Configuration -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-gray-900">Configuración de Pagos</h2>
+          <button type="button" (click)="testPaymentGateway()"
+                  class="px-4 py-2 bg-green-100 text-green-600 rounded-md hover:bg-green-200 text-sm">
+            Probar gateway
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2 flex items-center">
+            <input type="checkbox" formControlName="paymentConfig.enabled" id="paymentEnabled"
+                   class="h-4 w-4 text-[#1919e6] focus:ring-[#1919e6] border-gray-300 rounded">
+            <label for="paymentEnabled" class="ml-2 block text-sm text-gray-900">
+              Pasarela de pagos habilitada
+            </label>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">URL de la pasarela</label>
+            <input type="url" formControlName="paymentConfig.gatewayUrl"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+            <input type="password" formControlName="paymentConfig.apiKey"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="flex justify-end">
+        <button type="submit" [disabled]="!configForm.valid || saving"
+                class="px-6 py-3 bg-[#1919e6] text-white rounded-md hover:bg-[#1919e6]/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          <span *ngIf="saving" class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+          Guardar Configuración
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

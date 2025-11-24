@@ -11,21 +11,27 @@ export class KeycloakService {
   constructor(private keycloak: KeycloakAngularService) {}
 
   async init(): Promise<boolean> {
-    const config = {
-      config: {
-        url: environment.keycloak.url,
-        realm: environment.keycloak.realm,
-        clientId: environment.keycloak.clientId
-      },
-      initOptions: {
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-        checkLoginIframe: false,
-        pkceMethod: 'S256'
-      } as KeycloakInitOptions
-    };
+    try {
+      const config = {
+        config: {
+          url: environment.keycloak.url,
+          realm: environment.keycloak.realm,
+          clientId: environment.keycloak.clientId
+        },
+        initOptions: {
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+          checkLoginIframe: false,
+          checkLoginIframeInterval: 0,
+          pkceMethod: 'S256'
+        } as KeycloakInitOptions
+      };
 
-    return this.keycloak.init(config);
+      return await this.keycloak.init(config);
+    } catch (error) {
+      console.warn('Keycloak initialization failed, continuing without authentication:', error);
+      return false;
+    }
   }
 
   isLoggedIn(): boolean {

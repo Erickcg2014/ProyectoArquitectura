@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-6">
+        <h1 class="text-3xl font-bold text-gray-900">Reportes Administrativos</h1>
+        <p class="mt-1 text-sm text-gray-500">Generar y descargar reportes detallados del sistema</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Report Generator -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Generar Reporte</h2>
+
+        <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Reporte</label>
+            <select formControlName="type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+              <option value="">Seleccionar tipo</option>
+              <option *ngFor="let type of reportTypes" [value]="type.value">{{ type.label }}</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+              <input type="date" formControlName="startDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+              <input type="date" formControlName="endDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="!reportForm.valid || generating"
+                  class="w-full px-4 py-2 bg-[#1919e6] text-white rounded-md hover:bg-[#1919e6]/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            <span *ngIf="generating" class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+            Generar Reporte
+          </button>
+        </form>
+      </div>
+
+      <!-- Report Preview -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Vista Previa del Reporte</h2>
+
+        <div *ngIf="!currentReport" class="text-center py-8 text-gray-500">
+          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <p>Genera un reporte para ver la vista previa</p>
+        </div>
+
+        <div *ngIf="currentReport" class="space-y-4">
+          <div class="border-b pb-4">
+            <h3 class="font-medium text-gray-900">{{ currentReport.name }}</h3>
+            <p class="text-sm text-gray-600">Tipo: {{ getReportTypeLabel(currentReport.type) }}</p>
+            <p class="text-sm text-gray-600">Generado: {{ currentReport.generatedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p class="text-sm text-gray-600">Por: {{ currentReport.generatedBy }}</p>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-md">
+            <h4 class="font-medium text-gray-900 mb-2">Rango de Fechas</h4>
+            <p class="text-sm text-gray-600">
+              Desde: {{ currentReport.dateRange.start | date:'dd/MM/yyyy' }}<br>
+              Hasta: {{ currentReport.dateRange.end | date:'dd:'MM/yyyy' }}
+            </p>
+          </div>
+
+          <div class="flex gap-2">
+            <button (click)="downloadReport()"
+                    class="flex-1 px-4 py-2 bg-[#1919e6] text-white rounded-md hover:bg-[#1919e6]/90 flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Descargar JSON
+            </button>
+            <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+              Exportar CSV
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="mt-8 bg-white rounded-lg shadow-sm border">
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Reportes Recientes</h2>
+      </div>
+
+      <div class="divide-y divide-gray-200">
+        <!-- Mock recent reports -->
+        <div class="p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-medium text-gray-900">Reporte de Órdenes - Enero 2024</h3>
+              <p class="text-sm text-gray-600">Generado el 15/01/2024 por Admin</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="px-3 py-1 text-[#1919e6] border border-[#1919e6] rounded text-sm hover:bg-[#1919e6] hover:text-white">
+                Descargar
+              </button>
+              <button class="px-3 py-1 text-gray-600 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                Ver
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-medium text-gray-900">Reporte de Usuarios - Diciembre 2023</h3>
+              <p class="text-sm text-gray-600">Generado el 31/12/2023 por Admin</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="px-3 py-1 text-[#1919e6] border border-[#1919e6] rounded text-sm hover:bg-[#1919e6] hover:text-white">
+                Descargar
+              </button>
+              <button class="px-3 py-1 text-gray-600 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                Ver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

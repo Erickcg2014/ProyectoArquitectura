@@ -135,6 +135,9 @@ export class NavbarComponent {
 
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
-    console.log('Searching for:', input.value);
+    const query = input.value.trim();
+    if (query) {
+      this.router.navigate(['/search'], { queryParams: { q: query } });
+    }
   }
 }

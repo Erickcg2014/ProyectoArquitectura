@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Mis Órdenes</h1>
+            <p class="mt-1 text-sm text-gray-500">Gestiona los pedidos de tus productos</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <select [(ngModel)]="selectedStatus" (change)="loadOrders()"
+                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+              <option value="all">Todas las órdenes</option>
+              <option value="pending">Pendientes</option>
+              <option value="confirmed">Confirmadas</option>
+              <option value="shipped">Enviadas</option>
+              <option value="delivered">Entregadas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1919e6]"></div>
+    </div>
+
+    <!-- Orders List -->
+    <div *ngIf="!loading" class="bg-white rounded-lg shadow-sm border">
+      <div class="p-6 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Órdenes ({{ getFilteredOrders().length }})</h2>
+      </div>
+
+      <div class="divide-y divide-gray-200">
+        <div *ngFor="let order of getFilteredOrders()" class="p-6 hover:bg-gray-50 transition-colors">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <div>
+                <h3 class="text-sm font-medium text-gray-900">Orden #{{ order.orderId }}</h3>
+                <p class="text-sm text-gray-600">{{ order.customerName }}</p>
+                <p class="text-sm text-gray-500">{{ order.date | date:'dd/MM/yyyy' }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="text-right">
+                <p class="text-sm font-medium text-gray-900">{{ formatCurrency(order.total) }}</p>
+                <p class="text-sm text-gray-600">{{ order.itemCount }} producto(s)</p>
+              </div>
+
+              <span [class]="getStatusColor(order.status)"
+                    class="px-3 py-1 rounded-full text-xs font-medium">
+                {{ getStatusText(order.status) }}
+              </span>
+
+              <div class="flex gap-2">
+                <select (change)="updateOrderStatus(order.id, $any($event.target).value)"
+                        [value]="order.status"
+                        class="px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#1919e6]">
+                  <option value="pending">Pendiente</option>
+                  <option value="confirmed">Confirmar</option>
+                  <option value="shipped">Enviar</option>
+                  <option value="delivered">Entregar</option>
+                  <option value="cancelled">Cancelar</option>
+                </select>
+
+                <button (click)="viewOrderDetail(order.id)"
+                        class="px-3 py-1 bg-[#1919e6] text-white text-xs rounded hover:bg-[#1919e6]/90 transition-colors">
+                  Ver Detalles
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="getFilteredOrders().length === 0" class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No hay órdenes</h3>
+        <p class="text-gray-500">Cuando tengas pedidos, aparecerán aquí</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="container mx-auto px-4 py-16 max-w-2xl">
+  <div class="text-center">
+    <!-- Loading -->
+    <div *ngIf="loading" class="mb-8">
+      <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-[#1919e6] mx-auto mb-4"></div>
+      <h2 class="text-xl font-semibold text-gray-700">Procesando pago...</h2>
+      <p class="text-gray-500 mt-2">Por favor espera mientras confirmamos tu transacción</p>
+    </div>
+
+    <!-- Success -->
+    <div *ngIf="!loading && status === 'success'" class="mb-8">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">¡Pago Exitoso!</h1>
+      <p class="text-gray-600 mb-6">Tu orden ha sido procesada correctamente</p>
+
+      <div *ngIf="order" class="bg-gray-50 p-6 rounded-lg mb-6 text-left">
+        <h3 class="font-semibold mb-4">Resumen de la Orden</h3>
+        <div class="space-y-2 text-sm">
+          <p><span class="font-medium">ID de Orden:</span> #{{ order.id }}</p>
+          <p><span class="font-medium">Total:</span> ${{ order.total | number:'1.2-2' }}</p>
+          <p><span class="font-medium">Estado:</span> {{ order.status }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Failed -->
+    <div *ngIf="!loading && status === 'failed'" class="mb-8">
+      <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Pago Rechazado</h1>
+      <p class="text-gray-600 mb-6">Hubo un problema procesando tu pago</p>
+
+      <div class="bg-red-50 p-4 rounded-lg mb-6 text-left">
+        <p class="text-red-800 text-sm">
+          Si el problema persiste, contacta con soporte técnico con el ID de pago: {{ paymentId }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div *ngIf="!loading && status === 'pending'" class="mb-8">
+      <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Pago en Proceso</h1>
+      <p class="text-gray-600 mb-6">Tu pago está siendo procesado. Te notificaremos cuando se complete.</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="space-y-3">
+      <button (click)="goToOrders()"
+              class="w-full px-6 py-3 bg-[#1919e6] text-white rounded-md hover:bg-[#1919e6]/90 font-medium">
+        Ver Mis Órdenes
+      </button>
+      <button (click)="goToHome()"
+              class="w-full px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium">
+        Continuar Comprando
+      </button>
+    </div>
+  </div>
+</div>
