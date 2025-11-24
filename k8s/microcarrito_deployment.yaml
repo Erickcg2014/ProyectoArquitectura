@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microcarrito-deployment
+  namespace: arquitectura
+spec:
+  replicas: 3 # ✔ 3 PODS
+  selector:
+    matchLabels:
+      app: microcarrito # ✔ selector correcto
+  template:
+    metadata:
+      labels:
+        app: microcarrito # ✔ labels correctos
+    spec:
+      containers:
+        - name: microcarrito
+          image: localhost:5000/microcarrito:latest # ✔ registry local
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8087
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microcarrito-service
+  namespace: arquitectura
+spec:
+  type: ClusterIP
+  selector:
+    app: microcarrito
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8087 # ✔ apunta al port del container
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: microcarrito-hpa
+  namespace: arquitectura
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: microcarrito-deployment
+  minReplicas: 3 # ✔ mínimo 3 pods
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60

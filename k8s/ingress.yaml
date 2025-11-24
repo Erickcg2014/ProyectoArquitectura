@@ -1,0 +1,64 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: arquitectura
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: localhost
+      http:
+        paths:
+          # ---------------------------
+          # FRONTEND (ANGULAR)
+          # ---------------------------
+          - path: /()(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: presentacion-service
+                port:
+                  number: 80
+
+          # ---------------------------
+          # API GATEWAY
+          # ---------------------------
+          - path: /api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-service
+                port:
+                  number: 8080
+
+          # ---------------------------
+          # KEYCLOAK
+          # ---------------------------
+          - path: /auth(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  number: 8080
+
+          # ---------------------------
+          # MICROSERVICIOS
+          # ---------------------------
+          - path: /microproductos(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: microproductos-service
+                port:
+                  number: 80
+
+          - path: /microcarrito(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: microcarrito-service
+                port:
+                  number: 80
