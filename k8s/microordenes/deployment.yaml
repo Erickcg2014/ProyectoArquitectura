@@ -21,11 +21,11 @@ spec:
         - containerPort: 8089
         env:
         - name: SUPABASE_URL
-          value: "jdbc:postgresql://supabase-host:5432/ordenes_db"
+          value: "jdbc:postgresql://35.184.26.172:5432/micro_ordenes"
         - name: SUPABASE_USERNAME
           value: "postgres"
         - name: SUPABASE_PASSWORD
-          value: "password"
+          value: "JaveMarket/01"
         - name: MICRONVENTARIO_URL
           value: "http://microinventario-service:8081/api/inventario"
         - name: MICROPAGOS_URL

@@ -18,6 +18,13 @@ spec:
           image: docker.io/davidjcuadros/micropagos:latest
           ports:
             - containerPort: 8086
+          env:
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://35.184.26.172:5432/micro_pagos"
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "postgres"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "JaveMarket/01"
           resources:
             limits:
               cpu: "300m"
