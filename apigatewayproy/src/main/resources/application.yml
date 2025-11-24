@@ -32,85 +32,67 @@ logging:
     apigateway.apigatewayproy: DEBUG
   cloud:
     gateway:
-      server:
-        webflux:
-          routes:
-            # Microservicio de Inventario
-            - id: producto-service
-              uri: http://localhost:8083
-              predicates:
-                - Path=/api/producto/**
-              filters:
-                - StripPrefix=1
-                
-            # Microservicio de Cliente
-            - id: usuario-service
-              uri: http://localhost:8084
-              predicates:
-                - Path=/api/usuario/**
-              filters:
-                - StripPrefix=1
-                
-            # Microservicio de Pagos
-            - id: pago-service
-              uri: http://localhost:8085
-              predicates:
-                - Path=/api/pago/**
-              filters:
-                - StripPrefix=1
-                
-            # Microservicio de Proveedor
-            - id: metrica-service
-              uri: http://localhost:8086
-              predicates:
-                - Path=/api/metrica/**
-              filters:
-                - StripPrefix=1
+      routes:
+        # Microservicio de Productos
+        - id: producto-service
+          uri: http://localhost:30083  # NodePort del service
+          predicates:
+            - Path=/api/producto/**
+          # SIN StripPrefix - el path se mantiene completo
             
-            # Microservicio de Administrador
-            - id: carrito-service
-              uri: http://localhost:8087
-              predicates:
-                - Path=/api/carrito/**
-              filters:
-                - StripPrefix=1
-
-            # Microservicio de Recomendaciones
-            - id: recomendaciones-service
-              uri: http://localhost:8088
-              predicates:
-                - Path=/api/recomendaciones/**
-              filters:
-                - StripPrefix=1
+        # Microservicio de Usuario
+        - id: usuario-service
+          uri: http://localhost:30084
+          predicates:
+            - Path=/api/usuario/**
             
-            # Microservicio de Recomendaciones
-            - id: orden-service
-              uri: http://localhost:8089
-              predicates:
-                - Path=/api/orden/**
-              filters:
-                - StripPrefix=1
+        # Microservicio de Pagos
+        - id: pago-service
+          uri: http://localhost:30085
+          predicates:
+            - Path=/api/pago/**
+            
+        # Microservicio de Métricas
+        - id: metrica-service
+          uri: http://localhost:30086
+          predicates:
+            - Path=/api/metrica/**
+        
+        # Microservicio de Carrito
+        - id: carrito-service
+          uri: http://localhost:30087
+          predicates:
+            - Path=/api/carrito/**
 
-          # Configuración CORS (opcional pero recomendado)
-        globalcors:
-          cors-configurations:
-            '[/**]':
-              allowedOrigins: "http://localhost:4200"
-              allowedMethods:
-                - GET
-                - POST
-                - PUT
-                - DELETE
-                - OPTIONS
-              allowedHeaders: "*"
-              allowCredentials: true
+        # Microservicio de Recomendaciones
+        - id: recomendaciones-service
+          uri: http://localhost:30088
+          predicates:
+            - Path=/api/recomendaciones/**
+        
+        # Microservicio de Orden
+        - id: orden-service
+          uri: http://localhost:30089
+          predicates:
+            - Path=/api/orden/**
 
-        # Rate Limiting básico
-        default-filters:
-          - name: RequestRateLimiter
-            args:
-              redis-rate-limiter.replenishRate: 10
-              redis-rate-limiter.burstCapacity: 20
-              redis-rate-limiter.requestedTokens: 1
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
 
-
+      # Rate Limiting básico
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            redis-rate-limiter.requestedTokens: 1
