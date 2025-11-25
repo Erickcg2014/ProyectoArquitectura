@@ -38,7 +38,7 @@ public class CarritoRepository : ICarritoRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteCarritoItemsByIdCliente(int id_cliente)
+    public async Task DeleteCarritoItemsByIdCliente(Guid id_cliente)
     {
        var carrito =  await _context.Carritos
         .Where(c => c.IdUsuario == id_cliente).FirstAsync();
@@ -48,7 +48,7 @@ public class CarritoRepository : ICarritoRepository
     }
 
 
-    public async Task<List<CarritoItem>> GetAllCarritoItemByIdCliente(int id_cliente)
+    public async Task<List<CarritoItem>> GetAllCarritoItemByIdCliente(Guid id_cliente)
     {
         var carrito = await _context.Carritos.Where(c => c.IdUsuario == id_cliente).FirstAsync();
         return await _context.CarritoItems

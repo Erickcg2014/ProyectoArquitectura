@@ -19,12 +19,12 @@ public class CarritoDBContext : DbContext
 
             modelBuilder.Entity<CarritoItem>(entity =>
             {
-                entity.ToTable("CarritoItem");
+                entity.ToTable("carritoitem");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.IdCarrito).HasColumnName("id_carrito");
-                entity.Property(e => e.IdProducto).HasColumnName("id_producto");
+                entity.Property(e => e.IdCarrito).HasColumnName("idcarrito");
+                entity.Property(e => e.IdProducto).HasColumnName("idproducto");
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
                 entity.Property(e => e.PrecioUnitario).HasColumnName("precio_unitario");
                 entity.Property(e => e.Descripcion).HasColumnName("descripcion");
@@ -38,11 +38,11 @@ public class CarritoDBContext : DbContext
             });
             modelBuilder.Entity<Carrito>(entity =>
             {
-                entity.ToTable("Carrito");
+                entity.ToTable("carrito");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+                entity.Property(e => e.IdUsuario).HasColumnName("idusuario");
                 entity.Property(e => e.PrecioTotal).HasColumnName("total");
                 entity.Property(e => e.FechaActualizacion).HasColumnName("fecha_actualizacion");
             });

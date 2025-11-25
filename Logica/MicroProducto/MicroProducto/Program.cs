@@ -1,4 +1,3 @@
-
 using MicroProducto.Integration;
 using MicroProducto.Persistence;
 using MicroProducto.Repository;
@@ -33,8 +32,10 @@ public class Program
             builder.Services.AddHostedService<Receive>();
             builder.WebHost.UseUrls("http://0.0.0.0:8083");
 
+            // CORS ELIMINADO COMPLETAMENTE
 
             var app = builder.Build();
+            // CORS ELIMINADO COMPLETAMENTE
 
            // if (app.Environment.IsDevelopment())
             //{

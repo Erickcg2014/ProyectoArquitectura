@@ -28,9 +28,18 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.WebHost.UseUrls("http://0.0.0.0:8087");
 
-
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAngular",
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+        });
         var app = builder.Build();
-
+        app.UseCors("AllowAngular");
         // Configure the HTTP request pipeline.
        
             app.UseSwagger();

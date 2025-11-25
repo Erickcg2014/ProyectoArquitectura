@@ -18,9 +18,10 @@ namespace MicroProducto.Controllers
         }
 
         // GET: api/producto
-        [HttpGet]
+        [HttpGet("obtenerproductos")]
         public async Task<IActionResult> GetAll()
         {
+            
             var productos = await _service.ObtenerTodosLosProductos();
             return Ok(productos);
         }
@@ -32,7 +33,7 @@ namespace MicroProducto.Controllers
         }
 
         // GET: api/producto/5
-        [HttpGet("{id}")]
+        [HttpGet("buscarproducto/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
@@ -149,7 +150,7 @@ namespace MicroProducto.Controllers
         }
 
         // DELETE: api/producto/5
-        [HttpDelete("{id}")]
+        [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

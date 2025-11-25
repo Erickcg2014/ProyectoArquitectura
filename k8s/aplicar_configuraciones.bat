@@ -81,6 +81,10 @@ echo  Aplicando micro_notificaciones_deployment.yaml...
 kubectl apply -f micro_notificaciones_deployment.yaml
 
 echo.
+echo  Aplicando microusuarios_deployment.yaml...
+kubectl apply -f microusuarios_deployment.yaml
+
+echo.
 echo ============================================
 echo          CONFIGURACION FINALIZADA
 echo ============================================

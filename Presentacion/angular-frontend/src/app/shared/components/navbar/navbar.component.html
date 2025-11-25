@@ -53,8 +53,8 @@
         <!-- Iconos de acción -->
         <div class="flex items-center gap-4">
           <button
-            routerLink="/cart"
-            class="relative flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group"
+            (click)="goToCarrito()"
+            class="relative flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
           >
             <span
               class="material-symbols-outlined text-gray-700 text-2xl group-hover:scale-110 transition-transform"
@@ -71,8 +71,12 @@
             </span>
           </button>
 
+          <!-- ============================================ -->
+          <!-- Si NO está autenticado: Mostrar "Cuenta" -->
+          <!-- ============================================ -->
           <button
-            routerLink="/login"
+            *ngIf="!isAuthenticated"
+            (click)="goToLogin()"
             class="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity group cursor-pointer"
           >
             <span
@@ -83,6 +87,41 @@
               >Cuenta</span
             >
           </button>
+
+          <!-- ============================================ -->
+          <!-- Si SÍ está autenticado: Mostrar nombre -->
+          <!-- ============================================ -->
+          <div
+            *ngIf="isAuthenticated"
+            class="relative flex items-center gap-2 cursor-pointer group"
+            (click)="goToProfile()"
+          >
+            <!-- Avatar con iniciales -->
+            <div
+              class="flex items-center justify-center size-10 rounded-full bg-gradient-to-br from-[#1919e6] to-[#5353ff] text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform"
+            >
+              {{ userInitials }}
+            </div>
+
+            <!-- Nombre del usuario (solo desktop) -->
+            <div class="hidden lg:flex flex-col">
+              <span class="text-gray-900 text-sm font-semibold leading-tight">
+                {{ currentUser?.nombre?.split(" ")[0] || "Usuario" }}
+              </span>
+              <span class="text-gray-500 text-xs leading-none">Mi cuenta</span>
+            </div>
+
+            <!-- Botón de logout (visible al hover) -->
+            <button
+              (click)="logout(); $event.stopPropagation()"
+              class="hidden group-hover:flex items-center justify-center size-8 rounded-full bg-red-50 hover:bg-red-100 transition-colors ml-2"
+              title="Cerrar sesión"
+            >
+              <span class="material-symbols-outlined text-red-600 text-lg"
+                >logout</span
+              >
+            </button>
+          </div>
 
           <div
             class="hidden xl:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 cursor-pointer hover:ring-2 hover:ring-[#1919e6] transition-all border-2 border-white shadow-sm"

@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ProductsService } from '../../core/product.service';
+import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../models/product.model';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 
@@ -150,7 +150,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productsService: ProductsService
+    private productsService: ProductService
   ) {}
 
   ngOnInit(): void {

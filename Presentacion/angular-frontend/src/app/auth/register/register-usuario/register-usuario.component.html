@@ -31,6 +31,7 @@
       >
       Volver al inicio
     </button>
+
     <!-- Header -->
     <div class="text-center mb-10">
       <div class="flex justify-center mb-6">
@@ -64,7 +65,7 @@
       </p>
     </div>
 
-    <!-- Progress Steps REDISEÑADO -->
+    <!-- Progress Steps -->
     <div class="mb-10">
       <div
         class="flex justify-between items-center relative max-w-md mx-auto px-8"
@@ -316,63 +317,70 @@
                 >Mínimo 3 caracteres</span
               >
               <span *ngIf="nombre?.errors?.['maxlength']"
-                >Máximo 100 caracteres</span
+                >Máximo 150 caracteres</span
               >
             </p>
           </div>
 
-          <!-- Edad -->
+          <!-- Username -->
           <div>
             <label
-              for="edad"
+              for="username"
               class="block text-sm font-bold mb-2"
               style="color: #1e40af"
             >
-              Edad <span style="color: #ef4444">*</span>
+              Nombre de Usuario <span style="color: #ef4444">*</span>
             </label>
             <div class="relative">
               <span
                 class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
                 style="color: #60a5fa; font-size: 1.25rem"
               >
-                cake
+                badge
               </span>
               <input
-                id="edad"
-                type="number"
-                formControlName="edad"
-                placeholder="25"
+                id="username"
+                type="text"
+                formControlName="username"
+                placeholder="juanperez123"
                 class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
                 [style.border]="
-                  edad?.invalid && edad?.touched
+                  username?.invalid && username?.touched
                     ? '2px solid #EF4444'
                     : '2px solid #BFDBFE'
                 "
                 [style.background]="
-                  edad?.invalid && edad?.touched ? '#FEF2F2' : '#FFFFFF'
+                  username?.invalid && username?.touched ? '#FEF2F2' : '#FFFFFF'
                 "
                 style="outline: none"
-                min="18"
-                max="120"
                 (focus)="onInputFocus($event)"
                 (blur)="onInputBlur($event)"
               />
             </div>
             <p
-              *ngIf="edad?.invalid && edad?.touched"
+              *ngIf="username?.invalid && username?.touched"
               class="mt-2 text-xs font-semibold flex items-center gap-1.5"
               style="color: #dc2626"
             >
               <span class="material-symbols-outlined" style="font-size: 1rem"
                 >info</span
               >
-              <span *ngIf="edad?.errors?.['required']"
-                >La edad es requerida</span
+              <span *ngIf="username?.errors?.['required']"
+                >El nombre de usuario es requerido</span
               >
-              <span *ngIf="edad?.errors?.['min']"
-                >Debes ser mayor de 18 años</span
+              <span *ngIf="username?.errors?.['minlength']"
+                >Mínimo 4 caracteres</span
               >
-              <span *ngIf="edad?.errors?.['max']">Edad inválida</span>
+              <span *ngIf="username?.errors?.['pattern']"
+                >Solo letras, números y guión bajo (_)</span
+              >
+            </p>
+            <p
+              *ngIf="username?.valid && username?.value"
+              class="mt-2 text-xs font-medium"
+              style="color: #6b7280"
+            >
+              💡 Este será tu identificador único en JaveMarket
             </p>
           </div>
 
@@ -440,6 +448,117 @@
               <span *ngIf="email?.errors?.['invalidDomain']"
                 >Este dominio de correo no está permitido</span
               >
+            </p>
+          </div>
+
+          <!-- Fecha de Nacimiento -->
+          <div>
+            <label
+              for="fecha_nacimiento"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Fecha de Nacimiento <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                cake
+              </span>
+              <input
+                id="fecha_nacimiento"
+                type="date"
+                formControlName="fecha_nacimiento"
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  fecha_nacimiento?.invalid && fecha_nacimiento?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  fecha_nacimiento?.invalid && fecha_nacimiento?.touched
+                    ? '#FEF2F2'
+                    : '#FFFFFF'
+                "
+                style="outline: none"
+                [max]="getMaxDate()"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              />
+            </div>
+            <p
+              *ngIf="fecha_nacimiento?.invalid && fecha_nacimiento?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              <span *ngIf="fecha_nacimiento?.errors?.['required']"
+                >La fecha de nacimiento es requerida</span
+              >
+              <span *ngIf="fecha_nacimiento?.errors?.['underAge']"
+                >Debes ser mayor de 18 años</span
+              >
+            </p>
+          </div>
+
+          <!-- Género -->
+          <div>
+            <label
+              for="genero"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Género <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                wc
+              </span>
+              <select
+                id="genero"
+                formControlName="genero"
+                class="w-full pl-12 pr-10 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                [style.border]="
+                  genero?.invalid && genero?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  genero?.invalid && genero?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              >
+                <option value="" disabled selected>Selecciona tu género</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+                <option value="Prefiero no decir">Prefiero no decir</option>
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                style="color: #60a5fa; font-size: 1.5rem"
+              >
+                expand_more
+              </span>
+            </div>
+            <p
+              *ngIf="genero?.invalid && genero?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              El género es requerido
             </p>
           </div>
         </div>
@@ -613,7 +732,7 @@
                 >
                   {{ hasSpecialCharacter() ? "check_circle" : "cancel" }}
                 </span>
-                Un carácter especial (!&#64;#$%^&amp;*)
+                Un carácter especial (!&#64;#$%^&*)
               </p>
             </div>
           </div>
@@ -796,7 +915,7 @@
               <textarea
                 id="direccion"
                 formControlName="direccion"
-                placeholder="Calle 123 #45-67, Apto 301, Barrio Centro"
+                placeholder="Calle 123 #45-67, Apto 301"
                 class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium resize-none transition-all duration-200"
                 rows="3"
                 [style.border]="
@@ -828,6 +947,99 @@
               <span *ngIf="direccion?.errors?.['minlength']"
                 >Mínimo 10 caracteres</span
               >
+            </p>
+          </div>
+
+          <!-- Barrio (opcional) -->
+          <div>
+            <label
+              for="barrio"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Barrio
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                signpost
+              </span>
+              <input
+                id="barrio"
+                type="text"
+                formControlName="barrio"
+                placeholder="Centro, Chapinero, etc."
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                style="
+                  border: 2px solid #bfdbfe;
+                  background: #ffffff;
+                  outline: none;
+                "
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              />
+            </div>
+          </div>
+
+          <!-- Departamento -->
+          <div>
+            <label
+              for="departamento"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Departamento <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                map
+              </span>
+              <select
+                id="departamento"
+                formControlName="departamento"
+                class="w-full pl-12 pr-10 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                [style.border]="
+                  departamento?.invalid && departamento?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  departamento?.invalid && departamento?.touched
+                    ? '#FEF2F2'
+                    : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              >
+                <option value="" disabled selected>
+                  Selecciona tu departamento
+                </option>
+                <option *ngFor="let dept of departamentos" [value]="dept">
+                  {{ dept }}
+                </option>
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                style="color: #60a5fa; font-size: 1.5rem"
+              >
+                expand_more
+              </span>
+            </div>
+            <p
+              *ngIf="departamento?.invalid && departamento?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              El departamento es requerido
             </p>
           </div>
 
@@ -888,6 +1100,7 @@
           </div>
 
           <!-- Términos y condiciones -->
+          <!-- REEMPLAZAR esta sección completa: -->
           <div
             class="flex items-start gap-3 p-4 rounded-xl"
             style="
@@ -914,8 +1127,9 @@
                 style="color: #2563eb"
                 onmouseover="this.style.color='#1E40AF'"
                 onmouseout="this.style.color='#2563EB'"
-                >términos y condiciones</a
               >
+                términos y condiciones
+              </a>
               y la
               <a
                 href="#"
@@ -923,8 +1137,9 @@
                 style="color: #2563eb"
                 onmouseover="this.style.color='#1E40AF'"
                 onmouseout="this.style.color='#2563EB'"
-                >política de privacidad</a
               >
+                política de privacidad
+              </a>
               de JaveMarket
               <span style="color: #ef4444">*</span>
             </label>
@@ -1057,6 +1272,7 @@
       </div>
 
       <!-- Link de login -->
+      <!-- REEMPLAZAR esta sección: -->
       <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-6">
         ¿Ya tienes una cuenta?
         <a

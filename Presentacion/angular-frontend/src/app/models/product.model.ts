@@ -31,9 +31,13 @@ export interface Product {
   updatedAt?: Date;
 }
 
+export interface CategoriaBackend {
+  id: number;
+  nombre: string;
+}
+
 export interface ProductCategory {
-  id: string;
+  id: number; // ← ANTES era string
   name: string;
   slug: string;
-  icon?: string;
 }

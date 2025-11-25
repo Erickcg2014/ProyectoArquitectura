@@ -1,8 +1,15 @@
-// src/app/shared/navbar/navbar.component.ts
-
-import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  HostListener,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { Subscription } from 'rxjs';
 
 interface Category {
   id: string;
@@ -18,14 +25,22 @@ interface Category {
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('categoriesButton', { read: ElementRef })
   categoriesButton!: ElementRef;
-  constructor(private router: Router) {} // ← Inyectar Router
 
   cartItemCount = 0;
   isDropdownOpen = false;
   dropdownStyles: any = {};
+
+  isAuthenticated = false;
+  currentUser: any = null;
+  userInitials = '';
+
+  // ============================================
+  // NUEVO: Subscription para limpiar después
+  // ============================================
+  private authSubscription?: Subscription;
 
   categories: Category[] = [
     {
@@ -82,6 +97,48 @@ export class NavbarComponent {
     { id: '17', name: 'Mascotas', icon: 'pets', slug: 'mascotas' },
   ];
 
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.loadUserInfo();
+
+    // ============================================
+    // NUEVO: Escuchar cambios de autenticación
+    // ============================================
+    this.authSubscription = this.authService.authStatus$.subscribe(() => {
+      this.loadUserInfo();
+    });
+  }
+
+  // ============================================
+  // NUEVO: Limpiar subscripción al destruir
+  // ============================================
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
+  }
+
+  loadUserInfo(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
+
+    if (this.isAuthenticated) {
+      this.currentUser = this.authService.getCurrentUser();
+
+      if (this.currentUser?.nombre) {
+        const names = this.currentUser.nombre.split(' ');
+        this.userInitials =
+          names.length >= 2
+            ? `${names[0][0]}${names[1][0]}`.toUpperCase()
+            : names[0].substring(0, 2).toUpperCase();
+      }
+    } else {
+      // ============================================
+      // NUEVO: Limpiar datos cuando no hay usuario
+      // ============================================
+      this.currentUser = null;
+      this.userInitials = '';
+    }
+  }
+
   openDropdown(): void {
     if (this.categoriesButton) {
       const buttonElement = this.categoriesButton.nativeElement;
@@ -95,6 +152,19 @@ export class NavbarComponent {
       };
 
       this.isDropdownOpen = true;
+    }
+  }
+  goToCarrito(): void {
+    console.log('Click en carrito, isAuthenticated:', this.isAuthenticated);
+
+    if (this.isAuthenticated) {
+      // Cambia esta línea - usa la ruta correcta
+      this.router.navigate(['/cart']);
+    } else {
+      // También actualiza el returnUrl
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/cart' },
+      });
     }
   }
 
@@ -118,6 +188,14 @@ export class NavbarComponent {
 
   goToLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
   onSearch(event: Event): void {

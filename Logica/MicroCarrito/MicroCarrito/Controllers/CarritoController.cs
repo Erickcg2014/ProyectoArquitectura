@@ -67,7 +67,7 @@ namespace MicroCarrito.Controllers
         }
 
         [HttpGet("cliente/{idCliente}")]
-        public async Task<IActionResult> GetAllCarritoItemByIdCliente(int idCliente)
+        public async Task<IActionResult> GetAllCarritoItemByIdCliente(Guid idCliente)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace MicroCarrito.Controllers
             }
         }
         [HttpDelete("cliente/{id_cliente}")]
-        public async Task<IActionResult> DeleteByCliente(int id_cliente)
+        public async Task<IActionResult> DeleteByCliente(Guid id_cliente)
         {
             try
             {

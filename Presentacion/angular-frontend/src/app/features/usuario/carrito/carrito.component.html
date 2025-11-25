@@ -1,0 +1,152 @@
+<!-- src/app/pages/carrito/carrito.component.html -->
+
+<div class="carrito-container">
+  <!-- Header -->
+  <div class="carrito-header">
+    <h1>
+      <i class="cart-icon">🛒</i>
+      Mi Carrito de Compras
+    </h1>
+    <p class="items-count">{{ items.length }} producto(s) en tu carrito</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando tu carrito...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-message">
+    <i class="error-icon">⚠️</i>
+    <p>{{ error }}</p>
+    <button (click)="cargarCarrito()" class="btn-retry">Intentar de nuevo</button>
+  </div>
+
+  <!-- Empty Cart -->
+  <div *ngIf="!loading && !error && items.length === 0" class="empty-cart">
+    <div class="empty-cart-icon">🛒</div>
+    <h2>Tu carrito está vacío</h2>
+    <p>¡Agrega productos para empezar a comprar!</p>
+    <a href="/home" class="btn-primary">Explorar productos</a>
+  </div>
+
+  <!-- Cart Content -->
+  <div *ngIf="!loading && !error && items.length > 0" class="carrito-content">
+    
+    <!-- Items List -->
+    <div class="items-section">
+      <div class="items-header">
+        <button (click)="vaciarCarrito()" class="btn-clear-cart">
+          <i>🗑️</i> Vaciar carrito
+        </button>
+      </div>
+
+      <div class="items-list">
+        <div *ngFor="let item of items" class="cart-item">
+
+          <!-- ⬇️ CAMBIO: imagen real del microproductos -->
+          <div class="item-image">
+            <img [src]="item.producto!.imagenUrl" [alt]="item.producto!.nombre">
+          </div>
+
+          <div class="item-details">
+
+            <!-- ⬇️ CAMBIO: nombre -->
+            <h3 class="item-title">{{ item.producto!.nombre }}</h3>
+
+            <!-- ⬇️ CAMBIO: descripción -->
+            <p class="item-description">{{ item.producto!.descripcion }}</p>
+
+            <!-- ⬇️ CAMBIO: precio -->
+            <p class="item-price">
+              ${{ item.producto!.precio | number:'1.2-2' }}
+            </p>
+          </div>
+
+          <div class="item-quantity">
+            <button 
+              (click)="disminuirCantidad(item)" 
+              class="qty-btn"
+              [disabled]="item.cantidad <= 1">
+              −
+            </button>
+            <span class="qty-value">{{ item.cantidad }}</span>
+            <button 
+              (click)="aumentarCantidad(item)" 
+              class="qty-btn">
+              +
+            </button>
+          </div>
+
+          <div class="item-subtotal">
+            <p class="subtotal-label">Subtotal</p>
+
+            <!-- ⬇️ CAMBIO: subtotal ya calculado -->
+            <p class="subtotal-value">
+              ${{ item.subtotal | number:'1.2-2' }}
+            </p>
+          </div>
+
+          <button 
+            (click)="eliminarItem(item)" 
+            class="btn-remove"
+            title="Eliminar producto">
+            <i>✕</i>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="summary-section">
+      <div class="summary-card">
+        <h2>Resumen del pedido</h2>
+        
+        <div class="summary-row">
+          <span>Subtotal ({{ items.length }} productos)</span>
+          <span>${{ precioTotal | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Envío</span>
+          <span class="free-shipping">GRATIS</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span class="total-amount">${{ precioTotal | number:'1.2-2' }}</span>
+        </div>
+
+        <button (click)="procederAlPago()" class="btn-checkout">
+          Proceder al pago
+          <i>→</i>
+        </button>
+
+        <a href="/home" class="btn-continue-shopping">
+          ← Continuar comprando
+        </a>
+
+        <div class="trust-badges">
+          <div class="badge">
+            <i>🔒</i>
+            <span>Pago seguro</span>
+          </div>
+          <div class="badge">
+            <i>📦</i>
+            <span>Envío gratis</span>
+          </div>
+          <div class="badge">
+            <i>↩️</i>
+            <span>Devolución fácil</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

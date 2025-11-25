@@ -24,7 +24,7 @@ public class CarritoService
     }
 
 
-    public async Task<List<CarritoItem>> GetAllCarritoItemByIdCliente(int idCliente)
+    public async Task<List<CarritoItem>> GetAllCarritoItemByIdCliente(Guid idCliente)
     {
 
             return await _repo.GetAllCarritoItemByIdCliente(idCliente);
@@ -74,7 +74,7 @@ public class CarritoService
             await _repo.UpdatePrecioCarrito(id, precio);
 
     }
-    public async Task DeleteCarritoItemsByIdCliente(int id_cliente)
+    public async Task DeleteCarritoItemsByIdCliente(Guid id_cliente)
     {
 
             await _repo.DeleteCarritoItemsByIdCliente(id_cliente);

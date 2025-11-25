@@ -50,7 +50,8 @@ metadata:
 spec:
   selector:
     app: keycloak
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 30085 # Puerto externo para acceso desde navegador

@@ -31,6 +31,7 @@
       >
       Volver al inicio
     </button>
+
     <!-- Header -->
     <div class="text-center mb-10">
       <div class="flex justify-center mb-6">
@@ -70,7 +71,7 @@
       </p>
     </div>
 
-    <!-- Progress Steps REDISEÑADO -->
+    <!-- Progress Steps -->
     <div class="mb-10">
       <div
         class="flex justify-between items-center relative max-w-md mx-auto px-8"
@@ -322,7 +323,137 @@
                 >Mínimo 3 caracteres</span
               >
               <span *ngIf="nombre?.errors?.['maxlength']"
-                >Máximo 100 caracteres</span
+                >Máximo 150 caracteres</span
+              >
+            </p>
+          </div>
+
+          <!-- Username -->
+          <div>
+            <label
+              for="username"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Nombre de Usuario <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                badge
+              </span>
+              <input
+                id="username"
+                type="text"
+                formControlName="username"
+                placeholder="mitienda123"
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  username?.invalid && username?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  username?.invalid && username?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              />
+            </div>
+            <p
+              *ngIf="username?.invalid && username?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              <span *ngIf="username?.errors?.['required']"
+                >El nombre de usuario es requerido</span
+              >
+              <span *ngIf="username?.errors?.['minlength']"
+                >Mínimo 4 caracteres</span
+              >
+              <span *ngIf="username?.errors?.['pattern']"
+                >Solo letras, números y guión bajo (_)</span
+              >
+            </p>
+            <p
+              *ngIf="username?.valid && username?.value"
+              class="mt-2 text-xs font-medium"
+              style="color: #6b7280"
+            >
+              💡 Este será tu identificador único en JaveMarket
+            </p>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Correo Electrónico Corporativo
+              <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                email
+              </span>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="contacto@tunegocio.com"
+                class="w-full pl-12 pr-12 py-3.5 rounded-xl font-medium transition-all duration-200"
+                [style.border]="
+                  email?.invalid && email?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  email?.invalid && email?.touched ? '#FEF2F2' : '#FFFFFF'
+                "
+                style="outline: none"
+                autocomplete="email"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              />
+              <span
+                *ngIf="email?.valid"
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2"
+                style="
+                  color: #10b981;
+                  font-size: 1.5rem;
+                  font-variation-settings: 'FILL' 1;
+                "
+              >
+                check_circle
+              </span>
+            </div>
+            <p
+              *ngIf="email?.invalid && email?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              <span *ngIf="email?.errors?.['required']"
+                >El correo es requerido</span
+              >
+              <span *ngIf="email?.errors?.['email']"
+                >Ingresa un correo válido</span
+              >
+              <span *ngIf="email?.errors?.['invalidDomain']"
+                >Este dominio de correo no está permitido</span
               >
             </p>
           </div>
@@ -403,81 +534,13 @@
           </div>
         </div>
 
-        <!-- STEP 2: Información de Contacto -->
+        <!-- STEP 2: Información de Contacto y Ubicación -->
         <div
           *ngIf="currentStep === 2"
           class="space-y-6"
           style="animation: fadeIn 0.4s ease-out"
         >
-          <!-- Email -->
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-bold mb-2"
-              style="color: #1e40af"
-            >
-              Correo Electrónico Corporativo
-              <span style="color: #ef4444">*</span>
-            </label>
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
-                style="color: #60a5fa; font-size: 1.25rem"
-              >
-                email
-              </span>
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                placeholder="contacto@tunegocio.com"
-                class="w-full pl-12 pr-12 py-3.5 rounded-xl font-medium transition-all duration-200"
-                [style.border]="
-                  email?.invalid && email?.touched
-                    ? '2px solid #EF4444'
-                    : '2px solid #BFDBFE'
-                "
-                [style.background]="
-                  email?.invalid && email?.touched ? '#FEF2F2' : '#FFFFFF'
-                "
-                style="outline: none"
-                autocomplete="email"
-                (focus)="onInputFocus($event)"
-                (blur)="onInputBlur($event)"
-              />
-              <span
-                *ngIf="email?.valid"
-                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2"
-                style="
-                  color: #10b981;
-                  font-size: 1.5rem;
-                  font-variation-settings: 'FILL' 1;
-                "
-              >
-                check_circle
-              </span>
-            </div>
-            <p
-              *ngIf="email?.invalid && email?.touched"
-              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
-              style="color: #dc2626"
-            >
-              <span class="material-symbols-outlined" style="font-size: 1rem"
-                >info</span
-              >
-              <span *ngIf="email?.errors?.['required']"
-                >El correo es requerido</span
-              >
-              <span *ngIf="email?.errors?.['email']"
-                >Ingresa un correo válido</span
-              >
-              <span *ngIf="email?.errors?.['invalidDomain']"
-                >Este dominio de correo no está permitido</span
-              >
-            </p>
-          </div>
-
-          <!-- Teléfono -->
+          <!-- Teléfono con prefijo -->
           <div>
             <label
               for="telefono"
@@ -486,38 +549,62 @@
             >
               Teléfono de Contacto <span style="color: #ef4444">*</span>
             </label>
-            <div class="relative">
-              <span
-                class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-base"
-                style="color: #1e40af"
-              >
-                🇨🇴 +57
-              </span>
-              <span
-                class="material-symbols-outlined absolute top-1/2 -translate-y-1/2"
-                style="color: #60a5fa; font-size: 1.25rem; left: 4.5rem"
-              >
-                phone
-              </span>
-              <input
-                id="telefono"
-                type="tel"
-                formControlName="telefono"
-                placeholder="3001234567"
-                class="w-full py-3.5 rounded-xl font-medium transition-all duration-200"
-                style="padding-left: 7rem; padding-right: 1rem; outline: none"
-                [style.border]="
-                  telefono?.invalid && telefono?.touched
-                    ? '2px solid #EF4444'
-                    : '2px solid #BFDBFE'
-                "
-                [style.background]="
-                  telefono?.invalid && telefono?.touched ? '#FEF2F2' : '#FFFFFF'
-                "
-                maxlength="10"
-                (focus)="onInputFocus($event)"
-                (blur)="onInputBlur($event)"
-              />
+            <div class="flex gap-3">
+              <div class="relative" style="width: 140px">
+                <select
+                  formControlName="countryCode"
+                  class="w-full pl-3 pr-8 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                  style="
+                    border: 2px solid #bfdbfe;
+                    background: #ffffff;
+                    outline: none;
+                  "
+                  (focus)="onInputFocus($event)"
+                  (blur)="onInputBlur($event)"
+                >
+                  <option
+                    *ngFor="let country of countryCodes"
+                    [value]="country.code"
+                  >
+                    {{ country.flag }} {{ country.code }}
+                  </option>
+                </select>
+                <span
+                  class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+                  style="color: #60a5fa; font-size: 1.5rem"
+                >
+                  expand_more
+                </span>
+              </div>
+              <div class="relative flex-1">
+                <span
+                  class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                  style="color: #60a5fa; font-size: 1.25rem"
+                >
+                  phone
+                </span>
+                <input
+                  id="telefono"
+                  type="tel"
+                  formControlName="telefono"
+                  placeholder="3001234567"
+                  class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                  [style.border]="
+                    telefono?.invalid && telefono?.touched
+                      ? '2px solid #EF4444'
+                      : '2px solid #BFDBFE'
+                  "
+                  [style.background]="
+                    telefono?.invalid && telefono?.touched
+                      ? '#FEF2F2'
+                      : '#FFFFFF'
+                  "
+                  style="outline: none"
+                  maxlength="10"
+                  (focus)="onInputFocus($event)"
+                  (blur)="onInputBlur($event)"
+                />
+              </div>
             </div>
             <p
               *ngIf="telefono?.invalid && telefono?.touched"
@@ -533,15 +620,6 @@
               <span *ngIf="telefono?.errors?.['pattern']"
                 >Debe contener exactamente 10 dígitos</span
               >
-            </p>
-            <p
-              class="mt-2 text-xs font-semibold flex items-center gap-1.5 p-2.5 rounded-lg"
-              style="background: #eff6ff; color: #1e40af"
-            >
-              <span class="material-symbols-outlined" style="font-size: 1rem"
-                >info</span
-              >
-              <span>Número de contacto para clientes (Colombia +57)</span>
             </p>
           </div>
 
@@ -564,7 +642,7 @@
               <textarea
                 id="direccion"
                 formControlName="direccion"
-                placeholder="Calle 123 #45-67, Local 301, Barrio Centro"
+                placeholder="Calle 123 #45-67, Local 301"
                 class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium resize-none transition-all duration-200"
                 rows="3"
                 [style.border]="
@@ -596,6 +674,99 @@
               <span *ngIf="direccion?.errors?.['minlength']"
                 >Mínimo 10 caracteres</span
               >
+            </p>
+          </div>
+
+          <!-- Barrio (opcional) -->
+          <div>
+            <label
+              for="barrio"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Barrio
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                signpost
+              </span>
+              <input
+                id="barrio"
+                type="text"
+                formControlName="barrio"
+                placeholder="Centro, Chapinero, etc."
+                class="w-full pl-12 pr-4 py-3.5 rounded-xl font-medium transition-all duration-200"
+                style="
+                  border: 2px solid #bfdbfe;
+                  background: #ffffff;
+                  outline: none;
+                "
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              />
+            </div>
+          </div>
+
+          <!-- Departamento -->
+          <div>
+            <label
+              for="departamento"
+              class="block text-sm font-bold mb-2"
+              style="color: #1e40af"
+            >
+              Departamento <span style="color: #ef4444">*</span>
+            </label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2"
+                style="color: #60a5fa; font-size: 1.25rem"
+              >
+                map
+              </span>
+              <select
+                id="departamento"
+                formControlName="departamento"
+                class="w-full pl-12 pr-10 py-3.5 rounded-xl font-medium appearance-none cursor-pointer transition-all duration-200"
+                [style.border]="
+                  departamento?.invalid && departamento?.touched
+                    ? '2px solid #EF4444'
+                    : '2px solid #BFDBFE'
+                "
+                [style.background]="
+                  departamento?.invalid && departamento?.touched
+                    ? '#FEF2F2'
+                    : '#FFFFFF'
+                "
+                style="outline: none"
+                (focus)="onInputFocus($event)"
+                (blur)="onInputBlur($event)"
+              >
+                <option value="" disabled selected>
+                  Selecciona tu departamento
+                </option>
+                <option *ngFor="let dept of departamentos" [value]="dept">
+                  {{ dept }}
+                </option>
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                style="color: #60a5fa; font-size: 1.5rem"
+              >
+                expand_more
+              </span>
+            </div>
+            <p
+              *ngIf="departamento?.invalid && departamento?.touched"
+              class="mt-2 text-xs font-semibold flex items-center gap-1.5"
+              style="color: #dc2626"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >info</span
+              >
+              El departamento es requerido
             </p>
           </div>
 
@@ -825,7 +996,7 @@
                 >
                   {{ hasSpecialCharacter() ? "check_circle" : "cancel" }}
                 </span>
-                Un carácter especial (!&#64;#$%^&amp;*)
+                Un carácter especial (!&#64;#$%^&*)
               </p>
             </div>
           </div>
@@ -938,6 +1109,7 @@
                   onmouseout="this.style.color='#2563EB'"
                   >política de privacidad</a
                 >
+                de JaveMarket
                 <span style="color: #ef4444">*</span>
               </label>
             </div>
@@ -1077,7 +1249,7 @@
             "
             [style.opacity]="isLoading || registerForm.invalid ? '0.6' : '1'"
             onmouseover="if(!this.disabled) { this.style.background='linear-gradient(135deg, #059669 0%, #047857 100%)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(16, 185, 129, 0.4)' }"
-            onmouseout="if(!this.disabled) { this.style.background='linear-gradient(135deg, #10B981 0%, #059669 100())'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(16, 185, 129, 0.3)' }"
+            onmouseout="if(!this.disabled) { this.style.background='linear-gradient(135deg, #10B981 0%, #059669 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(16, 185, 129, 0.3)' }"
           >
             <span *ngIf="!isLoading" class="flex items-center gap-2">
               <span

@@ -10,7 +10,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../core/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-register-proveedor',
@@ -29,6 +29,50 @@ export class RegisterProveedorComponent implements OnInit {
   currentStep = 1;
   totalSteps = 3;
 
+  // Prefijos de país
+  countryCodes = [
+    { code: '+57', country: 'Colombia', flag: '🇨🇴' },
+    { code: '+1', country: 'USA/Canada', flag: '🇺🇸' },
+    { code: '+52', country: 'México', flag: '🇲🇽' },
+    { code: '+34', country: 'España', flag: '🇪🇸' },
+  ];
+
+  // Departamentos de Colombia
+  departamentos = [
+    'Amazonas',
+    'Antioquia',
+    'Arauca',
+    'Atlántico',
+    'Bolívar',
+    'Boyacá',
+    'Caldas',
+    'Caquetá',
+    'Casanare',
+    'Cauca',
+    'Cesar',
+    'Chocó',
+    'Córdoba',
+    'Cundinamarca',
+    'Guainía',
+    'Guaviare',
+    'Huila',
+    'La Guajira',
+    'Magdalena',
+    'Meta',
+    'Nariño',
+    'Norte de Santander',
+    'Putumayo',
+    'Quindío',
+    'Risaralda',
+    'San Andrés y Providencia',
+    'Santander',
+    'Sucre',
+    'Tolima',
+    'Valle del Cauca',
+    'Vaupés',
+    'Vichada',
+  ];
+
   // Ciudades principales de Colombia
   ciudades = [
     'Bogotá',
@@ -44,6 +88,9 @@ export class RegisterProveedorComponent implements OnInit {
     'Ibagué',
     'Pasto',
     'Villavicencio',
+    'Montería',
+    'Valledupar',
+    'Neiva',
     'Otra',
   ];
 
@@ -66,8 +113,21 @@ export class RegisterProveedorComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(3),
-            Validators.maxLength(100),
+            Validators.maxLength(150),
           ],
+        ],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(4),
+            Validators.maxLength(50),
+            Validators.pattern(/^[a-zA-Z0-9_]+$/),
+          ],
+        ],
+        email: [
+          '',
+          [Validators.required, Validators.email, this.emailDomainValidator],
         ],
         descripcion: [
           '',
@@ -78,11 +138,8 @@ export class RegisterProveedorComponent implements OnInit {
           ],
         ],
 
-        // Step 2: Información de Contacto
-        email: [
-          '',
-          [Validators.required, Validators.email, this.emailDomainValidator],
-        ],
+        // Step 2: Información de Contacto y Ubicación
+        countryCode: ['+57', [Validators.required]],
         telefono: [
           '',
           [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
@@ -92,10 +149,13 @@ export class RegisterProveedorComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(10),
-            Validators.maxLength(200),
+            Validators.maxLength(150),
           ],
         ],
+        barrio: ['', [Validators.maxLength(100)]],
+        departamento: ['', [Validators.required]],
         ciudad: ['', [Validators.required]],
+        pais: ['Colombia', [Validators.required]],
 
         // Step 3: Seguridad
         password: [
@@ -147,7 +207,6 @@ export class RegisterProveedorComponent implements OnInit {
 
     const passwordValid =
       hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
-
     return !passwordValid ? { weakPassword: true } : null;
   }
 
@@ -162,11 +221,17 @@ export class RegisterProveedorComponent implements OnInit {
   get nombre() {
     return this.registerForm.get('nombre');
   }
-  get descripcion() {
-    return this.registerForm.get('descripcion');
+  get username() {
+    return this.registerForm.get('username');
   }
   get email() {
     return this.registerForm.get('email');
+  }
+  get descripcion() {
+    return this.registerForm.get('descripcion');
+  }
+  get countryCode() {
+    return this.registerForm.get('countryCode');
   }
   get telefono() {
     return this.registerForm.get('telefono');
@@ -174,8 +239,17 @@ export class RegisterProveedorComponent implements OnInit {
   get direccion() {
     return this.registerForm.get('direccion');
   }
+  get barrio() {
+    return this.registerForm.get('barrio');
+  }
+  get departamento() {
+    return this.registerForm.get('departamento');
+  }
   get ciudad() {
     return this.registerForm.get('ciudad');
+  }
+  get pais() {
+    return this.registerForm.get('pais');
   }
   get password() {
     return this.registerForm.get('password');
@@ -218,12 +292,17 @@ export class RegisterProveedorComponent implements OnInit {
   validateCurrentStep(): boolean {
     switch (this.currentStep) {
       case 1:
-        return !!(this.nombre?.valid && this.descripcion?.valid);
+        return !!(
+          this.nombre?.valid &&
+          this.username?.valid &&
+          this.email?.valid &&
+          this.descripcion?.valid
+        );
       case 2:
         return !!(
-          this.email?.valid &&
           this.telefono?.valid &&
           this.direccion?.valid &&
+          this.departamento?.valid &&
           this.ciudad?.valid
         );
       case 3:
@@ -243,12 +322,15 @@ export class RegisterProveedorComponent implements OnInit {
     switch (this.currentStep) {
       case 1:
         this.nombre?.markAsTouched();
+        this.username?.markAsTouched();
+        this.email?.markAsTouched();
         this.descripcion?.markAsTouched();
         break;
       case 2:
-        this.email?.markAsTouched();
         this.telefono?.markAsTouched();
         this.direccion?.markAsTouched();
+        this.barrio?.markAsTouched();
+        this.departamento?.markAsTouched();
         this.ciudad?.markAsTouched();
         break;
       case 3:
@@ -260,55 +342,46 @@ export class RegisterProveedorComponent implements OnInit {
     }
   }
 
-  // CONTRASEÑA FUNCIONES
   // Métodos para verificar requisitos de contraseña
   hasMinLength(): boolean {
-    const password = this.registerForm.get('password')?.value;
+    const password = this.password?.value;
     return password && password.length >= 8;
   }
 
   hasUpperCase(): boolean {
-    const password = this.registerForm.get('password')?.value;
+    const password = this.password?.value;
     return password && /[A-Z]/.test(password);
   }
 
   hasLowerCase(): boolean {
-    const password = this.registerForm.get('password')?.value;
+    const password = this.password?.value;
     return password && /[a-z]/.test(password);
   }
 
   hasNumber(): boolean {
-    const password = this.registerForm.get('password')?.value;
+    const password = this.password?.value;
     return password && /[0-9]/.test(password);
   }
 
   hasSpecialCharacter(): boolean {
-    const password = this.registerForm.get('password')?.value;
-    if (!password) return false;
-
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    return specialCharRegex.test(password);
+    const password = this.password?.value;
+    return password && /[!@#$%^&*(),.?":{}|<>]/.test(password);
   }
 
-  // src/app/auth/register/register-proveedor/register-proveedor.component.ts
-
-  // Agregar estos métodos a la clase
-
   onInputFocus(event: Event): void {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     target.style.border = '2px solid #2563EB';
     target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
   }
 
   onInputBlur(event: Event): void {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     target.style.border = '2px solid #BFDBFE';
     target.style.boxShadow = 'none';
   }
 
   onConfirmPasswordBlur(event: Event): void {
     const target = event.target as HTMLInputElement;
-
     if (
       (this.confirmPassword?.invalid ||
         this.registerForm.errors?.['passwordMismatch']) &&
@@ -324,7 +397,6 @@ export class RegisterProveedorComponent implements OnInit {
     } else {
       target.style.border = '2px solid #BFDBFE';
     }
-
     target.style.boxShadow = 'none';
   }
 
@@ -364,28 +436,38 @@ export class RegisterProveedorComponent implements OnInit {
 
     const {
       confirmPassword,
+      countryCode,
       aceptaTerminos,
       aceptaPoliticasComerciales,
+      descripcion,
       ...proveedorData
     } = this.registerForm.value;
 
-    // Agregar prefijo +57 al teléfono
-    const telefonoCompleto = `+57${proveedorData.telefono}`;
+    // Combinar código de país con teléfono
+    const telefonoCompleto = `${countryCode}${proveedorData.telefono}`;
 
+    // Preparar datos para enviar (sin descripción, no está en BD usuarios)
     const registerData = {
       ...proveedorData,
       telefono: telefonoCompleto,
+      genero: 'No aplica',
+      fecha_nacimiento: null,
     };
+
+    console.log('Datos a enviar (proveedor):', registerData);
+    console.log(
+      'Descripción del negocio (no se guarda por ahora):',
+      descripcion
+    );
 
     this.authService.registerProveedor(registerData).subscribe({
       next: (response) => {
         console.log('Registro de proveedor exitoso:', response);
         this.isLoading = false;
         this.successMessage =
-          '¡Registro exitoso! Bienvenido a JaveMarket. Redirigiendo...';
-
+          '¡Registro exitoso! Bienvenido a JaveMarket. Redirigiendo al login...';
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/login']);
         }, 2000);
       },
       error: (error) => {
@@ -394,7 +476,6 @@ export class RegisterProveedorComponent implements OnInit {
         this.errorMessage =
           error.error?.message ||
           'Error al registrar proveedor. Por favor, intenta nuevamente.';
-
         setTimeout(() => {
           this.errorMessage = '';
         }, 5000);
@@ -406,7 +487,6 @@ export class RegisterProveedorComponent implements OnInit {
     Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       control?.markAsTouched();
-
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
       }

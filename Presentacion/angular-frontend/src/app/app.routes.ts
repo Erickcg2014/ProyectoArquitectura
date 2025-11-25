@@ -1,12 +1,12 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
+import HomeComponent from './features/usuario/home/home.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-    title: 'JaveMarket - Your Product Catalog',
+    component: HomeComponent, // ← Home público
+    title: 'JaveMarket - Tu Catálogo de Productos',
   },
   {
     path: 'login',
@@ -39,28 +39,10 @@ export const routes: Routes = [
     title: 'Categoría - JaveMarket',
   },
   {
-    path: 'product/:id',
-    loadComponent: () =>
-      import('./pages/product-detail/product-detail.component').then(
-        (m) => m.ProductDetailComponent
-      ),
-    title: 'Product Details - JaveMarket',
-  },
-  {
     path: 'cart',
     loadComponent: () =>
       import('./pages/cart/cart.component').then((m) => m.CartComponent),
     title: 'Shopping Cart - JaveMarket',
-  },
-  {
-    path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent
-      ),
-    title: 'Dashboard - JaveMarket',
-    // Aquí podrías agregar un guard de autenticación más adelante
-    // canActivate: [authGuard]
   },
   {
     path: '**',
