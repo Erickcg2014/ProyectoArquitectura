@@ -1,0 +1,212 @@
+# Para ejecutar deberá ejecutar lo siguiente
+
+## Pruebe primero en local
+
+```env
+dotnet clean
+```
+
+```env
+dotnet build
+```
+
+## Luego ejecute el docker
+
+```env
+docker-compose up --build
+```
+
+## ENDPOINTS DE PRUEBA 
+
+POST:
+http://localhost:8081/api/producto/
+
+JSON Ejemplo:
+```env
+{
+        "nombre": "Zapatos",
+        "descripcion": "Nike",
+        "cantidad": 10,
+        "correo": "cuadrosdavid01@gmail.com"
+}
+```
+GET:
+http://localhost:8081/api/producto/
+
+
+# README – Proyecto Arquitectura Distribuida (Docker + Kubernetes + Microservicios)
+
+1. Descripción General del Proyecto
+
+Este proyecto implementa una arquitectura empresarial distribuida basada
+en microservicios, combinando tecnologías modernas como:
+
+-   Docker para empaquetar contenedores
+-   Kubernetes para despliegue, orquestación y escalabilidad
+-   .NET 8 para microservicios
+-   Spring Boot / Jakarta EE como soporte para microservicios Java
+-   Angular + Nginx para la capa de presentación
+-   Spring Cloud Gateway como API Gateway
+-   Keycloak + PostgreSQL para autenticación
+-   NodePort Services para exposición externa
+-   ClusterIP Services para comunicación interna
+
+### El objetivo es construir un ecosistema modular, escalable y altamente
+disponible que simule una plataforma de e‑commerce distribuido.
+
+2. Arquitectura General
+
+a. Presentación (Frontend Angular)
+
+-   Angular empaquetado con Nginx
+-   Deployment con múltiples réplicas
+-   Expuesto vía NodePort 30080
+-   Toda comunicación pasa por el API Gateway
+
+b. Capa de Integración
+
+-   API Gateway (Spring Cloud Gateway)
+    -   Enruteo dinámico
+    -   Comunicación interna con ClusterIP
+    -   Expuesto por NodePort 30080
+-   Keycloak
+    -   Autenticación/Autorización
+    -   PostgreSQL como backend
+    -   Desplegado con StatefulSet
+
+c. Capa de Microservicios
+
+Microservicios independientes (cada uno con Deployment y Service):
+
+-   MicroCarrito (.NET)
+-   MicroOrdenes (.NET)
+-   MicroProducto / Inventario (.NET)
+-   MicroNotificaciones (.NET)
+-   MicroPagos (Jakarta)
+-   MicroUsuarios (.NET)
+-   MicroMetricas (Jakarta)
+-   MicroRecomendaciones (Python)
+
+Características comunes: - Contenedores individuales
+- Deployments Kubernetes
+- NodePort externo / ClusterIP interno
+- HPA para autoescalado
+- Liveness/Readiness Probes
+
+3. Orquestación con Docker
+
+-   Cada servicio posee Dockerfile optimizado
+-   Registry local: localhost:5000
+-   Scripts buildAndPush_*.bat automatizan build y push:
+
+    docker build -t localhost:5000/microcarrito:latest .
+    docker push localhost:5000/microcarrito:latest
+
+-   Kubernetes consume las imágenes desde el registry local.
+
+4. Orquestación con Kubernetes
+
+Despliegue en namespace arquitectura.
+
+Incluye: - Deployments y Services por microservicio
+- HPA para cada servicio
+- StatefulSet (PostgreSQL Keycloak)
+- Secrets (Kafka, Twilio, DB, etc.)
+- Script aplicar_configuraciones.bat que automatiza: - Creación del
+namespace
+- Aplicación de manifiestos
+- Despliegue de Keycloak
+- Despliegue de microservicios
+- Configuración general del cluster
+
+5. API Gateway
+
+Rutas principales expuestas por NodePort:
+
+    /api/producto/**        → microproductos-service  (30083)
+    /api/carrito/**         → microcarrito-service   (30087)
+    /api/pago/**            → micropagos-service     (30086)
+    /api/notificacion/**    → micronotificaciones    (30082)
+    /api/orden/**           → microordenes-service   (30123)
+    /app/**                 → presentacion-service   (30080)
+
+El Gateway recibe solicitudes externas y enruta mediante ClusterIP
+dentro del cluster.
+
+6. Seguridad con Keycloak
+
+Keycloak gestiona:
+
+-   Autenticación
+-   Roles y usuarios
+-   Tokens
+-   Realms
+
+Arquitectura: - Deployment
+- ClusterIP Service
+- StatefulSet (PostgreSQL)
+- Import automático de realm JSON
+
+7. Microservicios y Funcionalidad
+
+✔ MicroProducto
+
+-   CRUD productos
+-   Categorías
+-   Inventario
+-   Validación de stock
+
+✔ MicroCarrito
+
+-   Carrito persistente por usuario
+-   Totales
+-   Gestión de ítems
+
+✔ MicroPagos
+
+-   Procesos simulados de pago
+-   Envío de eventos
+
+✔ MicroOrdenes
+
+-   Creación y gestión
+-   Integración con inventario y pagos
+
+✔ MicroNotificaciones
+
+-   Consumo de Kafka
+-   SMS (Twilio)
+-   Email
+
+✔ MicroUsuarios
+
+-   Autenticación y información del usuario
+-   Keycloak
+
+✔ MicroRecomendaciones
+
+-   Generación de embeddings para recomendaciones
+-   Python
+
+8. Frontend Angular
+
+-   Angular 19
+-   Nginx
+-   Deployments replicados por microservicios
+-   NodePort 30080
+-   Comunicación exclusiva con API Gateway
+
+9. Conclusiones
+
+El sistema implementa una arquitectura profesional:
+
+-   Independencia de servicios
+-   Escalabilidad (K8s + HPA)
+-   Deploy automatizado
+-   Kafka para comunicación asíncrona (Confluent cloud)
+-   Seguridad con Keycloak (Autenticación y Autorización)
+-   API Gateway como punto único de entrada
+-   Angular como SPA distribuida
+-   NodePort para acceso público
+-   ClusterIP para comunicación interna
+
