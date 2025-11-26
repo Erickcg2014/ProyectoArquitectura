@@ -8,7 +8,7 @@ import {
 } from '../../../core/services/product.service';
 import { ProductCarouselComponent } from '../../../shared/components/product-carousel/product-carousel.component';
 import { forkJoin } from 'rxjs';
-import { Product } from '../../../models/product.model'; // Importar la interfaz Product del frontend
+import { Product } from '../../../models/product.model';
 
 interface ProductsByCategory {
   categoria: string;
@@ -37,7 +37,6 @@ export default class HomeComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    // 1. Primero obtener todas las categorías
     this.productService.getAllCategories().subscribe({
       next: (categorias: CategoriaBackend[]) => {
         if (categorias.length === 0) {
@@ -46,21 +45,18 @@ export default class HomeComponent implements OnInit {
           return;
         }
 
-        // 2. Para cada categoría, obtener sus productos
         const requests = categorias.map((categoria: CategoriaBackend) =>
           this.productService.getProductsByCategoryId(categoria.id)
         );
 
-        // 3. Ejecutar todas las peticiones en paralelo
         forkJoin(requests).subscribe({
           next: (results: Product[][]) => {
-            // 4. Combinar resultados con nombres de categorías
             this.productsByCategory = categorias
               .map((categoria: CategoriaBackend, index: number) => ({
                 categoria: categoria.nombre,
                 productos: results[index],
               }))
-              .filter((item) => item.productos.length > 0); // Solo mostrar categorías con productos
+              .filter((item) => item.productos.length > 0);
 
             this.loading = false;
           },

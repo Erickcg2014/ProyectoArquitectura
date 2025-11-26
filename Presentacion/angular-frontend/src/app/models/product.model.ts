@@ -11,7 +11,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  originalPrice?: number; // Para mostrar descuentos
+  originalPrice?: number;
   images: string[];
   category: string;
   categorySlug?: string;
@@ -26,7 +26,7 @@ export interface Product {
     rating?: number;
   };
   inStock: boolean;
-  featured?: boolean; // Para productos destacados
+  featured?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -37,7 +37,7 @@ export interface CategoriaBackend {
 }
 
 export interface ProductCategory {
-  id: number; // ← ANTES era string
+  id: number;
   name: string;
   slug: string;
 }

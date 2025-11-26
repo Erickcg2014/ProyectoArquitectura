@@ -27,7 +27,6 @@ export class CategoryComponent implements OnInit {
   products: Product[] = [];
   loading: boolean = true;
 
-  // Información de categorías
   private categoriesData: { [key: string]: CategoryInfo } = {
     'mas-vendidos': {
       name: 'Más Vendidos',

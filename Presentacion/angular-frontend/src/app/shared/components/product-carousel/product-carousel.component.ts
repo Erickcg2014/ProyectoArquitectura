@@ -59,17 +59,14 @@ export class ProductCarouselComponent {
     }
   }
 
-  // Método para obtener el precio formateado
   getFormattedPrice(price: number): string {
     return `$${price.toFixed(2)}`;
   }
 
-  // Método para verificar si tiene descuento
   hasDiscount(product: Product): boolean {
     return !!product.originalPrice && product.originalPrice > product.price;
   }
 
-  // Método para calcular el porcentaje de descuento
   getDiscountPercentage(product: Product): number {
     if (!this.hasDiscount(product)) return 0;
     return Math.round(

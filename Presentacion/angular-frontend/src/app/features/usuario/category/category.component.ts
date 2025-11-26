@@ -27,7 +27,6 @@ export class CategoryComponent implements OnInit {
   products: Product[] = [];
   loading: boolean = true;
 
-  // Información de categorías
   private categoriesData: { [key: string]: CategoryInfo } = {
     'mas-vendidos': {
       name: 'Más Vendidos',
@@ -163,13 +162,10 @@ export class CategoryComponent implements OnInit {
   loadCategory(): void {
     this.loading = true;
 
-    // Cargar información de la categoría
     this.categoryInfo = this.categoriesData[this.categorySlug] || null;
 
-    // Cargar productos
     this.productsService.getAllProducts().subscribe({
       next: (products: Product[]) => {
-        // Filtrar productos por categoría
         this.products = products.filter(
           (p) => p.categorySlug === this.categorySlug
         );

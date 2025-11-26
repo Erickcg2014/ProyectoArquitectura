@@ -14,9 +14,9 @@ CREATE TABLE categoria (
 -- 2. TABLA PRODUCTOS
 -- =============================
 CREATE TABLE productos (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),     -- ← UUID
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),     
     nombre VARCHAR(150) NOT NULL,
-    idProveedor UUID NOT NULL,                         -- ← UUID
+    idProveedor UUID NOT NULL,                         
     descripcion TEXT,
     precio DECIMAL(10,2),
     cantidadDisponible INT,

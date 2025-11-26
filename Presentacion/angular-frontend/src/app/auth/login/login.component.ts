@@ -72,16 +72,11 @@ export class LoginComponent implements OnInit {
         console.log('Login exitoso:', response);
         this.isLoading = false;
 
-        // ============================================
-        // NUEVO: Verificar si hay returnUrl
-        // ============================================
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
 
         if (returnUrl) {
-          // Si hay returnUrl, redirigir ahí directamente
           this.router.navigateByUrl(returnUrl);
         } else {
-          // Si no hay returnUrl, redirigir según el rol
           const role = response.user.rolTipo?.toLowerCase();
 
           if (role === 'admin') {
@@ -97,7 +92,6 @@ export class LoginComponent implements OnInit {
         console.error('Error en login:', error);
         this.isLoading = false;
 
-        // Mensajes de error personalizados
         if (error.status === 401) {
           this.errorMessage = 'Usuario o contraseña incorrectos';
         } else if (error.status === 0) {

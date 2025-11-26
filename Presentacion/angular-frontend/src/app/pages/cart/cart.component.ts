@@ -30,7 +30,6 @@ export class CartComponent implements OnInit {
   }
 
   loadCart(): void {
-    // Mock data - TODO: Conectar con CartService
     this.cartItems = [
       {
         id: '1',
@@ -74,11 +73,11 @@ export class CartComponent implements OnInit {
   }
 
   getTax(): number {
-    return this.getSubtotal() * 0.08; // 8% tax
+    return this.getSubtotal() * 0.08;
   }
 
   getShipping(): number {
-    return this.cartItems.length > 0 ? 0 : 0; // Free shipping
+    return this.cartItems.length > 0 ? 0 : 0;
   }
 
   getTotal(): number {
@@ -88,7 +87,6 @@ export class CartComponent implements OnInit {
   proceedToCheckout(): void {
     console.log('Proceeding to checkout...');
     alert('Checkout feature coming soon!');
-    // TODO: Navigate to checkout
   }
 
   continueShopping(): void {

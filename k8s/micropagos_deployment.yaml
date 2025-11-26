@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: micropagos
-          image: localhost:5000/micropagos:latest # ✔ registry local
+          image: localhost:5000/micropagos:latest
           ports:
             - containerPort: 8086
           resources:
@@ -40,7 +40,7 @@ spec:
     - name: http
       port: 80
       targetPort: 8086
-      nodePort: 30086 # ✔ NodePort asignado
+      nodePort: 30086
 
 ---
 apiVersion: autoscaling/v2

@@ -20,22 +20,16 @@ export default class CarritoComponent implements OnInit {
   loading: boolean = false;
   error: string = '';
 
-  // ============================================
-  // CAMBIO: Ya no es hardcoded
-  // ============================================
   idCliente: string = '';
   precioTotal: number = 0;
 
   constructor(
     private carritoService: CarritoService,
-    private authService: AuthService, // ← Inyectar AuthService
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    // ============================================
-    // NUEVO: Obtener ID del usuario autenticado
-    // ============================================
     const currentUser = this.authService.getCurrentUser();
 
     if (!currentUser || !currentUser.id) {
@@ -46,7 +40,7 @@ export default class CarritoComponent implements OnInit {
       return;
     }
 
-    this.idCliente = currentUser.id; // ← Usar el ID de la BD (no keycloakId)
+    this.idCliente = currentUser.id;
     this.cargarCarrito();
   }
 

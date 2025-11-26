@@ -63,7 +63,7 @@ spec:
     - name: http
       port: 80
       targetPort: 8089
-      nodePort: 30089 # ← NodePort fijo como hicimos con microcarrito
+      nodePort: 30089
 
 ---
 apiVersion: autoscaling/v2

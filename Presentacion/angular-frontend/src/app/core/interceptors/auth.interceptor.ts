@@ -27,12 +27,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // No agregar token a requests de login/registro
     if (this.isAuthRequest(request)) {
       return next.handle(request);
     }
 
-    // Agregar token a la petición
     const token = this.keycloakService.getAccessToken();
     if (token) {
       request = this.addToken(request, token);

@@ -19,10 +19,6 @@ export class CarritoService {
 
   constructor(private http: HttpClient) {}
 
-  // ------------------------------
-  //  MÉTODOS ORIGINALES (NO TOCAR)
-  // ------------------------------
-
   crearCarrito(carrito: Carrito): Observable<Carrito> {
     return this.http.post<Carrito>(`${this.apiUrl}/crear/carrito`, carrito);
   }
@@ -69,23 +65,16 @@ export class CarritoService {
     return this.http.delete(`${this.apiUrl}/cliente/${idCliente}`);
   }
 
-  // ------------------------------
-  //     NUEVAS FUNCIONES
-  // ------------------------------
-
-  // Obtener producto por ID desde microproductos
   getProductoById(idProducto: string): Observable<Producto> {
     return this.http.get<Producto>(
       `${this.apiProductoUrl}/buscarproducto/${idProducto}`
     );
   }
 
-  // Extender items del carrito con sus productos y subtotal
   extenderItems(items: CarritoItem[]): Observable<CarritoItemExtendido[]> {
     const llamadas = items.map((item) =>
       this.getProductoById(item.idProducto).pipe(
         map((producto) => {
-          // 🔥 Armar URL pública de Google Cloud Storage
           if (producto?.imagenUrl) {
             producto.imagenUrl = `https://storage.googleapis.com/${producto.imagenUrl}`;
           }

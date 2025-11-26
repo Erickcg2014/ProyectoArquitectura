@@ -6,8 +6,8 @@
 -- TABLA ORDEN
 -- =============================
 CREATE TABLE Orden (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   -- ← UUID
-    idUsuario UUID NOT NULL,                         -- ← UUID
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   
+    idUsuario UUID NOT NULL,                         
     total DECIMAL(10,2) NOT NULL,
     estado VARCHAR(20) NOT NULL,
     direccion VARCHAR(150) NOT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE Orden (
 -- =============================
 CREATE TABLE Orden_Item (
     id SERIAL PRIMARY KEY,
-    idOrden UUID NOT NULL,                           -- ← UUID
-    idProducto UUID NOT NULL,                        -- ← UUID
-    idProveedor UUID NOT NULL,                       -- ← UUID
+    idOrden UUID NOT NULL,                           
+    idProducto UUID NOT NULL,                        
+    idProveedor UUID NOT NULL,                       
     cantidad INT NOT NULL,
     precioUnitario DECIMAL(10,2) NOT NULL,
 
@@ -41,8 +41,8 @@ CREATE TABLE Orden_Item (
 -- =============================
 CREATE TABLE Resumen_Proveedor_Orden (
     id SERIAL PRIMARY KEY,
-    idProveedor UUID NOT NULL,                       -- ← UUID
-    idOrden UUID NOT NULL,                           -- ← UUID
+    idProveedor UUID NOT NULL,                       
+    idOrden UUID NOT NULL,                           
     totalProveedor DECIMAL(10,2) NOT NULL,
 
     CONSTRAINT fk_resumen_orden

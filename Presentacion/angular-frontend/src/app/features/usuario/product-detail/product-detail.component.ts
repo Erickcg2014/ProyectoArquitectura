@@ -100,12 +100,10 @@ export class ProductDetailComponent implements OnInit {
     this.router.navigate(['/cart']);
   }
 
-  // Método auxiliar para verificar si es un producto físico
   isPhysicalProduct(): boolean {
     return this.product?.type === 'physical';
   }
 
-  // Método auxiliar para verificar si hay descuento
   hasDiscount(): boolean {
     return (
       !!this.product?.originalPrice &&

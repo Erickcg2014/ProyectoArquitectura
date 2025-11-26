@@ -28,7 +28,7 @@ COPY --from=build /app/target/*.jar app.jar
 # Exponer el puerto
 EXPOSE 8080
 
-# Variables de entorno (opcional, pueden sobrescribirse al correr)
+# Variables de entorno 
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Comando para ejecutar la aplicación

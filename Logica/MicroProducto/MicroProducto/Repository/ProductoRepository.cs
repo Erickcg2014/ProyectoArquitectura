@@ -22,7 +22,6 @@ public class ProductoRepository : IProductoRepository
 {
     int? categoriaId = producto.Categoria;
 
-    // 1. Si el ID viene en el producto, validar si existe
     if (categoriaId.HasValue)
     {
         bool categoriaExiste = await _context.Categorias
@@ -33,13 +32,11 @@ public class ProductoRepository : IProductoRepository
     }
     else if (!string.IsNullOrWhiteSpace(categoriaNombre))
     {
-        // 2. Si no vino ID, pero sí nombre → buscar categoría
         var categoria = await _context.Categorias
             .FirstOrDefaultAsync(c => c.Nombre == categoriaNombre);
 
         if (categoria == null)
         {
-            // 3. Si no existe el nombre → crear categoría
             categoria = new Categoria { Nombre = categoriaNombre };
             await _context.Categorias.AddAsync(categoria);
             await _context.SaveChangesAsync(); // para generar ID
@@ -62,10 +59,8 @@ public class ProductoRepository : IProductoRepository
         Categoria = producto.Categoria,
         ImagenUrl = producto.ImagenUrl,
         IdProveedor = producto.IdProveedor
-        // No seteas el ID → lo genera PostgreSQL automáticamente
     };
 
-    // 4. Guardar producto
     await _context.Productos.AddAsync(productonuevo);
     await _context.SaveChangesAsync();
 }

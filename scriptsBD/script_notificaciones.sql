@@ -23,7 +23,7 @@ CREATE TABLE Estado_Notificacion (
 -- =============================
 CREATE TABLE Notificacion (
     id SERIAL PRIMARY KEY,
-    idUsuario UUID NOT NULL,                     -- ← UUID
+    idUsuario UUID NOT NULL,                    
     idCanal INT NOT NULL,
     idEstado INT NOT NULL,
 

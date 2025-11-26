@@ -5,7 +5,7 @@ import HomeComponent from './features/usuario/home/home.component';
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent, // ← Home público
+    component: HomeComponent,
     title: 'JaveMarket - Tu Catálogo de Productos',
   },
   {

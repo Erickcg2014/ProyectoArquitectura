@@ -10,9 +10,6 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  // ============================================
-  // NUEVO: Observable para cambios de auth
-  // ============================================
   private authStatusSubject = new BehaviorSubject<boolean>(
     this.isAuthenticated()
   );
@@ -83,9 +80,6 @@ export class AuthService {
             localStorage.setItem('current_user', JSON.stringify(response.user));
           }
 
-          // ============================================
-          // NUEVO: Notificar cambio de estado
-          // ============================================
           this.authStatusSubject.next(true);
         })
       );
@@ -96,15 +90,10 @@ export class AuthService {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('current_user');
 
-    // ============================================
-    // NUEVO: Notificar cambio de estado
-    // ============================================
     this.authStatusSubject.next(false);
 
     this.router.navigate(['/login']);
   }
-
-  // auth.service.ts
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('access_token');

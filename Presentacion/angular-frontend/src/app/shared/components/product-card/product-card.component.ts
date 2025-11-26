@@ -14,13 +14,12 @@ import { Product } from '../../../models/product.model';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
-  Math = Math; // Para usar Math.floor en el template
+  Math = Math;
 
   addToCart(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
     console.log('Adding to cart:', this.product.name);
-    // TODO: Conectar con CartService
   }
 
   getDiscount(): number {

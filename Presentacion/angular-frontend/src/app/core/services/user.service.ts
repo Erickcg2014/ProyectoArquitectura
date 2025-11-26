@@ -15,7 +15,7 @@ interface RegisterUsuarioDto {
   departamento?: string;
   pais: string;
   genero?: string;
-  fecha_nacimiento?: string | null; // ← Permitir null
+  fecha_nacimiento?: string | null;
   idRol: number;
 }
 

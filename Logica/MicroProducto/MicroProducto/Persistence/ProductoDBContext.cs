@@ -29,7 +29,6 @@ public class ProductoDBContext: DbContext
                 entity.Property(e => e.IdProveedor).HasColumnName("idproveedor");
                 entity.Property(e => e.CantidadReservada).HasColumnName("cantidadreservada");
                              
-                // Relación opcional: Producto → Categoria
                 entity.HasOne<Categoria>()
                       .WithMany()
                       .HasForeignKey(e => e.Categoria)

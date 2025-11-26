@@ -41,7 +41,7 @@ spring:
             - Path=/api/orden/**
 
         # ==========================
-        # MICROUSUARIOS - NUEVO
+        # MICROUSUARIOS
         # ==========================
         - id: microusuarios-service
           uri: http://microusuarios-service:8080
@@ -59,7 +59,7 @@ spring:
             - Path=/app/**
 
         # ==========================
-        # AUTH - LOGIN (CORREGIDO)
+        # AUTH - LOGIN
         # ==========================
         - id: auth-service
           uri: http://microusuarios-service:8080
@@ -68,8 +68,6 @@ spring:
           filters:
             - StripPrefix=0
 
-      # ELIMINAR globalcors SI YA TIENES CORS CONFIGURADO EN LOS MICROSERVICIOS
-      # O mantenerlo SOLO si ningún microservicio tiene CORS
       globalcors:
         cors-configurations:
           "[/**]":

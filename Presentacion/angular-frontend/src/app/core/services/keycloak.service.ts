@@ -20,7 +20,6 @@ export class KeycloakService {
 
   constructor(private http: HttpClient) {}
 
-  // Login directo contra Keycloak
   login(username: string, password: string): Observable<KeycloakTokenResponse> {
     const url = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
 
@@ -38,18 +37,15 @@ export class KeycloakService {
       .post<KeycloakTokenResponse>(url, body.toString(), { headers })
       .pipe(
         tap((response) => {
-          // Guardar tokens en localStorage
           localStorage.setItem('access_token', response.access_token);
           localStorage.setItem('refresh_token', response.refresh_token);
 
-          // Calcular y guardar tiempo de expiración
           const expiresAt = Date.now() + response.expires_in * 1000;
           localStorage.setItem('expires_at', expiresAt.toString());
         })
       );
   }
 
-  // Refresh token
   refreshToken(): Observable<KeycloakTokenResponse> {
     const url = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
     const refreshToken = localStorage.getItem('refresh_token');
@@ -115,7 +111,6 @@ export class KeycloakService {
     return Date.now() >= parseInt(expiresAt);
   }
 
-  // Decodificar JWT token (sin validar firma)
   decodeToken(token: string): any {
     try {
       const payload = token.split('.')[1];

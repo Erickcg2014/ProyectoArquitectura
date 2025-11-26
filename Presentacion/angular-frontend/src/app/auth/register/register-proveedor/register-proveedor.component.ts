@@ -29,7 +29,6 @@ export class RegisterProveedorComponent implements OnInit {
   currentStep = 1;
   totalSteps = 3;
 
-  // Prefijos de país
   countryCodes = [
     { code: '+57', country: 'Colombia', flag: '🇨🇴' },
     { code: '+1', country: 'USA/Canada', flag: '🇺🇸' },
@@ -37,7 +36,6 @@ export class RegisterProveedorComponent implements OnInit {
     { code: '+34', country: 'España', flag: '🇪🇸' },
   ];
 
-  // Departamentos de Colombia
   departamentos = [
     'Amazonas',
     'Antioquia',
@@ -73,7 +71,6 @@ export class RegisterProveedorComponent implements OnInit {
     'Vichada',
   ];
 
-  // Ciudades principales de Colombia
   ciudades = [
     'Bogotá',
     'Medellín',
@@ -107,7 +104,6 @@ export class RegisterProveedorComponent implements OnInit {
 
     this.registerForm = this.fb.group(
       {
-        // Step 1: Información del Negocio
         nombre: [
           '',
           [
@@ -138,7 +134,6 @@ export class RegisterProveedorComponent implements OnInit {
           ],
         ],
 
-        // Step 2: Información de Contacto y Ubicación
         countryCode: ['+57', [Validators.required]],
         telefono: [
           '',
@@ -168,7 +163,6 @@ export class RegisterProveedorComponent implements OnInit {
         ],
         confirmPassword: ['', [Validators.required]],
 
-        // Términos y condiciones
         aceptaTerminos: [false, [Validators.requiredTrue]],
         aceptaPoliticasComerciales: [false, [Validators.requiredTrue]],
       },
@@ -178,7 +172,6 @@ export class RegisterProveedorComponent implements OnInit {
     );
   }
 
-  // Validador personalizado para dominios de email
   emailDomainValidator(control: AbstractControl): ValidationErrors | null {
     const email = control.value;
     if (email && email.includes('@')) {
@@ -195,7 +188,6 @@ export class RegisterProveedorComponent implements OnInit {
     return null;
   }
 
-  // Validador de fortaleza de contraseña
   passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.value;
     if (!password) return null;
@@ -210,14 +202,12 @@ export class RegisterProveedorComponent implements OnInit {
     return !passwordValid ? { weakPassword: true } : null;
   }
 
-  // Validador para verificar que las contraseñas coincidan
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
-  // Getters para facilitar el acceso a los controles
   get nombre() {
     return this.registerForm.get('nombre');
   }
@@ -272,7 +262,6 @@ export class RegisterProveedorComponent implements OnInit {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  // Navegación entre pasos
   nextStep(): void {
     if (this.currentStep < this.totalSteps) {
       if (this.validateCurrentStep()) {
@@ -342,7 +331,6 @@ export class RegisterProveedorComponent implements OnInit {
     }
   }
 
-  // Métodos para verificar requisitos de contraseña
   hasMinLength(): boolean {
     const password = this.password?.value;
     return password && password.length >= 8;
@@ -400,7 +388,6 @@ export class RegisterProveedorComponent implements OnInit {
     target.style.boxShadow = 'none';
   }
 
-  // Calcular fortaleza de contraseña
   getPasswordStrength(): { strength: string; color: string; width: string } {
     const password = this.password?.value || '';
     let strength = 0;
@@ -418,7 +405,6 @@ export class RegisterProveedorComponent implements OnInit {
     return { strength: 'Fuerte', color: 'bg-green-500', width: '100%' };
   }
 
-  // Contador de caracteres para descripción
   getDescripcionCount(): string {
     const count = this.descripcion?.value?.length || 0;
     return `${count}/500`;
@@ -443,10 +429,8 @@ export class RegisterProveedorComponent implements OnInit {
       ...proveedorData
     } = this.registerForm.value;
 
-    // Combinar código de país con teléfono
     const telefonoCompleto = `${countryCode}${proveedorData.telefono}`;
 
-    // Preparar datos para enviar (sin descripción, no está en BD usuarios)
     const registerData = {
       ...proveedorData,
       telefono: telefonoCompleto,

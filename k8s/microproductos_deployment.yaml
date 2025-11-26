@@ -15,15 +15,15 @@ spec:
     spec:
       containers:
         - name: microproductos
-          image: localhost:5000/microproductos:latest # ← ✔ REGISTRY LOCAL
+          image: localhost:5000/microproductos:latest
           ports:
             - containerPort: 8083
           resources:
             limits:
-              cpu: "300m" # Reducir de 500m
-              memory: "256Mi" # Reducir de 512Mi
+              cpu: "300m"
+              memory: "256Mi"
             requests:
-              cpu: "50m" # Reducir de 100-250m
+              cpu: "50m"
               memory: "64Mi"
 
 ---

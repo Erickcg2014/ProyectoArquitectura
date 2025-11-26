@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: presentacion
-          image: localhost:5000/frontend:latest # ← misma imagen del docker-compose
+          image: localhost:5000/frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

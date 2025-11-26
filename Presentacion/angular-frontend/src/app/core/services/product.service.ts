@@ -37,9 +37,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // Mapear ProductoBackend a Product (frontend)
   private mapProductoToProduct(producto: ProductoBackend): Product {
-    // Mapeo de categorías a slugs basado en tu base de datos
     const categorySlugMap: { [key: number]: string } = {
       1: 'supermercado',
       2: 'tecnologia',
@@ -81,13 +79,10 @@ export class ProductService {
     const categorySlug = categorySlugMap[producto.idCategoria] || 'general';
     const categoryName = categoryNameMap[producto.idCategoria] || 'General';
 
-    // Calcular stock total
     const totalStock = producto.cantidadDisponible + producto.cantidadReservada;
 
-    // Calcular precio original (10% más para mostrar descuento)
     const originalPrice = producto.precio * 1.1;
 
-    // Construir URL de imagen para Google Cloud Storage
     const images = this.buildImageUrls(producto.imagenUrl);
 
     return {
@@ -100,7 +95,7 @@ export class ProductService {
       images: images,
       category: categoryName,
       categorySlug: categorySlug,
-      stock: totalStock, // Stock total disponible + reservado
+      stock: totalStock,
       type: ProductType.PHYSICAL,
       rating: this.generateRandomRating(),
       reviewCount: this.generateRandomReviewCount(),
@@ -110,35 +105,30 @@ export class ProductService {
         rating: 4.0,
       },
       inStock: totalStock > 0,
-      featured: totalStock > 50, // Productos con mucho stock son featured
+      featured: totalStock > 50,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
   }
 
-  // Método para construir URLs de imágenes para Google Cloud Storage
   private buildImageUrls(imagenUrl: string): string[] {
     if (!imagenUrl) {
       return ['https://via.placeholder.com/300'];
     }
 
-    // Si la URL ya es completa, retornarla tal cual
     if (imagenUrl.startsWith('http')) {
       return [imagenUrl];
     }
 
-    // Si es una ruta de Google Cloud Storage, construir la URL completa
-    // Asumiendo que imagenUrl contiene el path del bucket: "nombre-bucket/path/a/imagen.jpg"
     if (imagenUrl.includes('/')) {
       return [`${this.gcsBaseUrl}/${imagenUrl}`];
     }
 
-    // Si es solo un nombre de archivo, usar un bucket por defecto
     return [`${this.gcsBaseUrl}/javemarket_bucket/${imagenUrl}`];
   }
 
   private generateRandomRating(): number {
-    return Math.random() * 2 + 3; // Rating entre 3-5
+    return Math.random() * 2 + 3;
   }
 
   private generateRandomReviewCount(): number {

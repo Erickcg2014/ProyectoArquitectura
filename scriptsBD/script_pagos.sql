@@ -25,8 +25,8 @@ CREATE TABLE EstadoPago (
 -- TABLA Pago
 -- =============================
 CREATE TABLE Pago (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   -- ← UUID
-    idOrden UUID NOT NULL,                           -- ← UUID 
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),   
+    idOrden UUID NOT NULL,                           
     monto DECIMAL(10,2) NOT NULL,
     fecha TIMESTAMP NOT NULL DEFAULT NOW(),
     idEstadoPago INT NOT NULL,

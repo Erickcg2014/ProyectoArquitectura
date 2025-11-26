@@ -22,7 +22,7 @@ COPY --from=build /publish .
 
 EXPOSE 8087
 
-# Configurar la aplicación para escuchar en el puerto 8083
+# Configurar la aplicación para escuchar en el puerto 8087
 ENV ASPNETCORE_URLS=http://+:8087
 
 ENTRYPOINT ["dotnet", "MicroCarrito.dll"]

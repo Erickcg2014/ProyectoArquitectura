@@ -20,7 +20,7 @@ CREATE TABLE producto_reco (
     idProveedor UUID NOT NULL,
 
     -- embedding del producto (vector)
-    embedding VECTOR(768),   -- ajusta tamaño según modelo que uses
+    embedding VECTOR(768),  
 
     actualizadoEn TIMESTAMP NOT NULL DEFAULT NOW()
 );

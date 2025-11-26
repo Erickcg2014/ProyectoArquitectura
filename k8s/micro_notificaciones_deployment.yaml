@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: micronotificaciones
-          image: localhost:5000/micronotificaciones:latest # ✔ Registry local
+          image: localhost:5000/micronotificaciones:latest
           ports:
             - containerPort: 8082
           env:
@@ -37,7 +37,6 @@ spec:
                   name: micronotificaciones-secrets
                   key: Sms__FromPhoneNumber
 
-            # Variables Kafka (pueden moverse al secret si deseas)
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "pkc-619z3.us-east1.gcp.confluent.cloud:9092"
 
@@ -62,14 +61,14 @@ metadata:
   name: micronotificaciones-service
   namespace: arquitectura
 spec:
-  type: NodePort # ✔ Ajustado a NodePort como el resto del sistema
+  type: NodePort
   selector:
     app: micronotificaciones
   ports:
     - name: http
       port: 80
       targetPort: 8082
-      nodePort: 30082 # ✔ NodePort fijo (estilo microservicios previos)
+      nodePort: 30082
 
 ---
 apiVersion: autoscaling/v2

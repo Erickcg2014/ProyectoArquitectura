@@ -37,9 +37,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: any = null;
   userInitials = '';
 
-  // ============================================
-  // NUEVO: Subscription para limpiar después
-  // ============================================
   private authSubscription?: Subscription;
 
   categories: Category[] = [
@@ -102,17 +99,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadUserInfo();
 
-    // ============================================
-    // NUEVO: Escuchar cambios de autenticación
-    // ============================================
     this.authSubscription = this.authService.authStatus$.subscribe(() => {
       this.loadUserInfo();
     });
   }
 
-  // ============================================
-  // NUEVO: Limpiar subscripción al destruir
-  // ============================================
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
   }
@@ -131,9 +122,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
             : names[0].substring(0, 2).toUpperCase();
       }
     } else {
-      // ============================================
-      // NUEVO: Limpiar datos cuando no hay usuario
-      // ============================================
       this.currentUser = null;
       this.userInitials = '';
     }
@@ -158,12 +146,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     console.log('Click en carrito, isAuthenticated:', this.isAuthenticated);
 
     if (this.isAuthenticated) {
-      // Cambia esta línea - usa la ruta correcta
-      this.router.navigate(['/cart']);
+      this.router.navigate(['/usuario/carrito']);
     } else {
-      // También actualiza el returnUrl
       this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/cart' },
+        queryParams: { returnUrl: '/usuario/carrito' },
       });
     }
   }

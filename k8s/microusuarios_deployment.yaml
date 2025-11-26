@@ -69,5 +69,5 @@ spec:
   ports:
     - name: http
       port: 8080 # Puerto del Service interno
-      targetPort: 8080 # Puerto en el contenedor .NET
+      targetPort: 8080 # Puerto en el contenedor
       nodePort: 32703 # Puerto externo accesible desde fuera del cluster
